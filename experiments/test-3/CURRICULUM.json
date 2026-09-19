@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "law": "Level N replays all earlier permanent regression families plus new Level N stress.",
+  "levels": [
+    {
+      "level": 0,
+      "name": "CLEAN_ROOM",
+      "new_scenarios": 80
+    },
+    {
+      "level": 1,
+      "name": "NORMAL_FRICTION",
+      "new_scenarios": 100
+    },
+    {
+      "level": 2,
+      "name": "STATE_INTEGRITY",
+      "new_scenarios": 120
+    },
+    {
+      "level": 3,
+      "name": "CONCURRENCY_AND_DRIFT",
+      "new_scenarios": 100
+    },
+    {
+      "level": 4,
+      "name": "OPERATIONAL_CHAOS",
+      "new_scenarios": 100
+    },
+    {
+      "level": 5,
+      "name": "LONG_HORIZON",
+      "new_scenarios": 100
+    },
+    {
+      "level": 6,
+      "name": "HOSTILE_NIGHTMARE",
+      "new_scenarios": 100
+    }
+  ],
+  "total_scenarios": 700
+}\n

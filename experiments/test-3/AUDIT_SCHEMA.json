@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "required": [
+    "scenario_id",
+    "level",
+    "family",
+    "expected",
+    "observed",
+    "status",
+    "failure_class",
+    "severity",
+    "component",
+    "expected_behavior",
+    "observed_behavior",
+    "correction_hypothesis",
+    "permanent_regression"
+  ]
+}\n

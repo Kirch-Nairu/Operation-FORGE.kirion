@@ -1,0 +1,16 @@
+{
+  "test": "TEST 3 — Progressive Overload Behavioral Gauntlet",
+  "generation": 0,
+  "status": "BASELINE_CHALLENGE",
+  "source": {
+    "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
+    "sha": "80e3656a00dad5c0e3c22e38cad8a0f54bdd115d"
+  },
+  "current_main_context": {
+    "sha": "50e0646a303cba8cc11959a2974b2d84cbc515bd",
+    "relation": "DIVERGED",
+    "merge_base": "da4aacd036fc39bf6271874bd4508ed314dc0551"
+  },
+  "total_scenarios": 700,
+  "promotion_status": "NOT_AUTHORIZED"
+}\n
