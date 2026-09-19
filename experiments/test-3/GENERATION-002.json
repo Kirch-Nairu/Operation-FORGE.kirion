@@ -1,0 +1,15 @@
+{
+  "test": "TEST 3",
+  "generation": 2,
+  "status": "EVALUATOR_FIRST_BASELINE",
+  "parent_candidate": "3e3a109f638a7387b4aefd0a4a152e8020545fd1",
+  "cumulative_v2": {
+    "run_id": 35453886840,
+    "result": "800/800 PASS"
+  },
+  "level": 7,
+  "new_scenarios": 250,
+  "hypothesis": "Green state/authority mechanics may still fail when the agent can recompute hashes, processes restart, mutable snapshots are rewritten, active leases must survive restart, or verifier identity is caller-spoofable.",
+  "evaluator": "tools/test3_level7_trust.py",
+  "promotion_status": "NOT_AUTHORIZED"
+}
