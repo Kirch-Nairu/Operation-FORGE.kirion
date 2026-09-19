@@ -1,0 +1,20 @@
+{
+  "generation": 8,
+  "status": "CLOSED",
+  "red": {
+    "sha": "c3900c27bb92f028fd10a94bf82566236a2e39e5",
+    "run": 35442813571,
+    "result": "EXPECTED_FAILURE"
+  },
+  "green": {
+    "sha": "8df8ef7fe20f50d5540dec51b9d35bcb962a3aac",
+    "run": 35442848775,
+    "result": "10/10 PASS"
+  },
+  "retained": [
+    "review-only skill candidates",
+    "teacher/reviewer separation",
+    "no automatic skill authority or promotion"
+  ],
+  "promotion_status": "NOT_AUTHORIZED"
+}

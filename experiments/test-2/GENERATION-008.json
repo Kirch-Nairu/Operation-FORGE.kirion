@@ -1,7 +1,7 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 8,
-  "status": "CANDIDATE_MUTATION",
+  "status": "CLOSED",
   "baseline": {
     "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
     "sha": "64ff4622dc80c233bcbe1bb58092843134325272"
@@ -19,5 +19,11 @@
     "tools/forge_learning_kernel.py",
     "doctrine/controlled-learning.md"
   ],
-  "evaluator_changed": false
+  "evaluator_changed": false,
+  "green_run": {
+    "candidate_sha": "8df8ef7fe20f50d5540dec51b9d35bcb962a3aac",
+    "workflow_run": 35442848775,
+    "result": "10/10 PASS"
+  },
+  "decision": "RETAIN"
 }
