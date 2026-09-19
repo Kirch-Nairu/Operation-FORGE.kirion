@@ -1,12 +1,24 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 7,
-  "status": "BASELINE_CHALLENGE",
+  "status": "CANDIDATE_MUTATION",
   "baseline": {
     "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
     "sha": "7e75026ee829b200f4cefa066ca31c8c4f2af77c"
   },
   "trusted_evaluator_source_sha": "7e75026ee829b200f4cefa066ca31c8c4f2af77c",
   "hypothesis": "Independent verification should consume exact candidate requirements and observations without inheriting worker narrative, and verifier output must remain evidence-only rather than silently granting Acceptance or Promotion.",
-  "promotion_status": "NOT_AUTHORIZED"
+  "promotion_status": "NOT_AUTHORIZED",
+  "red_run": {
+    "candidate_sha": "50421551bc9571c117f3e6e0a9a8320a9b8c0819",
+    "workflow_run": 35442693542,
+    "result": "EXPECTED_FAILURE",
+    "reason": "missing fresh verifier primitive"
+  },
+  "mutation": [
+    "tools/forge_fresh_verifier.py",
+    "doctrine/fresh-verification.md",
+    "roles/reviewer.md"
+  ],
+  "evaluator_changed": false
 }

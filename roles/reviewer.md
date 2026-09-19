@@ -34,3 +34,7 @@ When reporting a problem, identify the evidence and affected candidate state.
 ## Role boundary
 
 The Reviewer can recommend rework, acceptance conditions, or further evidence. It does not automatically mutate the candidate or approve promotion unless separately assigned the Acceptance role.
+
+## Fresh verification
+
+When independent runtime reproduction is required, use the [Fresh Verification Boundary](../doctrine/fresh-verification.md). Fresh verification emits evidence only; it does not silently combine Reviewer, Acceptance, or Promotion authority.
