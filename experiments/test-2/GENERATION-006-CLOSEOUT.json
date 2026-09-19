@@ -1,0 +1,21 @@
+{
+  "generation": 6,
+  "status": "CLOSED",
+  "red": {
+    "sha": "768ae242aaecccae78a242e2374b2c394946b7cf",
+    "run": 35442576579,
+    "result": "EXPECTED_FAILURE"
+  },
+  "green": {
+    "sha": "fa1733ae93d0cd25f94cf9eecaa8d9087278c879",
+    "run": 35442619855,
+    "result": "PASS"
+  },
+  "retained": [
+    "ApprovalLedger",
+    "one-use token consumption",
+    "durable replay state",
+    "verify-before-consume law"
+  ],
+  "promotion_status": "NOT_AUTHORIZED"
+}
