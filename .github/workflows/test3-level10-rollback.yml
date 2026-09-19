@@ -1,0 +1,15 @@
+name: Forge Test 3 Level 10 Rollback Apocalypse
+
+on:
+  push:
+    branches:
+      - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-3
+  workflow_dispatch:
+
+jobs:
+  level10:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python tools/entity_check.py
+      - run: python tools/test3_level10_rollback.py
