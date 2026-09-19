@@ -1,0 +1,27 @@
+{
+  "generation": 3,
+  "status": "CLOSED",
+  "invalid_red": {
+    "sha": "84f74673289df767e49bc303b005faf101e3cf25",
+    "run": 35442135736,
+    "classification": "EVALUATOR_DEFECT"
+  },
+  "valid_red": {
+    "sha": "56bb5c71a9591c2f6326bcb650f597767bbe8118",
+    "run": 35442204648,
+    "result": "EXPECTED_FAILURE",
+    "reason": "missing seal_checkpoint"
+  },
+  "green": {
+    "sha": "50b010dfd32f63e64b0fe8a772a2ccbbad98e8a7",
+    "run": 35442242984,
+    "result": "PASS"
+  },
+  "retained": [
+    "SHA256 checkpoint sealing",
+    "optional HMAC_SHA256 checkpoint sealing",
+    "signed-mode fail-closed verification",
+    "role/branch/run tamper detection"
+  ],
+  "promotion_status": "NOT_AUTHORIZED"
+}
