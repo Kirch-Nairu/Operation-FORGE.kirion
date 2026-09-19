@@ -6,10 +6,17 @@ on:
       - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-3
   workflow_dispatch:
 
+env:
+  TEST3_LEVEL3_EVALUATOR_SHA: 9ed1fbcb251acb8b6ef7a7565e69ada7745eef7c
+
 jobs:
   corrected-level3:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: python tools/entity_check.py
-      - run: python tools/test3_level3_contract.py
+      - name: Load frozen corrected Level 3 evaluator
+        run: git show "$TEST3_LEVEL3_EVALUATOR_SHA:tools/test3_level3_contract.py" > /tmp/test3_level3_contract.py
+      - run: python /tmp/test3_level3_contract.py

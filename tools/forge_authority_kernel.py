@@ -117,3 +117,11 @@ def delegate(parent:dict,*,role:str,capabilities:list[str],allow_paths:list[str]
         "parent_envelope_sha256":parent["envelope_sha256"],
     }
     return {**base,"envelope_sha256":_hash(base)}
+
+
+def authorize_current(envelope:dict,capability:str,*,current_sha:str,path:str|None=None)->bool:
+    """Authorize an effect only against the exact observed repository head."""
+    verify_envelope(envelope)
+    _require(bool(current_sha),"current_sha is required for target-bound authority")
+    _require(current_sha==envelope.get("base_sha"),f"target drift: observed {current_sha} != authority base {envelope.get('base_sha')}")
+    return authorize(envelope,capability,path=path)

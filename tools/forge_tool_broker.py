@@ -8,11 +8,16 @@ _TOOLS_DIR=Path(__file__).resolve().parent
 if str(_TOOLS_DIR) not in sys.path:
     sys.path.insert(0,str(_TOOLS_DIR))
 
-from forge_authority_kernel import authorize, AuthorityError
+from forge_authority_kernel import authorize, authorize_current, AuthorityError
 from forge_action_approval import propose_action, ApprovalLedger, ApprovalError
 
 class ToolBrokerError(RuntimeError):
     pass
+
+TARGET_BOUND_CAPABILITIES={
+    "WORKTREE_WRITE","LOCAL_GIT_WRITE","REMOTE_GIT_WRITE",
+    "NETWORK_WRITE","DEPLOY","DESTRUCTIVE","AUTHORITY_MUTATION"
+}
 
 class ToolBroker:
     def __init__(self):
@@ -34,28 +39,33 @@ class ToolBroker:
     def describe(self)->list[dict]:
         return [{"name":name,"capability":meta["capability"],"sensitive":meta["sensitive"],"path_arg":meta["path_arg"]} for name,meta in sorted(self._tools.items())]
 
-    def _authorize_tool(self,meta:dict,envelope:dict,args:dict)->None:
+    def _authorize_tool(self,meta:dict,envelope:dict,args:dict,observed_target_sha:str|None=None)->None:
         path=None
         if meta["path_arg"] is not None:
             if meta["path_arg"] not in args:
                 raise ToolBrokerError(f"missing path argument: {meta['path_arg']}")
             path=args[meta["path_arg"]]
-        authorize(envelope,meta["capability"],path=path)
+        if meta["capability"] in TARGET_BOUND_CAPABILITIES:
+            if not observed_target_sha:
+                raise ToolBrokerError("mutating tool requires observed_target_sha")
+            authorize_current(envelope,meta["capability"],current_sha=observed_target_sha,path=path)
+        else:
+            authorize(envelope,meta["capability"],path=path)
 
-    def proposal_for(self,name:str,envelope:dict,args:dict,*,target_state:dict)->dict:
+    def proposal_for(self,name:str,envelope:dict,args:dict,*,target_state:dict,observed_target_sha:str|None=None)->dict:
         meta=self._tool(name)
-        self._authorize_tool(meta,envelope,args)
+        self._authorize_tool(meta,envelope,args,observed_target_sha)
         if not meta["sensitive"]:
             raise ToolBrokerError("exact-action proposals are only required for sensitive tools")
         return propose_action(envelope,capability=meta["capability"],operation=name,parameters=args,target_state=target_state)
 
-    def execute(self,name:str,envelope:dict,args:dict,*,target_state:dict|None=None,approval_token:dict|None=None,approval_key:str|None=None,approval_ledger:ApprovalLedger|None=None):
+    def execute(self,name:str,envelope:dict,args:dict,*,target_state:dict|None=None,observed_target_sha:str|None=None,approval_token:dict|None=None,approval_key:str|None=None,approval_ledger:ApprovalLedger|None=None):
         meta=self._tool(name)
         if not isinstance(args,dict):
             raise ToolBrokerError("tool arguments must be an object")
 
         # Authority is evaluated before any handler code can run.
-        self._authorize_tool(meta,envelope,args)
+        self._authorize_tool(meta,envelope,args,observed_target_sha)
 
         if meta["sensitive"]:
             if approval_token is None or not approval_key or approval_ledger is None:

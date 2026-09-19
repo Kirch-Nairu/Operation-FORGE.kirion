@@ -1,0 +1,1 @@
+# Active Work Leases\n\nDelegation creates authority; activation creates concurrent mutable ownership. Active work must bind to the exact observed target SHA and reject overlapping mutable path leases on the same repository/branch. A released lease no longer blocks a successor.\n
