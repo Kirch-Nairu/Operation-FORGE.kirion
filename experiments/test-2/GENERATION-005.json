@@ -1,7 +1,7 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 5,
-  "status": "BASELINE_CHALLENGE",
+  "status": "CANDIDATE_MUTATION",
   "baseline": {
     "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
     "sha": "d308dc848d936e46838e5f22e22dbc97c72a0bd2"
@@ -9,5 +9,17 @@
   "trusted_evaluator_source_sha": "d308dc848d936e46838e5f22e22dbc97c72a0bd2",
   "hypothesis": "Sensitive effects need exact-action approval bound to the already-authorized envelope, exact operation, exact parameters, and exact target state. Approval must not create a capability that the envelope did not grant.",
   "method": "Frozen evaluator first; expect RED until exact-action approval primitive exists.",
-  "promotion_status": "NOT_AUTHORIZED"
+  "promotion_status": "NOT_AUTHORIZED",
+  "red_run": {
+    "candidate_sha": "9bb9725777b328f21ca6fa13e9d2f8731701ca80",
+    "workflow_run": 35442463127,
+    "result": "EXPECTED_FAILURE",
+    "reason": "missing tools/forge_action_approval.py"
+  },
+  "mutation": [
+    "tools/forge_action_approval.py",
+    "doctrine/exact-action-approval.md",
+    "doctrine/capability-authority.md"
+  ],
+  "evaluator_changed": false
 }

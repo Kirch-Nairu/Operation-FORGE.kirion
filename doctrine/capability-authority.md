@@ -61,3 +61,7 @@ Delegation therefore cannot be used to launder deploy, remote Git, acceptance, p
 ## Runtime reference
 
 `tools/forge_authority_kernel.py` is the experimental mechanical implementation. It is deliberately small so the trusted authority surface remains reviewable.
+
+## Sensitive effects
+
+Possessing a capability does not mean every invocation should execute without confirmation. Sensitive operations can add the [Exact-Action Approval](exact-action-approval.md) gate. The approval is bound to the envelope and exact action and cannot create a capability absent from the envelope.
