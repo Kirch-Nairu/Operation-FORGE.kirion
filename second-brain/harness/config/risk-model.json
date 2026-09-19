@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "dimensions": ["reversibility","blast_radius","data_sensitivity","authentication_impact","financial_impact","operational_impact","availability_impact","migration_risk","external_dependency_risk","uncertainty"],
+  "weights": {"reversibility":1.1,"blast_radius":1.3,"data_sensitivity":1.25,"authentication_impact":1.35,"financial_impact":1.1,"operational_impact":1.2,"availability_impact":1.25,"migration_risk":1.15,"external_dependency_risk":0.9,"uncertainty":1.0},
+  "thresholds": {"LOW":0.85,"MEDIUM":1.65,"HIGH":2.55,"CRITICAL":4.0},
+  "type_floors": {"GREENFIELD_SYSTEM":"MEDIUM","EXISTING_SYSTEM_FEATURE":"MEDIUM","BUG_FIX":"LOW","SECURITY_HARDENING":"HIGH","PERFORMANCE_HARDENING":"MEDIUM","ARCHITECTURE_CHANGE":"HIGH","DATABASE_CHANGE":"HIGH","DEPLOYMENT_CHANGE":"HIGH","INCIDENT_RESPONSE":"HIGH","REFACTOR":"LOW","PRODUCTION_RECOVERY":"CRITICAL"},
+  "base": {
+    "GREENFIELD_SYSTEM":{"reversibility":2,"blast_radius":2,"data_sensitivity":1,"authentication_impact":1,"financial_impact":0,"operational_impact":1,"availability_impact":1,"migration_risk":0,"external_dependency_risk":1,"uncertainty":3},
+    "EXISTING_SYSTEM_FEATURE":{"reversibility":2,"blast_radius":2,"data_sensitivity":1,"authentication_impact":1,"financial_impact":0,"operational_impact":1,"availability_impact":1,"migration_risk":1,"external_dependency_risk":1,"uncertainty":2},
+    "BUG_FIX":{"reversibility":1,"blast_radius":1,"data_sensitivity":0,"authentication_impact":0,"financial_impact":0,"operational_impact":1,"availability_impact":1,"migration_risk":0,"external_dependency_risk":0,"uncertainty":1},
+    "SECURITY_HARDENING":{"reversibility":2,"blast_radius":2,"data_sensitivity":2,"authentication_impact":3,"financial_impact":1,"operational_impact":2,"availability_impact":1,"migration_risk":1,"external_dependency_risk":1,"uncertainty":2},
+    "PERFORMANCE_HARDENING":{"reversibility":2,"blast_radius":2,"data_sensitivity":0,"authentication_impact":0,"financial_impact":1,"operational_impact":2,"availability_impact":2,"migration_risk":0,"external_dependency_risk":1,"uncertainty":2},
+    "ARCHITECTURE_CHANGE":{"reversibility":3,"blast_radius":3,"data_sensitivity":1,"authentication_impact":1,"financial_impact":1,"operational_impact":2,"availability_impact":2,"migration_risk":2,"external_dependency_risk":2,"uncertainty":3},
+    "DATABASE_CHANGE":{"reversibility":3,"blast_radius":3,"data_sensitivity":2,"authentication_impact":1,"financial_impact":1,"operational_impact":2,"availability_impact":2,"migration_risk":4,"external_dependency_risk":1,"uncertainty":2},
+    "DEPLOYMENT_CHANGE":{"reversibility":2,"blast_radius":3,"data_sensitivity":1,"authentication_impact":1,"financial_impact":1,"operational_impact":3,"availability_impact":3,"migration_risk":1,"external_dependency_risk":2,"uncertainty":2},
+    "INCIDENT_RESPONSE":{"reversibility":2,"blast_radius":3,"data_sensitivity":2,"authentication_impact":2,"financial_impact":1,"operational_impact":4,"availability_impact":4,"migration_risk":1,"external_dependency_risk":1,"uncertainty":4},
+    "REFACTOR":{"reversibility":1,"blast_radius":1,"data_sensitivity":0,"authentication_impact":0,"financial_impact":0,"operational_impact":1,"availability_impact":0,"migration_risk":0,"external_dependency_risk":0,"uncertainty":1},
+    "PRODUCTION_RECOVERY":{"reversibility":4,"blast_radius":4,"data_sensitivity":3,"authentication_impact":2,"financial_impact":2,"operational_impact":4,"availability_impact":4,"migration_risk":3,"external_dependency_risk":2,"uncertainty":4}
+  },
+  "signal_minimums": {
+    "data":{"data_sensitivity":2},"auth":{"authentication_impact":3},"privacy":{"data_sensitivity":3},"financial":{"financial_impact":3},"production":{"blast_radius":3,"operational_impact":3},"migration":{"migration_risk":3},"deployment":{"availability_impact":2,"operational_impact":2},"external_dependency":{"external_dependency_risk":2},"offline":{"uncertainty":2},"distributed":{"external_dependency_risk":2,"availability_impact":2},"security":{"authentication_impact":2,"data_sensitivity":2},"recovery":{"availability_impact":3,"operational_impact":3}
+  },
+  "critical_triggers": [
+    {"all_signals":["production","recovery"]},
+    {"all_signals":["production","security"],"minimum_dimension":{"blast_radius":3}},
+    {"task_types":["PRODUCTION_RECOVERY"]}
+  ]
+}

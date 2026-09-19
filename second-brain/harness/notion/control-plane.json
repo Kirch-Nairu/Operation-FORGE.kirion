@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "default_provider": "NOTION_SNAPSHOT",
+  "fallback_provider": "GIT",
+  "snapshot_path": ".harness/notion/semantic-snapshot.json",
+  "notion_api_version": "2026-03-11",
+  "root_page_id": "3cb29cbe-9a93-8115-8108-c704fea7e973",
+  "knowledge_data_source_id": "611d176e-e7cf-40b1-a5f4-173174d14cf0",
+  "required_status": "Accepted",
+  "required_origin": "Imported",
+  "source_repository": "Kirch-Nairu/project-second.brain",
+  "data_sources": {
+    "projects": "674b9f8f-564f-4358-899e-208365e74f3e",
+    "systems": "d45c10b0-4d65-4cb4-9859-22022a079dc5",
+    "knowledge": "611d176e-e7cf-40b1-a5f4-173174d14cf0",
+    "decisions": "b96ae14c-eace-4e07-abe8-e9e34de8f8b1",
+    "requirements": "f8aae440-500c-481f-b058-3326f74989bc",
+    "risks": "7e5496f8-f99a-4e7d-bf92-aa5d938951a7",
+    "incidents": "4b7bc1d5-86fe-42d5-b013-c01f9db159da",
+    "evidence": "8bb68c8d-fc73-4ae0-bbf0-eae0e5caf302",
+    "work_items": "e08966c8-b68c-4b80-8e2e-050a9b0bebe5",
+    "harness_runs": "bc71b325-0c95-41f3-9e1b-6bdf2a69aaa3"
+  }
+}

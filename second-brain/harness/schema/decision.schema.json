@@ -1,0 +1,10 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"project-second-brain://harness/decision.schema.json",
+  "title":"Harness Decision Record",
+  "type":"object",
+  "required":["version","id","question","evidence","alternatives","selected","rationale","failure_modes","verification","revisit_trigger"],
+  "properties":{
+    "version":{"const":1},"id":{"type":"string"},"question":{"type":"string"},"evidence":{"type":"array","items":{"type":"string"}},"assumptions":{"type":"array","items":{"type":"string"}},"alternatives":{"type":"array","minItems":2,"items":{"type":"string"}},"selected":{"type":"string"},"rationale":{"type":"string"},"authority_consequences":{"type":"array","items":{"type":"string"}},"security_consequences":{"type":"array","items":{"type":"string"}},"failure_modes":{"type":"array","items":{"type":"string"}},"reversibility":{"type":"string"},"rollback":{"type":"string"},"verification":{"type":"array","items":{"type":"string"}},"revisit_trigger":{"type":"string"}
+  }
+}

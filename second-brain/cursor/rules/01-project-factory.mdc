@@ -1,0 +1,20 @@
+---
+description: Apply when planning a new project, module, skin, or Salryn variant.
+globs:
+alwaysApply: false
+---
+
+Do not implement new projects immediately.
+
+First produce:
+
+- hypothesis
+- MVP include list
+- parked scope
+- cost-free scan
+- Salryn parent reuse map
+- questions
+- Project Constitution
+- approval gate
+
+No code before approval.

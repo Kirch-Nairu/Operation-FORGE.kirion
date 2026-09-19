@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-second-brain.local/schemas/notion-semantic-snapshot.schema.json",
+  "title": "Project Second Brain Notion Semantic Snapshot",
+  "type": "object",
+  "required": ["version", "provider", "generated_at", "notion_api_version", "data_source_id", "source_repository", "control_plane_sha256", "route_pack_sha256", "documents", "snapshot_sha256"],
+  "properties": {
+    "version": {"const": 1},
+    "provider": {"const": "NOTION_SNAPSHOT"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "notion_api_version": {"type": "string", "minLength": 1},
+    "data_source_id": {"type": "string", "minLength": 1},
+    "source_repository": {"type": "string", "minLength": 1},
+    "control_plane_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "route_pack_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["page_id", "title", "notion_url", "source_path", "source_sha", "content_sha256", "content"],
+        "properties": {
+          "page_id": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1},
+          "notion_url": {"type": "string", "minLength": 1},
+          "source_path": {"type": "string", "minLength": 1},
+          "source_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+          "content_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "content": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "snapshot_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": false
+}

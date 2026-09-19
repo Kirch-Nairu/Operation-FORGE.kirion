@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "ambiguity_margin": 1,
+  "minimum_score": 1,
+  "types": [
+    {"id":"PRODUCTION_RECOVERY","priority":100,"keywords":["production recovery","restore production","restore service","disaster recovery","recover production"]},
+    {"id":"INCIDENT_RESPONSE","priority":95,"keywords":["incident response","active incident","outage","breach","compromise","service down"]},
+    {"id":"SECURITY_HARDENING","priority":90,"keywords":["security hardening","vulnerability","authorization bypass","privilege escalation","security review","threat model"]},
+    {"id":"BUG_FIX","priority":85,"keywords":["bug","fix","error","exception","500","broken","regression","crash","undefined method"]},
+    {"id":"PERFORMANCE_HARDENING","priority":80,"keywords":["performance","memory leak","latency","throughput","slow","cpu","ram","optimize"]},
+    {"id":"DATABASE_CHANGE","priority":75,"keywords":["database change","migration","schema change","index","constraint","backfill"]},
+    {"id":"DEPLOYMENT_CHANGE","priority":70,"keywords":["deployment","deploy","ci/cd","pipeline","container","runtime host","release"]},
+    {"id":"ARCHITECTURE_CHANGE","priority":65,"keywords":["architecture change","re-architect","microservices","modular monolith","service decomposition"]},
+    {"id":"REFACTOR","priority":60,"keywords":["refactor","cleanup","restructure","technical debt"]},
+    {"id":"EXISTING_SYSTEM_FEATURE","priority":50,"keywords":["add feature","new feature","extend","existing system","implement feature"]},
+    {"id":"GREENFIELD_SYSTEM","priority":40,"keywords":["greenfield","build a","create a","new system","new application","new app","new platform","from scratch"]}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "capabilities": {
+    "INTENDED": "Claim or design intent exists. This is not executable proof.",
+    "IMPLEMENTED": "Executable implementation for the claim exists.",
+    "TESTED": "A test exercised the claim.",
+    "OBSERVED": "The behavior was directly observed in a running system or real HTTP/runtime path.",
+    "DURABLE": "The exact relevant state is durably versioned or persisted with an immutable identifier.",
+    "DEPLOYED": "The exact relevant state is present in the target runtime.",
+    "VERIFIED": "Independent or cross-layer verification corroborated the claim."
+  },
+  "rule": "Capabilities are not a total ordering. A claim may require several capabilities simultaneously."
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@project-second-brain/cognition-harness-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Tool-only MCP adapter for the Project Second Brain cognition harness runtime.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "stdio": "node server.mjs --stdio",
+    "check": "node --check server.mjs && node --check store.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/node": "2.0.0",
+    "@modelcontextprotocol/server": "2.0.0",
+    "zod": "4.4.3"
+  }
+}

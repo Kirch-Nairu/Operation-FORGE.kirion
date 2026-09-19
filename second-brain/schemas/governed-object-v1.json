@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-second.brain/schemas/governed-object-v1.json",
+  "title": "Project Second Brain Governed Object",
+  "type": "object",
+  "required": ["id", "type", "status", "authority"],
+  "properties": {
+    "id": {"type": "string", "minLength": 3},
+    "type": {"type": "string", "minLength": 2},
+    "status": {"type": "string", "minLength": 2},
+    "authority": {"type": "string", "minLength": 2},
+    "project": {"type": ["string", "null"]},
+    "certainty": {
+      "type": ["string", "null"],
+      "enum": [null, "UNKNOWN", "HYPOTHESIS", "SUPPORTED", "VERIFIED", "OBSERVED_IN_OPERATION", "PRODUCTION_PROVEN", "DISPROVEN", "STALE", "CONTESTED", "NOT_APPLICABLE"]
+    },
+    "evidence_strength": {
+      "type": ["string", "null"],
+      "enum": [null, "NONE", "WEAK", "MODERATE", "STRONG", "VERY_STRONG"]
+    },
+    "created": {"type": ["string", "null"]},
+    "updated": {"type": ["string", "null"]},
+    "last_verified": {"type": ["string", "null"]},
+    "review_trigger": {"type": ["string", "null"]},
+    "relations": {"type": ["object", "array", "string", "null"]}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,19 @@
+---
+description: Always apply Project Second Brain safety rules.
+globs:
+alwaysApply: true
+---
+
+You are working under Project Second Brain.
+
+Repo truth beats memory.
+Kirch remains project lead.
+Do not touch protected refs.
+Do not claim verification unless the command was actually run.
+Do not create temporary production code.
+Do not broad-refactor during milestone work.
+Do not implement UI without backend authority.
+Do not implement backend mutation without permission guard.
+Receipt snapshots are immutable.
+Stock changes must go through inventory movement paths.
+Classify new features before adding them.

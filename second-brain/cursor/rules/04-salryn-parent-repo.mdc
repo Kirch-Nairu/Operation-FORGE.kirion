@@ -1,0 +1,9 @@
+---
+description: Use Salryn Standard as parent source only after study.
+globs:
+alwaysApply: true
+---
+
+Salryn Standard is a parent pattern source, not a blind copy source.
+
+Study → Extract pattern → Adapt only what applies → Prove with gates.

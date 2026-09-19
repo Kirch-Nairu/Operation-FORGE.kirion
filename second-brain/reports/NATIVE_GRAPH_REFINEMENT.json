@@ -1,0 +1,53 @@
+{
+  "mode": "APPLY",
+  "before": {
+    "nodes": 129,
+    "edges": 283,
+    "average_degree": 4.387596899224806,
+    "density": 0.0342781007751938,
+    "locality": 0.4558303886925795
+  },
+  "after": {
+    "nodes": 129,
+    "edges": 254,
+    "average_degree": 3.937984496124031,
+    "density": 0.03076550387596899,
+    "locality": 0.5078740157480315
+  },
+  "removed_edges": 29,
+  "removed_sector_ring_edges": 8,
+  "removed_project_atomic_edges": 21,
+  "changed_files": 30,
+  "changed": [
+    "atlas/projects/ARJAM.md",
+    "mesh/architecture/Interface Contract.md",
+    "mesh/security/Authorization Boundary.md",
+    "mesh/operations/Observability.md",
+    "atlas/projects/HR_PAYROLL.md",
+    "mesh/data/Historical Snapshot.md",
+    "mesh/security/Audit Trail.md",
+    "atlas/projects/PIGSTEP.md",
+    "mesh/architecture/Domain Boundaries.md",
+    "mesh/data/Authoritative Store.md",
+    "mesh/data/Mutation Boundary.md",
+    "atlas/projects/PROJECT_SECOND_BRAIN.md",
+    "mesh/governance/Evidence Threshold.md",
+    "mesh/ai/Repo Reanchor.md",
+    "mesh/ai/Verification Honesty.md",
+    "atlas/projects/SALRYN.md",
+    "atlas/projects/SCORYN.md",
+    "mesh/operations/Release Promotion.md",
+    "mesh/operations/Rollback Path.md",
+    "mesh/reliability/Recovery Path.md",
+    "atlas/projects/TALIBON.md",
+    "mesh/security/Trust Boundary.md",
+    "cognitive-os/hubs/AI_AUTOMATION_SECTOR.md",
+    "cognitive-os/hubs/DECISION_GOVERNANCE_SECTOR.md",
+    "cognitive-os/hubs/PROJECTS_SECTOR.md",
+    "cognitive-os/hubs/ARCHITECTURE_SECTOR.md",
+    "cognitive-os/hubs/DATA_SECTOR.md",
+    "cognitive-os/hubs/ASSURANCE_LEARNING_SECTOR.md",
+    "cognitive-os/hubs/SECURITY_SECTOR.md",
+    "cognitive-os/hubs/PLATFORM_RELIABILITY_SECTOR.md"
+  ]
+}

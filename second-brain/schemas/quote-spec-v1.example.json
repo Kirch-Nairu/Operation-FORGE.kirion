@@ -1,0 +1,47 @@
+{
+  "project": "Talibon Intra-Office Portal",
+  "client": "Municipality of Talibon",
+  "currency": "PHP",
+  "validity_days": 30,
+  "items": [
+    {
+      "category": "engineering",
+      "name": "Core implementation",
+      "amount": 0,
+      "notes": "Architecture plus application implementation"
+    },
+    {
+      "category": "security",
+      "name": "Security and hardening",
+      "amount": 0,
+      "notes": "Threat model, secure defaults, privileged boundaries and verification"
+    },
+    {
+      "category": "verification",
+      "name": "Testing and assurance",
+      "amount": 0,
+      "notes": "Integration, security, recovery and release evidence"
+    },
+    {
+      "category": "deployment",
+      "name": "Deployment and turnover",
+      "amount": 0,
+      "notes": "Environment, release, documentation and handoff"
+    }
+  ],
+  "contingency_percent": 10,
+  "risk_premium_percent": 0,
+  "support_amount": 0,
+  "margin_percent": 20,
+  "tax_percent": 0,
+  "assumptions": [
+    "Approved requirements remain materially stable during the quoted phase."
+  ],
+  "exclusions": [
+    "Third-party licenses, hosting, domains, SMS/email/API usage unless explicitly listed."
+  ],
+  "maintenance": "Defined separately in the maintenance/support boundary.",
+  "notes": [
+    "Quote should be reviewed against the project planning, architecture, security, verification and operational packets before issue."
+  ]
+}

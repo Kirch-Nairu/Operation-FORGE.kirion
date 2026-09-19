@@ -1,0 +1,11 @@
+---
+description: POS inventory and receipt safety rules.
+globs: **/*.{cs,ts,tsx,js,jsx,sql,md}
+alwaysApply: false
+---
+
+Receipt snapshots are immutable.
+Reprint must not mutate sale, payment, receipt, or stock.
+Product edit must not change stock quantity.
+Stock changes must go through stock-in, stock-adjustment, checkout commit, or approved void reversal.
+Every stock mutation must leave evidence.

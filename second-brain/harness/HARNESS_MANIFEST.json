@@ -1,0 +1,78 @@
+{
+  "harness": "PROJECT_SECOND_BRAIN_COGNITION_HARNESS",
+  "version": "1.1.0-alpha.1",
+  "protocol_version": 1,
+  "determinism_contract": "same task + same harness source tree + same config + same semantic provider snapshot => same classification, risk, route and context manifest",
+  "semantic_provider": {
+    "preferred": "NOTION_SNAPSHOT",
+    "fallback": "GIT",
+    "control_plane": "harness/notion/control-plane.json",
+    "route_pack": "harness/notion/route-pack.json",
+    "snapshot_env": "PSB_NOTION_SNAPSHOT",
+    "provider_env": "PSB_SEMANTIC_PROVIDER"
+  },
+  "control_roots": [
+    "cognitive-os/CENTRAL_BRAIN.md",
+    "cognitive-os/02_ADAPTIVE_RIGOR.md",
+    "cognitive-os/05_AUTHORITY_AND_TRUTH.md"
+  ],
+  "context": {
+    "default_link_depth": {
+      "LOW": 1,
+      "MEDIUM": 1,
+      "HIGH": 2,
+      "CRITICAL": 2
+    },
+    "ignored_directories": [
+      ".git",
+      ".obsidian",
+      ".harness",
+      "archive",
+      "templates",
+      "templates-v2",
+      "node_modules",
+      "generated",
+      "reports"
+    ],
+    "max_documents_by_mode": {
+      "LOW": 72,
+      "MEDIUM": 84,
+      "HIGH": 136,
+      "CRITICAL": 230
+    },
+    "max_documents_default": 48,
+    "link_depth_by_seed": {
+      "CONTROL_ROOT": {
+        "LOW": 1,
+        "MEDIUM": 1,
+        "HIGH": 1,
+        "CRITICAL": 2
+      },
+      "LANE": {
+        "LOW": 1,
+        "MEDIUM": 1,
+        "HIGH": 1,
+        "CRITICAL": 1
+      }
+    },
+    "link_depth_rule": "Expansion depth is per seed kind, not per run. Control roots are few and authoritative, so they expand deeply. Lane seeds are numerous and each mesh note links to roughly seven neighbours, so uniform depth-2 expansion from lanes exceeded any document budget and truncated silently. Raising the budget only moves the ceiling; the depth is the cause. default_link_depth is retained as the fallback for seeds with no declared kind.",
+    "max_bytes_by_mode": {
+      "LOW": 98304,
+      "MEDIUM": 114688,
+      "HIGH": 163840,
+      "CRITICAL": 262144
+    },
+    "max_bytes_default": 163840,
+    "budget_rule": "Both document and byte budgets are set with headroom above the peak measured need across every lifecycle stage for that rigor mode, so a run does not truncate as lanes activate later in the lifecycle. Re-measure and re-tune if lanes, routing, or note sizes change materially."
+  },
+  "fail_closed": {
+    "missing_required_source": true,
+    "ambiguous_task_classification": true,
+    "missing_primary_journeys_for_build_tasks": true,
+    "failed_blocking_gate": true,
+    "missing_preferred_semantic_snapshot": true,
+    "semantic_snapshot_integrity_failure": true,
+    "semantic_source_drift": true,
+    "truncated_context_at_high_rigor": true
+  }
+}

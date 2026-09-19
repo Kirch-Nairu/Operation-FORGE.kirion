@@ -1,0 +1,293 @@
+{
+  "version": 1,
+  "gates": [
+    {
+      "id": "GATE-BOOT-CLASSIFICATION",
+      "stage": "BOOTSTRAP",
+      "severity": "BLOCK",
+      "description": "Task classification must be deterministic and non-ambiguous.",
+      "applies": {},
+      "requirement": {
+        "kind": "internal",
+        "check": "classification_resolved"
+      }
+    },
+    {
+      "id": "GATE-BOOT-SOURCES",
+      "stage": "BOOTSTRAP",
+      "severity": "BLOCK",
+      "description": "All required control and lane seed sources must exist.",
+      "applies": {},
+      "requirement": {
+        "kind": "internal",
+        "check": "required_sources_resolved"
+      }
+    },
+    {
+      "id": "GATE-BOOT-TARGET-REALITY",
+      "stage": "BOOTSTRAP",
+      "severity": "BLOCK",
+      "description": "When a target repository path is supplied, its Git reality must be readable before the harness can reason about that repository.",
+      "applies": {
+        "task_fields_any": [
+          "repository.path"
+        ]
+      },
+      "requirement": {
+        "kind": "internal",
+        "check": "target_repo_resolved"
+      }
+    },
+    {
+      "id": "GATE-DESIGN-PRIMARY-JOURNEYS",
+      "stage": "PRE_DESIGN",
+      "severity": "BLOCK",
+      "description": "Build-oriented work must declare primary user/operator journeys before design can be called acceptance-ready.",
+      "applies": {
+        "task_types": [
+          "GREENFIELD_SYSTEM",
+          "EXISTING_SYSTEM_FEATURE"
+        ]
+      },
+      "requirement": {
+        "kind": "task_field_nonempty",
+        "field": "primary_journeys"
+      }
+    },
+    {
+      "id": "GATE-DESIGN-AUTHORITY",
+      "stage": "PRE_IMPLEMENTATION",
+      "severity": "BLOCK",
+      "description": "Data/auth/security work must identify authoritative state and trust/mutation boundaries.",
+      "applies": {
+        "signals_any": [
+          "data",
+          "auth",
+          "security",
+          "offline",
+          "migration"
+        ]
+      },
+      "requirement": {
+        "kind": "claim",
+        "claim": "design.authority_boundaries",
+        "require_levels": [
+          "INTENDED"
+        ]
+      }
+    },
+    {
+      "id": "GATE-DESIGN-ARCHITECTURE",
+      "stage": "PRE_IMPLEMENTATION",
+      "severity": "BLOCK",
+      "description": "Greenfield and architecture-changing work requires a recorded architecture decision.",
+      "applies": {
+        "task_types": [
+          "GREENFIELD_SYSTEM",
+          "ARCHITECTURE_CHANGE"
+        ]
+      },
+      "requirement": {
+        "kind": "claim",
+        "claim": "decision.architecture",
+        "require_levels": [
+          "INTENDED"
+        ]
+      }
+    },
+    {
+      "id": "GATE-VERIFY-AUTOMATED",
+      "stage": "PRE_DELIVERY",
+      "severity": "BLOCK",
+      "description": "Executable work requires automated verification evidence.",
+      "applies": {
+        "task_types": [
+          "GREENFIELD_SYSTEM",
+          "EXISTING_SYSTEM_FEATURE",
+          "BUG_FIX",
+          "SECURITY_HARDENING",
+          "PERFORMANCE_HARDENING",
+          "ARCHITECTURE_CHANGE",
+          "DATABASE_CHANGE",
+          "DEPLOYMENT_CHANGE",
+          "REFACTOR"
+        ]
+      },
+      "requirement": {
+        "kind": "claim",
+        "claim": "verification.automated",
+        "require_levels": [
+          "TESTED"
+        ]
+      }
+    },
+    {
+      "id": "GATE-VERIFY-PRIMARY-RUNTIME",
+      "stage": "PRE_DELIVERY",
+      "severity": "BLOCK",
+      "description": "Every declared primary journey must be observed passing through a real runtime path.",
+      "applies": {
+        "task_types": [
+          "GREENFIELD_SYSTEM",
+          "EXISTING_SYSTEM_FEATURE"
+        ]
+      },
+      "requirement": {
+        "kind": "each_primary_journey_claim",
+        "claim_template": "journey.{id}.runtime",
+        "require_levels": [
+          "OBSERVED"
+        ]
+      }
+    },
+    {
+      "id": "GATE-VERIFY-AUTH-NEGATIVE",
+      "stage": "PRE_DELIVERY",
+      "severity": "BLOCK",
+      "description": "Authorization-sensitive work must include a negative authorization verification.",
+      "applies": {
+        "signals_any": [
+          "auth",
+          "security"
+        ]
+      },
+      "requirement": {
+        "kind": "claim",
+        "claim": "verification.authorization_negative",
+        "require_levels": [
+          "TESTED"
+        ]
+      }
+    },
+    {
+      "id": "GATE-VERIFY-RECOVERY",
+      "stage": "PRE_DELIVERY",
+      "severity": "BLOCK",
+      "description": "Recovery-sensitive work must prove the declared recovery boundary.",
+      "applies": {
+        "signals_any": [
+          "recovery"
+        ],
+        "risk_modes": [
+          "HIGH",
+          "CRITICAL"
+        ]
+      },
+      "requirement": {
+        "kind": "claim",
+        "claim": "verification.recovery",
+        "require_levels": [
+          "OBSERVED"
+        ]
+      }
+    },
+    {
+      "id": "GATE-DURABILITY-COMMIT",
+      "stage": "PRE_DELIVERY",
+      "severity": "BLOCK",
+      "description": "Delivery claims require the exact implementation state to be durable.",
+      "applies": {
+        "task_types": [
+          "GREENFIELD_SYSTEM",
+          "EXISTING_SYSTEM_FEATURE",
+          "BUG_FIX",
+          "SECURITY_HARDENING",
+          "PERFORMANCE_HARDENING",
+          "ARCHITECTURE_CHANGE",
+          "DATABASE_CHANGE",
+          "DEPLOYMENT_CHANGE",
+          "REFACTOR"
+        ]
+      },
+      "requirement": {
+        "kind": "claim",
+        "claim": "delivery.source_state",
+        "require_levels": [
+          "DURABLE"
+        ]
+      }
+    },
+    {
+      "id": "GATE-DURABILITY-TARGET-CLEAN",
+      "stage": "PRE_DELIVERY",
+      "severity": "BLOCK",
+      "description": "When a target repository is declared, PRE_DELIVERY cannot pass while its observed worktree is dirty.",
+      "applies": {
+        "task_fields_any": [
+          "repository.path"
+        ]
+      },
+      "requirement": {
+        "kind": "internal",
+        "check": "target_repo_clean"
+      }
+    },
+    {
+      "id": "GATE-DEPLOY-EXACT-STATE",
+      "stage": "POST_DEPLOY",
+      "severity": "BLOCK",
+      "description": "Deployment claims require exact-state deployment and runtime observation.",
+      "applies": {
+        "signals_any": [
+          "deployment",
+          "production"
+        ]
+      },
+      "requirement": {
+        "kind": "claim",
+        "claim": "deployment.exact_state",
+        "require_levels": [
+          "DEPLOYED",
+          "OBSERVED"
+        ]
+      }
+    },
+    {
+      "id": "GATE-LEARNING-FAILURES",
+      "stage": "POST_VERIFY",
+      "severity": "WARN",
+      "description": "Discovered runtime failures should produce a reviewed learning candidate rather than silent doctrine mutation.",
+      "applies": {},
+      "requirement": {
+        "kind": "claim_or_absent",
+        "claim": "learning.runtime_failure_reviewed",
+        "trigger_claim": "runtime.failure_discovered",
+        "require_levels": [
+          "VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "GATE-DESIGN-CONTEXT-COMPLETE",
+      "stage": "PRE_DESIGN",
+      "severity": "WARN",
+      "description": "Compiled context should not be truncated by budget before design proceeds.",
+      "applies": {
+        "risk_modes": [
+          "LOW",
+          "MEDIUM",
+          "HIGH"
+        ]
+      },
+      "requirement": {
+        "kind": "internal",
+        "check": "context_not_truncated"
+      }
+    },
+    {
+      "id": "GATE-DESIGN-CONTEXT-COMPLETE-CRITICAL",
+      "stage": "PRE_DESIGN",
+      "severity": "BLOCK",
+      "description": "CRITICAL-rigor work may not proceed past design on a truncated context: the consequence of missing a source is highest exactly where this gate is strictest.",
+      "applies": {
+        "risk_modes": [
+          "CRITICAL"
+        ]
+      },
+      "requirement": {
+        "kind": "internal",
+        "check": "context_not_truncated"
+      }
+    }
+  ]
+}

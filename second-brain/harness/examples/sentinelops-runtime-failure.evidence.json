@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "claims": {
+    "design.authority_boundaries":{"status":"PASS","levels":["INTENDED"],"detail":"PostgreSQL authority and client trust boundaries recorded."},
+    "decision.architecture":{"status":"PASS","levels":["INTENDED"],"detail":"Architecture decision recorded."},
+    "verification.automated":{"status":"PASS","levels":["TESTED"],"detail":"Automated suite passed."},
+    "verification.authorization_negative":{"status":"PASS","levels":["TESTED"],"detail":"Unauthorized action rejected in test."},
+    "verification.recovery":{"status":"PASS","levels":["OBSERVED"],"detail":"Recovery rehearsal observed."},
+    "delivery.source_state":{"status":"PASS","levels":["DURABLE"],"sha":"ed47333dc9addc4b5b3aa5d2623c0b6431f236ef"},
+    "journey.login-dashboard.runtime":{"status":"PASS","levels":["OBSERVED"]},
+    "journey.asset-index.runtime":{"status":"PASS","levels":["OBSERVED"]},
+    "journey.asset-detail.runtime":{"status":"FAIL","levels":["OBSERVED"],"detail":"Independent Windows run returned HTTP 500: AssetController::authorize() undefined."},
+    "journey.offline-incident-sync.runtime":{"status":"PASS","levels":["OBSERVED"]}
+  }
+}

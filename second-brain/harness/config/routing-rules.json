@@ -1,0 +1,220 @@
+{
+  "version": 1,
+  "always": [
+    "PROBLEM_SCOPE",
+    "DECISION_EVIDENCE",
+    "VERIFICATION"
+  ],
+  "by_task": {
+    "GREENFIELD_SYSTEM": [
+      "STRUCTURAL_ARCHITECTURE",
+      "DATA_STATE",
+      "INTERFACE_CLIENT",
+      "IDENTITY_ACCESS",
+      "APPLICATION_DEFENSE",
+      "CODE_QUALITY",
+      "STANDARDS_EVIDENCE",
+      "RELIABILITY_RECOVERY",
+      "BUILD_RELEASE",
+      "RUNTIME_HOST",
+      "DELIVERY_ACCEPTANCE",
+      "GOVERNANCE_CONTROL"
+    ],
+    "EXISTING_SYSTEM_FEATURE": [
+      "STRUCTURAL_ARCHITECTURE",
+      "DATA_STATE",
+      "INTERFACE_CLIENT",
+      "CODE_QUALITY",
+      "DELIVERY_ACCEPTANCE"
+    ],
+    "BUG_FIX": [
+      "CODE_QUALITY",
+      "DELIVERY_ACCEPTANCE"
+    ],
+    "SECURITY_HARDENING": [
+      "IDENTITY_ACCESS",
+      "APPLICATION_DEFENSE",
+      "PRIVACY_CRYPTO",
+      "STANDARDS_EVIDENCE",
+      "CODE_QUALITY",
+      "DELIVERY_ACCEPTANCE",
+      "GOVERNANCE_CONTROL"
+    ],
+    "PERFORMANCE_HARDENING": [
+      "PERFORMANCE_CAPACITY",
+      "CODE_QUALITY",
+      "RUNTIME_HOST",
+      "DELIVERY_ACCEPTANCE"
+    ],
+    "ARCHITECTURE_CHANGE": [
+      "STRUCTURAL_ARCHITECTURE",
+      "DATA_STATE",
+      "RELIABILITY_RECOVERY",
+      "BUILD_RELEASE",
+      "RUNTIME_HOST",
+      "GOVERNANCE_CONTROL",
+      "DELIVERY_ACCEPTANCE"
+    ],
+    "DATABASE_CHANGE": [
+      "DATA_STATE",
+      "RELIABILITY_RECOVERY",
+      "CODE_QUALITY",
+      "STANDARDS_EVIDENCE",
+      "GOVERNANCE_CONTROL",
+      "DELIVERY_ACCEPTANCE"
+    ],
+    "DEPLOYMENT_CHANGE": [
+      "BUILD_RELEASE",
+      "RUNTIME_HOST",
+      "NETWORK_OPERATIONS",
+      "RELIABILITY_RECOVERY",
+      "SUPPLY_CHAIN_TRUST",
+      "DELIVERY_ACCEPTANCE"
+    ],
+    "INCIDENT_RESPONSE": [
+      "INCIDENT_LEARNING",
+      "RUNTIME_HOST",
+      "NETWORK_OPERATIONS",
+      "RELIABILITY_RECOVERY",
+      "GOVERNANCE_CONTROL"
+    ],
+    "REFACTOR": [
+      "STRUCTURAL_ARCHITECTURE",
+      "CODE_QUALITY",
+      "DELIVERY_ACCEPTANCE"
+    ],
+    "PRODUCTION_RECOVERY": [
+      "RELIABILITY_RECOVERY",
+      "RUNTIME_HOST",
+      "NETWORK_OPERATIONS",
+      "DATA_STATE",
+      "GOVERNANCE_CONTROL",
+      "INCIDENT_LEARNING",
+      "STANDARDS_EVIDENCE",
+      "DELIVERY_ACCEPTANCE"
+    ]
+  },
+  "by_signal": {
+    "ui": [
+      "INTERFACE_CLIENT",
+      "DELIVERY_ACCEPTANCE"
+    ],
+    "data": [
+      "DATA_STATE"
+    ],
+    "auth": [
+      "IDENTITY_ACCESS",
+      "APPLICATION_DEFENSE"
+    ],
+    "security": [
+      "APPLICATION_DEFENSE",
+      "IDENTITY_ACCESS"
+    ],
+    "privacy": [
+      "PRIVACY_CRYPTO"
+    ],
+    "supply_chain": [
+      "SUPPLY_CHAIN_TRUST"
+    ],
+    "distributed": [
+      "DISTRIBUTED_FAILURE",
+      "NETWORK_OPERATIONS",
+      "RELIABILITY_RECOVERY"
+    ],
+    "performance": [
+      "PERFORMANCE_CAPACITY"
+    ],
+    "deployment": [
+      "BUILD_RELEASE",
+      "RUNTIME_HOST"
+    ],
+    "network": [
+      "NETWORK_OPERATIONS"
+    ],
+    "ai": [
+      "AI_AUTHORITY",
+      "GOVERNANCE_CONTROL"
+    ],
+    "incident": [
+      "INCIDENT_LEARNING"
+    ],
+    "commercial": [
+      "COMMERCIAL_COMMITMENT"
+    ],
+    "compliance": [
+      "STANDARDS_EVIDENCE",
+      "GOVERNANCE_CONTROL"
+    ],
+    "recovery": [
+      "RELIABILITY_RECOVERY"
+    ],
+    "migration": [
+      "DATA_STATE",
+      "RELIABILITY_RECOVERY"
+    ],
+    "external_dependency": [
+      "SUPPLY_CHAIN_TRUST",
+      "DISTRIBUTED_FAILURE"
+    ],
+    "offline": [
+      "DATA_STATE",
+      "DISTRIBUTED_FAILURE",
+      "RELIABILITY_RECOVERY"
+    ],
+    "production": [
+      "RUNTIME_HOST",
+      "RELIABILITY_RECOVERY",
+      "DELIVERY_ACCEPTANCE"
+    ]
+  },
+  "by_mode": {
+    "LOW": [],
+    "MEDIUM": [
+      "CODE_QUALITY"
+    ],
+    "HIGH": [
+      "STANDARDS_EVIDENCE",
+      "RELIABILITY_RECOVERY",
+      "GOVERNANCE_CONTROL",
+      "DELIVERY_ACCEPTANCE"
+    ],
+    "CRITICAL": [
+      "STANDARDS_EVIDENCE",
+      "RELIABILITY_RECOVERY",
+      "GOVERNANCE_CONTROL",
+      "DELIVERY_ACCEPTANCE",
+      "INCIDENT_LEARNING",
+      "RUNTIME_HOST"
+    ]
+  },
+  "stage_scope": {
+    "AI_AUTHORITY": "PRE_DESIGN",
+    "APPLICATION_DEFENSE": "PRE_DESIGN",
+    "BUILD_RELEASE": "PRE_DELIVERY",
+    "CODE_QUALITY": "PRE_IMPLEMENTATION",
+    "COMMERCIAL_COMMITMENT": "PRE_DELIVERY",
+    "DATA_STATE": "PRE_DESIGN",
+    "DECISION_EVIDENCE": "PRE_DESIGN",
+    "DELIVERY_ACCEPTANCE": "PRE_DELIVERY",
+    "DISTRIBUTED_FAILURE": "PRE_DESIGN",
+    "GOVERNANCE_CONTROL": "PRE_DESIGN",
+    "IDENTITY_ACCESS": "PRE_DESIGN",
+    "INCIDENT_LEARNING": "POST_DEPLOY",
+    "INTERFACE_CLIENT": "PRE_DESIGN",
+    "NETWORK_OPERATIONS": "PRE_DELIVERY",
+    "PERFORMANCE_CAPACITY": "PRE_IMPLEMENTATION",
+    "PRIVACY_CRYPTO": "PRE_DESIGN",
+    "PROBLEM_SCOPE": "PRE_DESIGN",
+    "RELIABILITY_RECOVERY": "PRE_IMPLEMENTATION",
+    "RUNTIME_HOST": "PRE_DELIVERY",
+    "STANDARDS_EVIDENCE": "PRE_DELIVERY",
+    "STRUCTURAL_ARCHITECTURE": "PRE_DESIGN",
+    "SUPPLY_CHAIN_TRUST": "PRE_IMPLEMENTATION",
+    "VERIFICATION": "PRE_IMPLEMENTATION"
+  },
+  "stage_scope_rule": "A routed lane is seeded into the compiled context only when the run's evaluated stage has reached the lane's scope. Lanes scoped later remain in the route and are reported as deferred with their activating stage. Deferral narrows context; it never drops a lane.",
+  "stage_floor_by_task": {
+    "INCIDENT_RESPONSE": "POST_DEPLOY",
+    "PRODUCTION_RECOVERY": "POST_DEPLOY"
+  }
+}

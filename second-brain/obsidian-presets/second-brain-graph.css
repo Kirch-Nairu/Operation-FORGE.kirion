@@ -1,0 +1,26 @@
+/* Project Second Brain — optional Obsidian interface refinement. */
+
+.workspace-leaf-content[data-type="canvas"] .canvas-node-container {
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.workspace-leaf-content[data-type="canvas"] .canvas-node-label {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.workspace-leaf-content[data-type="canvas"] .canvas-group-label {
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.markdown-preview-view h1,
+.markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  letter-spacing: -0.025em;
+}
+
+.markdown-preview-view .callout[data-callout="abstract"] {
+  border-width: 1px;
+}

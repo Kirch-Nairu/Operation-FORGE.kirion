@@ -1,0 +1,334 @@
+.workspace-leaf-content[data-type="second-brain-saturn-view"] .view-content.saturn-brain-root,
+.workspace-leaf-content[data-type="second-brain-saturn-view"] .saturn-brain-root {
+  --saturn-bg: #06080c;
+  --saturn-panel: rgba(10, 13, 18, 0.88);
+  --saturn-border: rgba(255,255,255,0.08);
+  --saturn-text: #e7eaf0;
+  --saturn-muted: #7f8793;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 50% 49%, rgba(120,128,142,0.055), transparent 24%),
+    radial-gradient(circle at 50% 50%, #0a0d12 0%, #07090d 48%, #05070a 100%) !important;
+  color: var(--saturn-text);
+  color-scheme: dark;
+  user-select: none;
+}
+
+.saturn-brain-toolbar {
+  position: absolute;
+  z-index: 40;
+  top: 18px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.saturn-brain-toolbar-title,
+.saturn-brain-controls {
+  pointer-events: auto;
+}
+
+.saturn-brain-toolbar-title {
+  padding: 10px 12px 9px;
+  border: 1px solid var(--saturn-border);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(18,21,27,0.90), rgba(9,11,15,0.82));
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 38px rgba(0,0,0,0.28);
+}
+
+.saturn-brain-kicker {
+  color: var(--saturn-muted);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.22em;
+}
+
+.saturn-brain-title {
+  margin-top: 3px;
+  color: #eceff4;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+}
+
+.saturn-brain-controls {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid var(--saturn-border);
+  border-radius: 10px;
+  background: var(--saturn-panel);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 38px rgba(0,0,0,0.24);
+}
+
+.saturn-brain-controls button {
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: rgba(255,255,255,0.035);
+  color: #aeb4bf;
+  font-size: 10px;
+  font-weight: 620;
+  letter-spacing: 0.02em;
+  box-shadow: none;
+}
+
+.saturn-brain-controls button:hover,
+.saturn-brain-controls button.is-active {
+  border-color: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.08);
+  color: #f0f2f5;
+}
+
+.saturn-brain-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.saturn-brain-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.saturn-brain-svg.is-panning {
+  cursor: grabbing;
+}
+
+.saturn-brain-status {
+  position: absolute;
+  z-index: 40;
+  right: 20px;
+  bottom: 16px;
+  padding: 7px 10px;
+  border: 1px solid var(--saturn-border);
+  border-radius: 8px;
+  background: rgba(8,10,14,0.76);
+  color: #666e7a;
+  font-size: 9px;
+  letter-spacing: 0.055em;
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+}
+
+.saturn-starfield {
+  pointer-events: none;
+}
+
+.saturn-planet-glow {
+  opacity: 1;
+  pointer-events: none;
+}
+
+.saturn-planet-disc {
+  stroke: rgba(229,233,240,0.16);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 28px rgba(0,0,0,0.55));
+  pointer-events: none;
+}
+
+.saturn-planet-band {
+  fill: none;
+  stroke: rgba(232,235,241,0.055);
+  stroke-width: 1.1;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+.saturn-ring-rear,
+.saturn-ring-front {
+  pointer-events: none;
+}
+
+.saturn-ring-rear ellipse,
+.saturn-ring-front path {
+  vector-effect: non-scaling-stroke;
+}
+
+.saturn-edge {
+  stroke: rgba(212,218,228,0.18);
+  stroke-width: 0.65;
+  opacity: 0;
+  vector-effect: non-scaling-stroke;
+  transition: opacity 110ms ease, stroke 110ms ease, stroke-width 110ms ease;
+}
+
+.saturn-edge-major {
+  stroke: rgba(224,229,237,0.20);
+  stroke-width: 0.8;
+  opacity: 0.055;
+}
+
+.saturn-show-edges .saturn-edge {
+  opacity: 0.14;
+}
+
+.saturn-show-edges .saturn-edge-major {
+  opacity: 0.24;
+}
+
+.saturn-edge.is-highlighted,
+.saturn-show-edges .saturn-edge.is-highlighted {
+  stroke: rgba(246,248,252,0.82);
+  stroke-width: 1.3;
+  opacity: 0.92;
+}
+
+.saturn-edge.is-dimmed {
+  opacity: 0.012;
+}
+
+.saturn-node {
+  cursor: pointer;
+  outline: none;
+  transition: opacity 100ms ease;
+}
+
+.saturn-node.is-dimmed {
+  opacity: 0.14;
+}
+
+.saturn-node-dot {
+  stroke: rgba(255,255,255,0.30);
+  stroke-width: 0.65;
+  vector-effect: non-scaling-stroke;
+  transition: filter 110ms ease, opacity 110ms ease, transform 110ms ease;
+}
+
+.saturn-node-atomic .saturn-node-dot {
+  fill: #c2c6ce !important;
+  opacity: 0.74;
+}
+
+.saturn-node-core .saturn-node-dot {
+  fill: #e3e6eb !important;
+  opacity: 0.92;
+}
+
+.saturn-node-subhub .saturn-node-dot {
+  fill: #d2d6dd !important;
+  opacity: 0.94;
+}
+
+.saturn-node-project .saturn-node-dot {
+  fill: #c7cbd2 !important;
+  stroke: rgba(255,255,255,0.52);
+}
+
+.saturn-node-halo {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.8;
+  opacity: 0.16;
+  vector-effect: non-scaling-stroke;
+}
+
+.saturn-node-central .saturn-node-halo {
+  opacity: 0.30;
+}
+
+.saturn-node-sector .saturn-node-halo {
+  opacity: 0.23;
+}
+
+.saturn-node-project .saturn-node-halo {
+  opacity: 0.16;
+}
+
+.saturn-node:hover .saturn-node-dot,
+.saturn-node:focus .saturn-node-dot {
+  filter: drop-shadow(0 0 7px rgba(255,255,255,0.50));
+}
+
+.saturn-node-label {
+  fill: #b5bbc6;
+  font-family: var(--font-interface);
+  font-size: 10px;
+  font-weight: 540;
+  letter-spacing: 0.02em;
+  dominant-baseline: middle;
+  opacity: 0;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: #06080c;
+  stroke-width: 3.4px;
+  stroke-linejoin: round;
+  transition: opacity 90ms ease;
+}
+
+.saturn-node-central .saturn-node-label,
+.saturn-node-sector .saturn-node-label,
+.saturn-node-project .saturn-node-label,
+.saturn-node.is-hovered .saturn-node-label,
+.saturn-show-all-labels .saturn-node-label {
+  opacity: 1;
+}
+
+.saturn-node-central .saturn-node-label {
+  fill: #e6c65c;
+  font-size: 12px;
+  font-weight: 760;
+  letter-spacing: 0.09em;
+}
+
+.saturn-node-sector .saturn-node-label {
+  fill: #d6d9df;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.10em;
+}
+
+.saturn-node-project .saturn-node-label {
+  fill: #c8ccd4;
+  font-size: 9.5px;
+  font-weight: 650;
+}
+
+.theme-light .workspace-leaf-content[data-type="second-brain-saturn-view"] .view-content.saturn-brain-root {
+  background:
+    radial-gradient(circle at 50% 49%, rgba(120,128,142,0.055), transparent 24%),
+    radial-gradient(circle at 50% 50%, #0a0d12 0%, #07090d 48%, #05070a 100%) !important;
+  color: #e7eaf0 !important;
+}
+
+@media (max-width: 800px) {
+  .saturn-brain-toolbar {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .saturn-brain-toolbar-title {
+    display: none;
+  }
+
+  .saturn-brain-controls {
+    margin-left: auto;
+    max-width: 78%;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .saturn-brain-status {
+    left: 10px;
+    right: auto;
+    bottom: 10px;
+  }
+}

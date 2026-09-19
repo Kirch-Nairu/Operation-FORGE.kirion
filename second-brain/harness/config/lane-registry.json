@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "families": {
+    "application-architecture": [
+      {"id":"DATA_STATE","path":"mesh/lanes/application-architecture/DATA_STATE_LANE.md"},
+      {"id":"INTERFACE_CLIENT","path":"mesh/lanes/application-architecture/INTERFACE_CLIENT_LANE.md"},
+      {"id":"STRUCTURAL_ARCHITECTURE","path":"mesh/lanes/application-architecture/STRUCTURAL_ARCHITECTURE_LANE.md"}
+    ],
+    "governance-intelligence": [
+      {"id":"AI_AUTHORITY","path":"mesh/lanes/governance-intelligence/AI_AUTHORITY_LANE.md"},
+      {"id":"DECISION_EVIDENCE","path":"mesh/lanes/governance-intelligence/DECISION_EVIDENCE_LANE.md"},
+      {"id":"GOVERNANCE_CONTROL","path":"mesh/lanes/governance-intelligence/GOVERNANCE_CONTROL_LANE.md"},
+      {"id":"INCIDENT_LEARNING","path":"mesh/lanes/governance-intelligence/INCIDENT_LEARNING_LANE.md"}
+    ],
+    "platform-runtime": [
+      {"id":"BUILD_RELEASE","path":"mesh/lanes/platform-runtime/BUILD_RELEASE_LANE.md"},
+      {"id":"NETWORK_OPERATIONS","path":"mesh/lanes/platform-runtime/NETWORK_OPERATIONS_LANE.md"},
+      {"id":"RUNTIME_HOST","path":"mesh/lanes/platform-runtime/RUNTIME_HOST_LANE.md"}
+    ],
+    "product-delivery": [
+      {"id":"COMMERCIAL_COMMITMENT","path":"mesh/lanes/product-delivery/COMMERCIAL_COMMITMENT_LANE.md"},
+      {"id":"DELIVERY_ACCEPTANCE","path":"mesh/lanes/product-delivery/DELIVERY_ACCEPTANCE_LANE.md"},
+      {"id":"PROBLEM_SCOPE","path":"mesh/lanes/product-delivery/PROBLEM_SCOPE_LANE.md"}
+    ],
+    "quality-assurance": [
+      {"id":"CODE_QUALITY","path":"mesh/lanes/quality-assurance/CODE_QUALITY_LANE.md"},
+      {"id":"STANDARDS_EVIDENCE","path":"mesh/lanes/quality-assurance/STANDARDS_EVIDENCE_LANE.md"},
+      {"id":"VERIFICATION","path":"mesh/lanes/quality-assurance/VERIFICATION_LANE.md"}
+    ],
+    "resilience-systems": [
+      {"id":"DISTRIBUTED_FAILURE","path":"mesh/lanes/resilience-systems/DISTRIBUTED_FAILURE_LANE.md"},
+      {"id":"PERFORMANCE_CAPACITY","path":"mesh/lanes/resilience-systems/PERFORMANCE_CAPACITY_LANE.md"},
+      {"id":"RELIABILITY_RECOVERY","path":"mesh/lanes/resilience-systems/RELIABILITY_RECOVERY_LANE.md"}
+    ],
+    "security-trust": [
+      {"id":"APPLICATION_DEFENSE","path":"mesh/lanes/security-trust/APPLICATION_DEFENSE_LANE.md"},
+      {"id":"IDENTITY_ACCESS","path":"mesh/lanes/security-trust/IDENTITY_ACCESS_LANE.md"},
+      {"id":"PRIVACY_CRYPTO","path":"mesh/lanes/security-trust/PRIVACY_CRYPTO_LANE.md"},
+      {"id":"SUPPLY_CHAIN_TRUST","path":"mesh/lanes/security-trust/SUPPLY_CHAIN_TRUST_LANE.md"}
+    ]
+  }
+}

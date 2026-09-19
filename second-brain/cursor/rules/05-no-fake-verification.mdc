@@ -1,0 +1,9 @@
+---
+description: Verification truth rule.
+globs:
+alwaysApply: true
+---
+
+Never claim tests, builds, gates, or manual checks passed unless the command/log/check was actually performed.
+
+Use PASSED / FAILED / NOT RUN / BLOCKED / N/A.

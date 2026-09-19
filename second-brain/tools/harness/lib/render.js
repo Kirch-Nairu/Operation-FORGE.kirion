@@ -1,0 +1,21 @@
+function gitSummary(probe){
+  if(!probe||probe.status==='NOT_REQUESTED') return 'not requested';
+  if(probe.status!=='RESOLVED') return `unresolved${probe.reason?` — ${probe.reason}`:''}`;
+  return `${probe.branch||'DETACHED'} @ ${probe.head}${probe.clean?' (clean)':` (dirty: ${probe.dirty_entry_count})`}`;
+}
+function renderContext(context,meta){
+  const provider=context.provider||'GIT';
+  const sourceNote=provider==='NOTION_SNAPSHOT'?'> This pack is compiled from an immutable Notion semantic snapshot whose imported records are pinned to exact Git source blobs. Snapshot hashes prove what was loaded; they do not prove product behavior.':'> This pack is compiled from exact repository notes. Source hashes prove what was loaded; they do not prove that product behavior matches the notes.';
+  const lines=['# Project Second Brain — Compiled Cognition Context','',`- Harness version: \`${meta.harnessVersion}\``,`- Task: \`${meta.taskId}\``,`- Task type: **${meta.type}**`,`- Rigor mode: **${meta.mode}**`,`- Semantic provider: **${provider}**`,...(context.snapshot_sha256?[`- Semantic snapshot: \`${context.snapshot_sha256}\``]:[]),`- Documents: **${context.document_count||context.documents.length}**`,`- Total bytes: **${context.total_bytes||0}**`,`- Graph expansion depth: **${context.max_depth??0}**`,`- Context truncated by budget: **${context.truncated?'YES':'NO'}**`,'',sourceNote,''];
+  for(const doc of context.documents){
+    const provenance=doc.source==='NOTION_SNAPSHOT'?`Source: \`${doc.source}\` · Content SHA-256: \`${doc.sha256}\` · Git blob: \`${doc.source_sha}\` · Notion page: \`${doc.notion_page_id}\``:`Source: \`${doc.source}\` · SHA-256: \`${doc.sha256}\` · depth ${doc.depth}`;
+    lines.push(`## ${doc.path}`,'',provenance,'',doc.content.trim(),'');
+  }
+  if(context.unresolved_links&&context.unresolved_links.length) lines.push('## Unresolved expansion links','',...context.unresolved_links.map(x=>`- \`${x.source}\` → \`${x.target}\``),'');
+  return lines.join('\n')+'\n';
+}
+function renderRun(run){
+  const failed=run.gates.results.filter(x=>x.status==='FAIL');
+  return ['# Cognition Harness Run','',`- Run ID: \`${run.run_id}\``,`- Task: \`${run.task.id}\``,`- Classification: **${run.classification.status==='RESOLVED'?run.classification.type:'BLOCKED'}**`,`- Rigor: **${run.risk?run.risk.mode:'UNRESOLVED'}**`,`- Routed lanes: **${run.route?run.route.routed_lane_count:0}**`,`- Active lanes at this stage: **${run.route?run.route.active_lane_count:0}**`,`- Semantic provider: **${run.context.provider||'UNRESOLVED'}**`,`- Context: **${run.context.status}**`,`- Evaluated through: **${run.gates.through_stage}**`,`- Gate verdict: **${run.gates.verdict}**`,`- Harness Git: ${gitSummary(run.harness_git)}`,`- Target Git: ${gitSummary(run.target_repository)}`,'','## Active lanes','',...(run.route?run.route.lanes.map(x=>`- ${x.family} / **${x.id}** — \`${x.path}\``):['- Routing unavailable']),'','## Deferred lanes','',...(run.route&&run.route.deferred_lanes.length?run.route.deferred_lanes.map(x=>`- ${x.family} / **${x.id}** — activates at ${x.activates_at}`):['- None']),'','## Context budget','',`- Documents compiled: **${run.context.document_count||0}** of a **${run.context.document_budget}** document budget`,`- Bytes compiled: **${run.context.total_bytes||0}** of a **${run.context.byte_budget}** byte budget`,`- Truncated: **${run.context.truncated?'YES':'NO'}**`,...(run.context.truncated?['','**A truncated context is not a complete context.** The compiler reached its budget and stopped expanding. Treat any claim that depends on an unlisted source as unsupported, and narrow the task or raise the budget deliberately rather than proceeding as if the pack were whole.']:[]),'','## Current gate failures','',...(failed.length?failed.map(x=>`- **${x.severity} ${x.id}** — ${x.reason}`):['- None']),'','## Operating instruction','',run.gates.verdict==='BLOCK'?`Do not advance beyond ${run.gates.through_stage} while an applicable BLOCK gate is failing. Resolve the missing fact or evidence; do not guess around it.`:`No BLOCK gate through ${run.gates.through_stage} is failing. This authorizes progression only to the next lifecycle stage; it is not a production-readiness claim.`,''].join('\n');
+}
+module.exports={renderContext,renderRun,gitSummary};

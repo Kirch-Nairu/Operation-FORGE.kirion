@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "id": "sentinelops-greenfield-harness-replay",
+  "intent": "Build a secure offline-first field asset and incident operations system for unreliable connectivity.",
+  "type": "GREENFIELD_SYSTEM",
+  "constraints": ["PostgreSQL is authoritative for server domain state.","Offline clients may queue intent but may not become domain authority."],
+  "signals": {"ui":true,"data":true,"auth":true,"security":true,"offline":true,"recovery":true,"deployment":true},
+  "risk_overrides": {"data_sensitivity":2,"operational_impact":3,"uncertainty":3},
+  "primary_journeys": [
+    {"id":"login-dashboard","description":"A seeded authorized user authenticates and reaches the operational dashboard.","method":"GET","path":"/dashboard"},
+    {"id":"asset-index","description":"An authorized field user opens the asset registry.","method":"GET","path":"/assets"},
+    {"id":"asset-detail","description":"An authorized field user opens a registered asset detail page.","method":"GET","path":"/assets/{asset}"},
+    {"id":"offline-incident-sync","description":"A field user captures incident intent offline and later synchronizes exactly one authoritative effect."}
+  ],
+  "acceptance": ["No primary journey returns an unhandled server error.","Authorization is re-evaluated by server authority.","Duplicate client operations reconcile deterministically."]
+}

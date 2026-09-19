@@ -1,0 +1,150 @@
+project-second.brain/
+  AGENTS.md
+  README.md
+  FILE_STRUCTURE.txt
+  VALIDATION.md
+
+  cognitive-os/
+    CENTRAL_BRAIN.md
+    NOW.md
+    00_CONSTITUTION.md
+    01_SYSTEM_MODEL.md
+    02_ADAPTIVE_RIGOR.md
+    03_GOVERNED_OBJECT_MODEL.md
+    04_RELATIONSHIP_VOCABULARY.md
+    05_AUTHORITY_AND_TRUTH.md
+    06_CERTAINTY_AND_EVIDENCE.md
+    07_LIFECYCLE_AND_STATE.md
+    08_ANTI_BUREAUCRACY.md
+    09_OVERRIDE_PROTOCOL.md
+
+  planning/
+    ARCHITECTURE_PLANNING_HUB.md
+    SECURITY_PLANNING_HUB.md
+    DATA_PLANNING_HUB.md
+    PLATFORM_OPERATIONS_PLANNING_HUB.md
+    DELIVERY_PLANNING_HUB.md
+    RESEARCH_PLANNING_HUB.md
+    UX_FRONTEND_PLANNING_HUB.md
+
+  decision-engine/
+    DECISION_ENGINE.md
+    DECISION_INDEX.md
+    REVERSIBILITY_ANALYSIS.md
+    WHAT_IF_ENGINE.md
+    CONTRADICTION_ENGINE.md
+    trees/
+      FEATURE_INTAKE_TREE.md
+      DATABASE_SELECTION_TREE.md
+      DEPLOYMENT_ARCHITECTURE_TREE.md
+      AUTHENTICATION_STRENGTH_TREE.md
+      RELEASE_RESPONSE_TREE.md
+
+  truth/
+    TRUTH_LEDGER.md
+
+  risk/
+    RISK_SYSTEM.md
+    RISK_REGISTER.md
+    THREAT_REGISTER.md
+
+  scenario/
+    SCENARIO_SYSTEM.md
+    SCENARIO_INDEX.md
+
+  assurance/
+    ASSURANCE_HUB.md
+    VERIFICATION_STRATEGY.md
+    RELEASE_GATE_MODEL.md
+    RECOVERY_PROOF.md
+
+  incident/
+    INCIDENT_SYSTEM.md
+    INCIDENT_INDEX.md
+    ROOT_CAUSE_PROTOCOL.md
+
+  knowledge/
+    PATTERN_LIBRARY.md
+    ANTI_PATTERN_LIBRARY.md
+    LESSON_SYSTEM.md
+    PATTERN_PROMOTION_PROTOCOL.md
+
+  research/
+    RESEARCH_INDEX.md
+    RESEARCH_PROTOCOL.md
+
+  mesh/
+    architecture/     # atomic architecture concepts
+    security/         # trust, identity, abuse and control concepts
+    data/             # authority, mutation, history and migration concepts
+    operations/       # runtime, deployment, logs, config and dependencies
+    reliability/      # failure, recovery, backup and capacity concepts
+    governance/       # scope, evidence, approval, drift, cost and risk
+    ai/               # agent authority, reanchoring, handoff and honesty
+
+  templates-v2/
+    README.md
+    PROJECT_FULL.md
+    REQUIREMENT.md
+    ASSUMPTION.md
+    CONSTRAINT.md
+    DECISION_QUICK.md
+    DECISION_FULL.md
+    ADR_FULL.md
+    RISK_QUICK.md
+    RISK_FULL.md
+    SCENARIO_QUICK.md
+    SCENARIO_FULL.md
+    INCIDENT_QUICK.md
+    INCIDENT_FULL.md
+    VERIFICATION.md
+    TRUTH_CLAIM.md
+    CONFLICT.md
+    PATTERN.md
+    LESSON.md
+    OVERRIDE.md
+
+  schemas/
+    README.md
+    governed-object-v1.json
+
+  tools/
+    README.md
+    brain_health.py
+    new_object.py
+
+  atlas/
+    00_SECOND_BRAIN_ATLAS.md
+    CENTRAL_COGNITIVE_OS.canvas
+    SECOND_BRAIN_COMMAND_CENTER.canvas
+    GRAPH_LENSES.md
+    OBSIDIAN_ADVANCED_SETUP.md
+    capabilities/
+    concepts/
+    hubs/
+    projects/
+
+  obsidian-presets/
+    graph.json
+    install.ps1
+    second-brain-graph.css
+
+  # Original V1 systems preserved:
+  archive/
+  chatgpt/
+  checklists/
+  codex/
+  cursor/
+  doctrine/
+  evals/
+  install/
+  lane-automation/
+  playbooks/
+  project-factory/
+  prompt-packs/
+  registries/
+  second-brain/
+  templates/
+
+  .github/workflows/
+    brain-health.yml

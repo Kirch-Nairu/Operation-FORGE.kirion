@@ -1,0 +1,23 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"project-second-brain://harness/learning-candidate.schema.json",
+  "title":"Harness Learning Candidate",
+  "type":"object",
+  "required":["version","id","task_id","failure_claim","observed_behavior","evidence_levels","failed_gates","scope","confidence","review_status","doctrine_mutated"],
+  "properties":{
+    "version":{"const":1},
+    "id":{"type":"string","pattern":"^learning-[a-f0-9]{16}$"},
+    "task_id":{"type":"string","minLength":1},
+    "failure_claim":{"type":"string","minLength":1},
+    "observed_behavior":{"type":"string","minLength":1},
+    "evidence_levels":{"type":"array","uniqueItems":true,"items":{"enum":["INTENDED","IMPLEMENTED","TESTED","OBSERVED","DURABLE","DEPLOYED","VERIFIED"]}},
+    "evidence_source":{"type":["string","null"]},
+    "failed_gates":{"type":"array","items":{"type":"object"}},
+    "proposed_change":{"type":["string","null"]},
+    "scope":{"type":"string"},
+    "confidence":{"enum":["LOW","MEDIUM","HIGH"]},
+    "review_status":{"const":"PENDING_HUMAN_REVIEW"},
+    "doctrine_mutated":{"const":false}
+  },
+  "additionalProperties":false
+}

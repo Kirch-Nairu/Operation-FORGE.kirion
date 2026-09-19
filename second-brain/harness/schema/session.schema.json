@@ -1,0 +1,30 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"project-second-brain://harness/session.schema.json",
+  "title":"Cognition Harness Lifecycle Session",
+  "type":"object",
+  "required":["version","session_id","run_id","runtime_sha256","config_sha256","task_sha256","context_sha256","accepted_target_sha256","current_stage","status","task_id","harness_version","protocol_version","integrity_mode","integrity_sha256","history"],
+  "properties":{
+    "version":{"const":1},
+    "session_id":{"type":"string","pattern":"^session-[a-f0-9]{16}$"},
+    "run_id":{"type":"string","pattern":"^[a-f0-9]{20}$"},
+    "runtime_sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "config_sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "task_sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "context_sha256":{"type":["string","null"]},
+    "accepted_target_sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "current_stage":{"type":["string","null"],"enum":[null,"BOOTSTRAP","PRE_DESIGN","PRE_IMPLEMENTATION","PRE_DELIVERY","POST_DEPLOY","POST_VERIFY"]},
+    "blocked_stage":{"type":["string","null"],"enum":[null,"BOOTSTRAP","PRE_DESIGN","PRE_IMPLEMENTATION","PRE_DELIVERY","POST_DEPLOY","POST_VERIFY"]},
+    "status":{"enum":["ACTIVE","BLOCKED"]},
+    "task_id":{"type":"string"},
+    "harness_version":{"type":"string"},
+    "protocol_version":{"type":"integer"},
+    "integrity_mode":{"enum":["SHA256","HMAC_SHA256"]},
+    "integrity_sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "harness_git":{"type":"object"},
+    "target_repository":{"type":"object"},
+    "last_evaluation":{"type":["object","null"]},
+    "history":{"type":"array","items":{"type":"object","required":["sequence","kind","previous_event_sha256","event_sha256"],"properties":{"sequence":{"type":"integer","minimum":0},"kind":{"enum":["GATE_EVALUATION","TARGET_REFRESH"]},"previous_event_sha256":{"type":["string","null"]},"event_sha256":{"type":"string","pattern":"^[a-f0-9]{64}$"}},"additionalProperties":true}}
+  },
+  "additionalProperties":false
+}

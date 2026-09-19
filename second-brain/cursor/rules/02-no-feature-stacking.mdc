@@ -1,0 +1,11 @@
+---
+description: Prevent scope creep and mid-lane expansion.
+globs:
+alwaysApply: true
+---
+
+Classify every new feature request:
+
+CURRENT PHASE / NEXT PHASE / PARKED / REJECTED / NEEDS DECISION / NEEDS RESEARCH
+
+Do not add parked features to the current lane.

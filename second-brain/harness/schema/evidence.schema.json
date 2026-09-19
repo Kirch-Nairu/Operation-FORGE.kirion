@@ -1,0 +1,11 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"project-second-brain://harness/evidence.schema.json",
+  "title":"Cognition Harness Evidence",
+  "type":"object",
+  "required":["version","claims"],
+  "properties":{
+    "version":{"const":1},
+    "claims":{"type":"object","additionalProperties":{"type":"object","required":["status","levels"],"properties":{"status":{"enum":["PASS","FAIL","UNKNOWN"]},"levels":{"type":"array","uniqueItems":true,"items":{"enum":["INTENDED","IMPLEMENTED","TESTED","OBSERVED","DURABLE","DEPLOYED","VERIFIED"]}},"detail":{"type":"string"},"source":{"type":"string"},"sha":{"type":"string"},"observed_at":{"type":"string"}}}}
+  }
+}

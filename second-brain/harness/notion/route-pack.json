@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "always": [
+    "cognitive-os/00_CONSTITUTION.md",
+    "cognitive-os/01_SYSTEM_MODEL.md",
+    "cognitive-os/06_CERTAINTY_AND_EVIDENCE.md",
+    "cognitive-os/07_LIFECYCLE_AND_STATE.md"
+  ],
+  "by_lane": {
+    "DATA_STATE": ["planning/DATA_PLANNING_HUB.md", "decision-engine/trees/DATABASE_SELECTION_TREE.md", "assurance/RECOVERY_PROOF.md"],
+    "INTERFACE_CLIENT": ["planning/UX_FRONTEND_PLANNING_HUB.md", "planning/ARCHITECTURE_PLANNING_HUB.md", "planning/SECURITY_PLANNING_HUB.md"],
+    "STRUCTURAL_ARCHITECTURE": ["planning/ARCHITECTURE_PLANNING_HUB.md", "decision-engine/DECISION_ENGINE.md", "decision-engine/REVERSIBILITY_ANALYSIS.md"],
+    "AI_AUTHORITY": ["cognitive-os/05_AUTHORITY_AND_TRUTH.md", "cognitive-os/06_CERTAINTY_AND_EVIDENCE.md", "cognitive-os/09_OVERRIDE_PROTOCOL.md"],
+    "DECISION_EVIDENCE": ["decision-engine/DECISION_ENGINE.md", "decision-engine/CONTRADICTION_ENGINE.md", "decision-engine/REVERSIBILITY_ANALYSIS.md"],
+    "GOVERNANCE_CONTROL": ["cognitive-os/03_GOVERNED_OBJECT_MODEL.md", "cognitive-os/07_LIFECYCLE_AND_STATE.md", "cognitive-os/08_ANTI_BUREAUCRACY.md", "cognitive-os/09_OVERRIDE_PROTOCOL.md"],
+    "INCIDENT_LEARNING": ["incident/INCIDENT_SYSTEM.md", "incident/ROOT_CAUSE_PROTOCOL.md", "knowledge/LESSON_SYSTEM.md", "knowledge/TEMPORAL_MEMORY.md"],
+    "BUILD_RELEASE": ["planning/DELIVERY_PLANNING_HUB.md", "assurance/RELEASE_GATE_MODEL.md", "decision-engine/trees/RELEASE_RESPONSE_TREE.md"],
+    "NETWORK_OPERATIONS": ["planning/PLATFORM_OPERATIONS_PLANNING_HUB.md", "assurance/ASSURANCE_HUB.md", "assurance/VERIFICATION_STRATEGY.md"],
+    "RUNTIME_HOST": ["planning/PLATFORM_OPERATIONS_PLANNING_HUB.md", "decision-engine/trees/DEPLOYMENT_ARCHITECTURE_TREE.md", "assurance/RECOVERY_PROOF.md"],
+    "COMMERCIAL_COMMITMENT": ["decision-engine/trees/FEATURE_INTAKE_TREE.md", "planning/DELIVERY_PLANNING_HUB.md", "decision-engine/DECISION_ENGINE.md"],
+    "DELIVERY_ACCEPTANCE": ["planning/DELIVERY_PLANNING_HUB.md", "assurance/RELEASE_GATE_MODEL.md", "assurance/VERIFICATION_STRATEGY.md"],
+    "PROBLEM_SCOPE": ["decision-engine/trees/FEATURE_INTAKE_TREE.md", "planning/RESEARCH_PLANNING_HUB.md", "decision-engine/DECISION_ENGINE.md"],
+    "CODE_QUALITY": ["assurance/VERIFICATION_STRATEGY.md", "assurance/ASSURANCE_HUB.md"],
+    "STANDARDS_EVIDENCE": ["cognitive-os/06_CERTAINTY_AND_EVIDENCE.md", "assurance/VERIFICATION_STRATEGY.md", "research/RESEARCH_PROTOCOL.md"],
+    "VERIFICATION": ["assurance/ASSURANCE_HUB.md", "assurance/VERIFICATION_STRATEGY.md", "assurance/RELEASE_GATE_MODEL.md"],
+    "DISTRIBUTED_FAILURE": ["decision-engine/WHAT_IF_ENGINE.md", "scenario/SCENARIO_SYSTEM.md", "risk/RISK_SYSTEM.md"],
+    "PERFORMANCE_CAPACITY": ["planning/ARCHITECTURE_PLANNING_HUB.md", "planning/PLATFORM_OPERATIONS_PLANNING_HUB.md", "risk/RISK_SYSTEM.md"],
+    "RELIABILITY_RECOVERY": ["decision-engine/WHAT_IF_ENGINE.md", "scenario/SCENARIO_SYSTEM.md", "assurance/RECOVERY_PROOF.md", "planning/PLATFORM_OPERATIONS_PLANNING_HUB.md"],
+    "APPLICATION_DEFENSE": ["planning/SECURITY_PLANNING_HUB.md", "risk/THREAT_REGISTER.md", "assurance/VERIFICATION_STRATEGY.md"],
+    "IDENTITY_ACCESS": ["planning/SECURITY_PLANNING_HUB.md", "decision-engine/trees/AUTHENTICATION_STRENGTH_TREE.md", "assurance/VERIFICATION_STRATEGY.md"],
+    "PRIVACY_CRYPTO": ["planning/SECURITY_PLANNING_HUB.md", "planning/DATA_PLANNING_HUB.md", "risk/RISK_SYSTEM.md"],
+    "SUPPLY_CHAIN_TRUST": ["planning/SECURITY_PLANNING_HUB.md", "planning/PLATFORM_OPERATIONS_PLANNING_HUB.md", "assurance/RELEASE_GATE_MODEL.md"]
+  }
+}

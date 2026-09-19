@@ -1,0 +1,220 @@
+{
+  "verdict": "STRUCTURALLY PLAUSIBLE",
+  "reasons": [],
+  "nodes": 129,
+  "edges": 254,
+  "average_degree": 3.938,
+  "density": 0.030766,
+  "components": 1,
+  "largest_component": 129,
+  "locality": 0.811024,
+  "body_only_edges": 254,
+  "frontmatter_only_edges": 0,
+  "both_channel_edges": 0,
+  "cross_domain_edges": 48,
+  "unresolved_scoped_links": 12,
+  "top_hubs": [
+    {
+      "path": "decision-engine/DECISION_ENGINE.md",
+      "degree": 19,
+      "cross_degree": 4,
+      "kind": "subhub",
+      "domain": "governance"
+    },
+    {
+      "path": "planning/PLATFORM_OPERATIONS_PLANNING_HUB.md",
+      "degree": 18,
+      "cross_degree": 9,
+      "kind": "subhub",
+      "domain": "operations"
+    },
+    {
+      "path": "cognitive-os/hubs/ASSURANCE_LEARNING_SECTOR.md",
+      "degree": 17,
+      "cross_degree": 1,
+      "kind": "sector",
+      "domain": "assurance"
+    },
+    {
+      "path": "cognitive-os/hubs/DECISION_GOVERNANCE_SECTOR.md",
+      "degree": 15,
+      "cross_degree": 1,
+      "kind": "sector",
+      "domain": "governance"
+    },
+    {
+      "path": "planning/SECURITY_PLANNING_HUB.md",
+      "degree": 15,
+      "cross_degree": 1,
+      "kind": "subhub",
+      "domain": "security"
+    },
+    {
+      "path": "planning/ARCHITECTURE_PLANNING_HUB.md",
+      "degree": 12,
+      "cross_degree": 2,
+      "kind": "subhub",
+      "domain": "architecture"
+    },
+    {
+      "path": "cognitive-os/CENTRAL_BRAIN.md",
+      "degree": 11,
+      "cross_degree": 11,
+      "kind": "central",
+      "domain": "central"
+    },
+    {
+      "path": "cognitive-os/hubs/AI_AUTOMATION_SECTOR.md",
+      "degree": 9,
+      "cross_degree": 1,
+      "kind": "sector",
+      "domain": "ai"
+    },
+    {
+      "path": "cognitive-os/hubs/PROJECTS_SECTOR.md",
+      "degree": 9,
+      "cross_degree": 1,
+      "kind": "sector",
+      "domain": "projects"
+    },
+    {
+      "path": "planning/DATA_PLANNING_HUB.md",
+      "degree": 9,
+      "cross_degree": 0,
+      "kind": "subhub",
+      "domain": "data"
+    },
+    {
+      "path": "cognitive-os/README.md",
+      "degree": 8,
+      "cross_degree": 0,
+      "kind": "core",
+      "domain": "core"
+    },
+    {
+      "path": "decision-engine/DECISION_INDEX.md",
+      "degree": 8,
+      "cross_degree": 0,
+      "kind": "subhub",
+      "domain": "governance"
+    },
+    {
+      "path": "risk/RISK_SYSTEM.md",
+      "degree": 7,
+      "cross_degree": 3,
+      "kind": "subhub",
+      "domain": "security"
+    },
+    {
+      "path": "cognitive-os/01_SYSTEM_MODEL.md",
+      "degree": 6,
+      "cross_degree": 0,
+      "kind": "core",
+      "domain": "core"
+    },
+    {
+      "path": "cognitive-os/03_GOVERNED_OBJECT_MODEL.md",
+      "degree": 6,
+      "cross_degree": 0,
+      "kind": "core",
+      "domain": "core"
+    },
+    {
+      "path": "cognitive-os/QUERY_ROUTER.md",
+      "degree": 6,
+      "cross_degree": 3,
+      "kind": "core",
+      "domain": "core"
+    },
+    {
+      "path": "knowledge/LESSON_SYSTEM.md",
+      "degree": 6,
+      "cross_degree": 0,
+      "kind": "subhub",
+      "domain": "assurance"
+    },
+    {
+      "path": "assurance/ASSURANCE_HUB.md",
+      "degree": 5,
+      "cross_degree": 1,
+      "kind": "subhub",
+      "domain": "assurance"
+    },
+    {
+      "path": "cognitive-os/05_AUTHORITY_AND_TRUTH.md",
+      "degree": 5,
+      "cross_degree": 1,
+      "kind": "core",
+      "domain": "core"
+    },
+    {
+      "path": "cognitive-os/06_CERTAINTY_AND_EVIDENCE.md",
+      "degree": 5,
+      "cross_degree": 1,
+      "kind": "core",
+      "domain": "core"
+    },
+    {
+      "path": "cognitive-os/hubs/SECURITY_SECTOR.md",
+      "degree": 5,
+      "cross_degree": 1,
+      "kind": "sector",
+      "domain": "security"
+    },
+    {
+      "path": "incident/INCIDENT_SYSTEM.md",
+      "degree": 5,
+      "cross_degree": 0,
+      "kind": "subhub",
+      "domain": "assurance"
+    },
+    {
+      "path": "truth/TRUTH_LEDGER.md",
+      "degree": 5,
+      "cross_degree": 1,
+      "kind": "subhub",
+      "domain": "governance"
+    },
+    {
+      "path": "assurance/RECOVERY_PROOF.md",
+      "degree": 4,
+      "cross_degree": 0,
+      "kind": "subhub",
+      "domain": "assurance"
+    },
+    {
+      "path": "assurance/RELEASE_GATE_MODEL.md",
+      "degree": 4,
+      "cross_degree": 0,
+      "kind": "subhub",
+      "domain": "assurance"
+    }
+  ],
+  "cross_heavy_atomic": [
+    {
+      "path": "mesh/reliability/Capacity Boundary.md",
+      "degree": 4,
+      "cross_degree": 2,
+      "domain": "reliability"
+    },
+    {
+      "path": "mesh/reliability/Graceful Degradation.md",
+      "degree": 4,
+      "cross_degree": 2,
+      "domain": "reliability"
+    },
+    {
+      "path": "mesh/reliability/Recovery Path.md",
+      "degree": 4,
+      "cross_degree": 2,
+      "domain": "reliability"
+    },
+    {
+      "path": "mesh/reliability/Restore Verification.md",
+      "degree": 4,
+      "cross_degree": 2,
+      "domain": "reliability"
+    }
+  ],
+  "central_leaf_edges": []
+}

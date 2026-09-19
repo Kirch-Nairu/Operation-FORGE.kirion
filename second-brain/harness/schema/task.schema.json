@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-second-brain://harness/task.schema.json",
+  "title": "Cognition Harness Task",
+  "type": "object",
+  "required": ["version","id","intent"],
+  "properties": {
+    "version":{"const":1},
+    "id":{"type":"string","minLength":1},
+    "intent":{"type":"string","minLength":1},
+    "type":{"type":"string"},
+    "constraints":{"type":"array","items":{"type":"string"}},
+    "signals":{"type":"object","additionalProperties":{"type":"boolean"}},
+    "risk_overrides":{"type":"object","additionalProperties":{"type":"integer","minimum":0,"maximum":4}},
+    "primary_journeys":{"type":"array","items":{"type":"object","required":["id","description"],"properties":{"id":{"type":"string","pattern":"^[a-z0-9][a-z0-9._-]*$"},"description":{"type":"string"},"method":{"type":"string"},"path":{"type":"string"}}}},
+    "repository":{"type":"object","properties":{"path":{"type":"string"},"branch":{"type":"string"},"sha":{"type":"string"}}},
+    "acceptance":{"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,9 @@
+---
+description: Enforce cost-free development by default.
+globs:
+alwaysApply: true
+---
+
+Default mode is cost-free.
+
+Avoid paid APIs, paid hosting, paid databases, paid auth providers, paid reporting tools, SMS providers, cloud sync, and subscription dependencies unless Kirch explicitly approves.
