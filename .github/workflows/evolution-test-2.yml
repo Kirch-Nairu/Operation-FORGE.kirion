@@ -6,10 +6,16 @@ on:
       - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2
   workflow_dispatch:
 
+env:
+  GEN9_EVALUATOR_SHA: 1031f6cf25b80585e5709bdc1d5b7a1816a98440
+
 jobs:
-  generation-nine-evaluator-repair:
+  generation-nine:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: python tools/entity_check.py
-      - run: python -m py_compile tools/evolution_generation9.py
+      - run: git show "$GEN9_EVALUATOR_SHA:tools/evolution_generation9.py" > /tmp/evolution_generation9.py
+      - run: python /tmp/evolution_generation9.py
