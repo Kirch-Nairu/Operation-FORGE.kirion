@@ -6,10 +6,17 @@ on:
       - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-3
   workflow_dispatch:
 
+env:
+  TEST3_LEVEL11_EVALUATOR_SHA: 2d86b16da58e19bc575c927fdbe74041fdafc845
+
 jobs:
   level11:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: python tools/entity_check.py
-      - run: python tools/test3_level11_cross_component.py
+      - name: Load frozen Level 11 evaluator
+        run: git show "$TEST3_LEVEL11_EVALUATOR_SHA:tools/test3_level11_cross_component.py" > /tmp/test3_level11_cross_component.py
+      - run: python /tmp/test3_level11_cross_component.py

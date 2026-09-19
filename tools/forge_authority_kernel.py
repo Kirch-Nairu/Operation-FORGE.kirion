@@ -164,6 +164,7 @@ def _temporal_authority_base(envelope:dict)->dict:
         "authority_issuer":envelope.get("authority_issuer"),
         "authority_trust_epoch":envelope.get("authority_trust_epoch"),
         "authority_expires_epoch":envelope.get("authority_expires_epoch"),
+        "authority_subject_actor_id":envelope.get("authority_subject_actor_id"),
         "envelope_sha256":envelope.get("envelope_sha256"),
     }
 
@@ -190,3 +191,10 @@ def verify_signed_envelope_temporal(envelope:dict,*,trust_store,current_epoch:in
     expected=hmac.new(key.encode("utf-8"),_canonical(_temporal_authority_base(envelope)),hashlib.sha256).hexdigest()
     _require(hmac.compare_digest(str(envelope.get("authority_temporal_signature_hmac_sha256") or ""),expected),"temporal authority signature verification failed")
     return True
+
+
+def sign_envelope_for_actor(envelope:dict,*,actor_id:str,issuer_id:str,trust_store,current_epoch:int,expires_epoch:int)->dict:
+    _require(bool(actor_id),"authority subject actor_id is required")
+    scoped=copy.deepcopy(envelope)
+    scoped["authority_subject_actor_id"]=actor_id
+    return sign_envelope_temporal(scoped,issuer_id=issuer_id,trust_store=trust_store,current_epoch=current_epoch,expires_epoch=expires_epoch)

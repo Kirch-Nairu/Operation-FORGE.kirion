@@ -178,6 +178,19 @@ class ApprovalLedger:
         self._high_water[self.ledger_id]=max(self._high_water.get(self.ledger_id,0),self.generation)
         return True
 
+    def consume_temporal(self, token:dict, proposal:dict, *, key:str, current_epoch:int)->bool:
+        verify_approval_temporal(token,proposal,key=key,current_epoch=current_epoch)
+        identity=(str(token.get("approval_id") or ""),str(token.get("action_sha256") or ""))
+        _require(identity not in self._keys,"approval token has already been consumed")
+        if self.anchor is not None:
+            _require(not self.anchor.contains(identity[0],identity[1]),"approval token has already been consumed in trusted anchor")
+            self.anchor.consume(identity[0],identity[1])
+        self._keys.add(identity)
+        self._consumed.append({"approval_id":identity[0],"action_sha256":identity[1]})
+        self.generation+=1
+        self._high_water[self.ledger_id]=max(self._high_water.get(self.ledger_id,0),self.generation)
+        return True
+
     def to_dict(self)->dict:
         base={"version":2,"ledger_id":self.ledger_id,"generation":self.generation,"consumed":copy.deepcopy(self._consumed)}
         return {**base,"snapshot_sha256":_sha(base)}

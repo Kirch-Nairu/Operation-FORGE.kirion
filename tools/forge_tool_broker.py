@@ -20,12 +20,13 @@ TARGET_BOUND_CAPABILITIES={
 }
 
 class ToolBroker:
-    def __init__(self, *, authority_key:str|None=None, require_trusted_approval_anchor:bool=False, authority_trust_store=None, current_epoch:int|None=None):
+    def __init__(self, *, authority_key:str|None=None, require_trusted_approval_anchor:bool=False, authority_trust_store=None, current_epoch:int|None=None, require_temporal_approval:bool=False):
         self._tools={}
         self.authority_key=authority_key
         self.require_trusted_approval_anchor=bool(require_trusted_approval_anchor)
         self.authority_trust_store=authority_trust_store
         self.current_epoch=current_epoch
+        self.require_temporal_approval=bool(require_temporal_approval)
         if self.authority_key is not None and self.authority_trust_store is not None:
             raise ToolBrokerError("choose static authority_key or temporal authority_trust_store, not both")
         if self.authority_trust_store is not None and not isinstance(self.current_epoch,int):
@@ -90,6 +91,11 @@ class ToolBroker:
             proposal=propose_action(envelope,capability=meta["capability"],operation=name,parameters=args,target_state=target_state or {})
             # Consume immediately before attempting the side effect. If the handler
             # fails ambiguously, replaying the same approval remains prohibited.
-            approval_ledger.consume(approval_token,proposal,key=approval_key)
+            if self.require_temporal_approval:
+                if not isinstance(self.current_epoch,int):
+                    raise ToolBrokerError("temporal approval mode requires current_epoch")
+                approval_ledger.consume_temporal(approval_token,proposal,key=approval_key,current_epoch=self.current_epoch)
+            else:
+                approval_ledger.consume(approval_token,proposal,key=approval_key)
 
         return meta["handler"](**args)

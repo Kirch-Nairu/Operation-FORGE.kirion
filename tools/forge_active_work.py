@@ -2,7 +2,7 @@
 """Active-work lease registry for concurrent Forge mutation ownership."""
 from __future__ import annotations
 import copy, fnmatch, hashlib, hmac, json, secrets
-from forge_authority_kernel import verify_envelope, verify_signed_envelope, AuthorityError
+from forge_authority_kernel import verify_envelope, verify_signed_envelope, verify_signed_envelope_temporal, AuthorityError
 
 class ActiveWorkError(RuntimeError):
     pass
@@ -32,9 +32,14 @@ def _digest(v):
     return hashlib.sha256(json.dumps(v,sort_keys=True,separators=(",",":")).encode()).hexdigest()
 
 class ActiveWorkRegistry:
-    def __init__(self, *, authority_key:str|None=None, monotonic_anchor=None, state_id:str|None=None, generation:int=0):
+    def __init__(self, *, authority_key:str|None=None, monotonic_anchor=None, state_id:str|None=None, generation:int=0, authority_trust_store=None, current_epoch:int|None=None):
         self._leases=[]
         self.authority_key=authority_key
+        self.authority_trust_store=authority_trust_store
+        self.current_epoch=current_epoch
+        _require(not (self.authority_key is not None and self.authority_trust_store is not None),"choose static authority_key or temporal authority_trust_store")
+        if self.authority_trust_store is not None:
+            _require(isinstance(self.current_epoch,int),"temporal active-work authority requires current_epoch")
         self.monotonic_anchor=monotonic_anchor
         self.state_id=state_id or secrets.token_hex(16)
         self.generation=int(generation)
@@ -43,7 +48,9 @@ class ActiveWorkRegistry:
             self.monotonic_anchor.require_current("active_work",self.state_id,self.generation)
 
     def acquire(self,envelope:dict,*,worker_id:str,observed_target_sha:str,current_epoch:int|None=None,ttl_epochs:int|None=None)->dict:
-        if self.authority_key is not None:
+        if self.authority_trust_store is not None:
+            verify_signed_envelope_temporal(envelope,trust_store=self.authority_trust_store,current_epoch=self.current_epoch)
+        elif self.authority_key is not None:
             verify_signed_envelope(envelope,key=self.authority_key)
         else:
             verify_envelope(envelope)

@@ -2,7 +2,7 @@
 """Fresh verifier contract: independent evidence, never self-acceptance."""
 from __future__ import annotations
 import copy, hashlib, hmac, json
-from forge_actor_identity import verify_actor_token
+from forge_actor_identity import verify_actor_token, verify_actor_token_temporal
 
 class VerificationError(RuntimeError):
     pass
@@ -101,3 +101,14 @@ def make_verification_request_authenticated(*,candidate_sha:str,claim:str,requir
         worker_id=identity["actor_id"],
         evidence_refs=evidence_refs,
     )
+
+
+def make_verification_request_temporal_authenticated(*,candidate_sha:str,claim:str,requirement:str,procedure:list[str],worker_token:dict,identity_trust_store,current_epoch:int,evidence_refs:list[str])->dict:
+    identity=verify_actor_token_temporal(worker_token,trust_store=identity_trust_store,current_epoch=current_epoch,required_role="WRITER")
+    return make_verification_request(
+        candidate_sha=candidate_sha,claim=claim,requirement=requirement,procedure=procedure,
+        worker_id=identity["actor_id"],evidence_refs=evidence_refs)
+
+def record_verification_temporal_authenticated(request:dict,*,verifier_token:dict,identity_trust_store,current_epoch:int,outcome:str,observed_evidence:list[str])->dict:
+    identity=verify_actor_token_temporal(verifier_token,trust_store=identity_trust_store,current_epoch=current_epoch,required_role="VERIFIER")
+    return record_verification(request,verifier_id=identity["actor_id"],outcome=outcome,observed_evidence=observed_evidence)
