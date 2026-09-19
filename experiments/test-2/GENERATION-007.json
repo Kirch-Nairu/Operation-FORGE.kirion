@@ -1,0 +1,12 @@
+{
+  "test": "KIRION Forge Benchmark Test 2",
+  "generation": 7,
+  "status": "BASELINE_CHALLENGE",
+  "baseline": {
+    "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
+    "sha": "7e75026ee829b200f4cefa066ca31c8c4f2af77c"
+  },
+  "trusted_evaluator_source_sha": "7e75026ee829b200f4cefa066ca31c8c4f2af77c",
+  "hypothesis": "Independent verification should consume exact candidate requirements and observations without inheriting worker narrative, and verifier output must remain evidence-only rather than silently granting Acceptance or Promotion.",
+  "promotion_status": "NOT_AUTHORIZED"
+}
