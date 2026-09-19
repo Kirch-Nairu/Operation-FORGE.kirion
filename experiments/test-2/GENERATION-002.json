@@ -1,7 +1,7 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 2,
-  "status": "CANDIDATE_MUTATION",
+  "status": "CLOSED",
   "baseline": {
     "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
     "sha": "1c05a3142df9a59c02b5dd092e3682fe4e49fad2"
@@ -22,5 +22,12 @@
     "state-machine/execution-lifecycle.md",
     "protocols/execution-window.md"
   ],
-  "evaluator_changed": false
+  "evaluator_changed": false,
+  "green_run": {
+    "candidate_sha": "73de31e0832dd8ed922161de06f36c8bbc4e9581",
+    "workflow_run": 35442077027,
+    "result": "PASS",
+    "scenarios": "15/15"
+  },
+  "decision": "RETAIN"
 }

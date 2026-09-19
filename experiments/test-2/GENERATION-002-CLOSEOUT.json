@@ -1,0 +1,23 @@
+{
+  "generation": 2,
+  "status": "CLOSED",
+  "red": {
+    "sha": "bf3c5a6cb4484045a7b3b99155de441c1ba85896",
+    "run": 35442027280,
+    "result": "EXPECTED_FAILURE"
+  },
+  "green": {
+    "sha": "73de31e0832dd8ed922161de06f36c8bbc4e9581",
+    "run": 35442077027,
+    "result": "15/15 PASS"
+  },
+  "retained": [
+    "resumable external-work protocol",
+    "execution lifecycle state machine",
+    "WAITING_EXTERNAL exact-run checkpoint law",
+    "role-preserving resume",
+    "failure classification"
+  ],
+  "interpretation": "Mechanical execution now supports durable yield/resume without CI babysitting. This addresses a concrete failure mode from Benchmark Test 1 but does not by itself prove behavior in a live long-running agent session.",
+  "promotion_status": "NOT_AUTHORIZED"
+}
