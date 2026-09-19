@@ -1,0 +1,22 @@
+{
+  "generation": 4,
+  "status": "CLOSED",
+  "red": {
+    "sha": "ec75b048f34f439831170f76ed237337445deee8",
+    "run": 35442313001,
+    "result": "EXPECTED_FAILURE"
+  },
+  "green": {
+    "sha": "2a31601a464f313dfb66450c166f698049d9f675",
+    "run": 35442367514,
+    "result": "15/15 PASS"
+  },
+  "retained": [
+    "capability envelopes",
+    "path-scoped WORKTREE_WRITE",
+    "strict capability subset delegation",
+    "delegation depth",
+    "deterministic envelope identity"
+  ],
+  "promotion_status": "NOT_AUTHORIZED"
+}

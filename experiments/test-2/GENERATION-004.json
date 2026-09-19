@@ -1,7 +1,7 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 4,
-  "status": "CANDIDATE_MUTATION",
+  "status": "CLOSED",
   "baseline": {
     "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
     "sha": "8637cd6c770d167fa9b2e6385de5ac7842224a95"
@@ -22,5 +22,11 @@
     "doctrine/capability-authority.md",
     "doctrine/authority-model.md"
   ],
-  "evaluator_changed": false
+  "evaluator_changed": false,
+  "green_run": {
+    "candidate_sha": "2a31601a464f313dfb66450c166f698049d9f675",
+    "workflow_run": 35442367514,
+    "result": "15/15 PASS"
+  },
+  "decision": "RETAIN"
 }

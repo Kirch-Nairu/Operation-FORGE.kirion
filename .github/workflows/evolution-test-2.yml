@@ -1,24 +1,12 @@
 name: Forge Evolution Test 2
-
 on:
   push:
-    branches:
-      - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2
+    branches: [KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2]
   workflow_dispatch:
-
-env:
-  GEN4_EVALUATOR_SHA: 8637cd6c770d167fa9b2e6385de5ac7842224a95
-
 jobs:
-  generation-four:
+  generation-five-evaluator-staging:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Integrated entity validation
-        run: python tools/entity_check.py
-      - name: Load frozen Generation 4 evaluator
-        run: git show "$GEN4_EVALUATOR_SHA:tools/evolution_generation4.py" > /tmp/evolution_generation4.py
-      - name: Generation 4 authority envelope evaluator
-        run: python /tmp/evolution_generation4.py
+      - run: python tools/entity_check.py
+      - run: python -m py_compile tools/evolution_generation5.py
