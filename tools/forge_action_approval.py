@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Exact-action approval tokens layered on top of Forge capability envelopes."""
 from __future__ import annotations
-import copy, hashlib, hmac, json
+import copy, hashlib, hmac, json, secrets
 
 from forge_authority_kernel import verify_envelope
 
@@ -83,40 +83,60 @@ def verify_approval(token:dict,proposal:dict,*,key:str)->bool:
     return True
 
 class ApprovalLedger:
-    """Durable one-use consumption ledger for exact-action approval tokens."""
+    """One-use exact-action approvals with rollback high-water detection.
 
-    def __init__(self, consumed=None):
+    The class-level high-water is a runtime trust anchor. A production runtime
+    must persist the same high-water outside the candidate-controlled snapshot
+    to preserve rollback detection across process loss.
+    """
+    _high_water={}
+
+    def __init__(self, consumed=None, *, ledger_id=None, generation=0, _restoring=False):
+        self.ledger_id=ledger_id or secrets.token_hex(16)
+        self.generation=int(generation)
+        _require(self.generation>=0,"ledger generation must be non-negative")
+        if _restoring:
+            trusted=self._high_water.get(self.ledger_id,0)
+            _require(self.generation>=trusted,f"approval ledger rollback detected: {self.generation} < trusted {trusted}")
         self._consumed=[]
         self._keys=set()
         for entry in consumed or []:
             self._add_existing(entry)
+        self._high_water[self.ledger_id]=max(self._high_water.get(self.ledger_id,0),self.generation)
 
     def _add_existing(self, entry):
         _require(isinstance(entry,dict),"invalid consumed approval entry")
         approval_id=str(entry.get("approval_id") or "")
         action_sha256=str(entry.get("action_sha256") or "")
         _require(bool(approval_id and action_sha256),"consumed entry requires approval_id and action_sha256")
-        key=(approval_id,action_sha256)
-        _require(key not in self._keys,"duplicate consumed approval entry")
-        normalized={"approval_id":approval_id,"action_sha256":action_sha256}
-        self._keys.add(key)
-        self._consumed.append(normalized)
+        identity=(approval_id,action_sha256)
+        _require(identity not in self._keys,"duplicate consumed approval entry")
+        self._keys.add(identity)
+        self._consumed.append({"approval_id":approval_id,"action_sha256":action_sha256})
 
     def consume(self, token:dict, proposal:dict, *, key:str)->bool:
-        # Verification happens before mutation: invalid attempts never burn a token.
         verify_approval(token,proposal,key=key)
         identity=(str(token.get("approval_id") or ""),str(token.get("action_sha256") or ""))
         _require(identity not in self._keys,"approval token has already been consumed")
         self._keys.add(identity)
         self._consumed.append({"approval_id":identity[0],"action_sha256":identity[1]})
+        self.generation+=1
+        self._high_water[self.ledger_id]=max(self._high_water.get(self.ledger_id,0),self.generation)
         return True
 
     def to_dict(self)->dict:
-        return {"version":1,"consumed":copy.deepcopy(self._consumed)}
+        base={"version":2,"ledger_id":self.ledger_id,"generation":self.generation,"consumed":copy.deepcopy(self._consumed)}
+        return {**base,"snapshot_sha256":_sha(base)}
 
     @classmethod
     def from_dict(cls, snapshot:dict):
-        _require(isinstance(snapshot,dict) and snapshot.get("version")==1,"unsupported approval ledger snapshot")
-        consumed=snapshot.get("consumed")
-        _require(isinstance(consumed,list),"approval ledger consumed entries must be a list")
-        return cls(consumed=consumed)
+        _require(isinstance(snapshot,dict) and snapshot.get("version")==2,"unsupported approval ledger snapshot")
+        base={
+            "version":snapshot.get("version"),
+            "ledger_id":snapshot.get("ledger_id"),
+            "generation":snapshot.get("generation"),
+            "consumed":snapshot.get("consumed"),
+        }
+        _require(hmac.compare_digest(str(snapshot.get("snapshot_sha256") or ""),_sha(base)),"approval ledger snapshot digest mismatch")
+        _require(bool(base["ledger_id"]) and isinstance(base["consumed"],list),"invalid approval ledger snapshot")
+        return cls(consumed=base["consumed"],ledger_id=base["ledger_id"],generation=base["generation"],_restoring=True)
