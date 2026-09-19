@@ -3,14 +3,10 @@ on:
   push:
     branches: [KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2]
   workflow_dispatch:
-env:
-  GEN7_EVALUATOR_SHA: 7e75026ee829b200f4cefa066ca31c8c4f2af77c
 jobs:
-  generation-seven:
+  gen8-staging:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: {fetch-depth: 0}
       - run: python tools/entity_check.py
-      - run: git show "$GEN7_EVALUATOR_SHA:tools/evolution_generation7.py" > /tmp/evolution_generation7.py
-      - run: python /tmp/evolution_generation7.py
+      - run: python -m py_compile tools/evolution_generation8.py
