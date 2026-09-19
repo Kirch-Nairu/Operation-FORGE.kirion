@@ -92,7 +92,15 @@ def transition(state: dict, event: str, payload: dict | None = None) -> dict:
 
     raise ExecutionError(f"unsupported transition: {current} --{event}--> ?")
 
+def _verified_state_digest(state:dict)->str:
+    clean=copy.deepcopy(state)
+    clean.pop("_verified_checkpoint_state_sha256",None)
+    return hashlib.sha256(_canonical(clean)).hexdigest()
+
 def resume_external(state: dict, observed: dict) -> dict:
+    marker=state.get("_verified_checkpoint_state_sha256")
+    if marker is not None:
+        _require(hmac.compare_digest(str(marker),_verified_state_digest(state)),"verified checkpoint state changed after integrity verification")
     _require(state.get("state")=="WAITING_EXTERNAL","resume requires WAITING_EXTERNAL")
     ext=state.get("external") or {}
     _require(ext.get("checkpoint_persisted") is True,"cannot resume an uncheckpointed external wait")
@@ -170,4 +178,6 @@ def verify_checkpoint(envelope: dict, key: str | None = None) -> dict:
     actual=str(envelope.get("integrity_sha256") or "")
     if not hmac.compare_digest(actual,expected):
         raise CheckpointIntegrityError("checkpoint integrity verification failed")
-    return copy.deepcopy(envelope["state"])
+    state=copy.deepcopy(envelope["state"])
+    state["_verified_checkpoint_state_sha256"]=_verified_state_digest(state)
+    return state
