@@ -1,7 +1,7 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 5,
-  "status": "CANDIDATE_MUTATION",
+  "status": "CLOSED",
   "baseline": {
     "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
     "sha": "d308dc848d936e46838e5f22e22dbc97c72a0bd2"
@@ -21,5 +21,12 @@
     "doctrine/exact-action-approval.md",
     "doctrine/capability-authority.md"
   ],
-  "evaluator_changed": false
+  "evaluator_changed": false,
+  "green_run": {
+    "candidate_sha": "a859d71e4b2328b816a917e070d33de77094089b",
+    "workflow_run": 35442510802,
+    "result": "13/13 PASS"
+  },
+  "decision": "RETAIN",
+  "next_hypothesis": "Exact approvals are action-bound but replayable unless consumption is durable."
 }

@@ -3,17 +3,10 @@ on:
   push:
     branches: [KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2]
   workflow_dispatch:
-env:
-  GEN5_EVALUATOR_SHA: d308dc848d936e46838e5f22e22dbc97c72a0bd2
 jobs:
-  generation-five:
+  gen6-staging:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - run: python tools/entity_check.py
-      - name: Load frozen Generation 5 evaluator
-        run: git show "$GEN5_EVALUATOR_SHA:tools/evolution_generation5.py" > /tmp/evolution_generation5.py
-      - name: Generation 5 exact-action approval evaluator
-        run: python /tmp/evolution_generation5.py
+      - run: python -m py_compile tools/evolution_generation6.py

@@ -1,0 +1,22 @@
+{
+  "generation": 5,
+  "status": "CLOSED",
+  "red": {
+    "sha": "9bb9725777b328f21ca6fa13e9d2f8731701ca80",
+    "run": 35442463127,
+    "result": "EXPECTED_FAILURE"
+  },
+  "green": {
+    "sha": "a859d71e4b2328b816a917e070d33de77094089b",
+    "run": 35442510802,
+    "result": "13/13 PASS"
+  },
+  "retained": [
+    "action proposal digest",
+    "HMAC exact-action approval",
+    "capability precondition",
+    "target-state binding"
+  ],
+  "residual_risk": "approval token replay",
+  "promotion_status": "NOT_AUTHORIZED"
+}
