@@ -3,6 +3,8 @@
 from __future__ import annotations
 import copy, hashlib, hmac, json
 
+from forge_authority_kernel import verify_envelope
+
 class ApprovalError(RuntimeError):
     pass
 
@@ -26,6 +28,7 @@ def _proposal_base(proposal:dict)->dict:
     }
 
 def propose_action(envelope:dict,*,capability:str,operation:str,parameters:dict,target_state:dict)->dict:
+    verify_envelope(envelope)
     _require(capability in envelope.get("capabilities",[]),f"approval cannot create missing capability: {capability}")
     _require(bool(envelope.get("envelope_sha256")),"authority envelope identity is required")
     _require(bool(operation),"operation is required")

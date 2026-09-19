@@ -21,6 +21,31 @@ def _hash(base:dict)->str:
 def _require(cond:bool,msg:str)->None:
     if not cond: raise AuthorityError(msg)
 
+def _envelope_base(envelope:dict)->dict:
+    return {
+        "version":envelope.get("version"),
+        "role":envelope.get("role"),
+        "repository":envelope.get("repository"),
+        "base_sha":envelope.get("base_sha"),
+        "branch":envelope.get("branch"),
+        "capabilities":envelope.get("capabilities"),
+        "allow_paths":envelope.get("allow_paths"),
+        "delegation_depth":envelope.get("delegation_depth"),
+        "parent_envelope_sha256":envelope.get("parent_envelope_sha256"),
+    }
+
+def verify_envelope(envelope:dict)->bool:
+    _require(isinstance(envelope,dict) and envelope.get("version")==1,"unsupported authority envelope")
+    caps=envelope.get("capabilities")
+    paths=envelope.get("allow_paths")
+    _require(isinstance(caps,list) and caps==sorted(set(caps)),"authority capabilities are not canonical")
+    _require(not (set(caps)-KNOWN_CAPABILITIES),"authority envelope contains unknown capability")
+    _require(isinstance(paths,list) and paths==_normalize_paths(paths),"authority paths are not canonical")
+    _require(isinstance(envelope.get("delegation_depth"),int) and envelope["delegation_depth"]>=0,"invalid delegation depth")
+    expected=_hash(_envelope_base(envelope))
+    _require(envelope.get("envelope_sha256")==expected,"authority envelope digest mismatch")
+    return True
+
 def _normalize_paths(paths):
     out=[]
     for p in paths:
@@ -55,6 +80,7 @@ def _path_allowed(patterns:list[str],path:str)->bool:
     return any(fnmatch.fnmatchcase(normalized,p) for p in patterns)
 
 def authorize(envelope:dict,capability:str,path:str|None=None)->bool:
+    verify_envelope(envelope)
     _require(capability in KNOWN_CAPABILITIES,f"unknown capability: {capability}")
     _require(capability in envelope.get("capabilities",[]),f"capability denied: {capability}")
     if capability=="WORKTREE_WRITE":
@@ -71,6 +97,7 @@ def _pattern_subset(child:str,parent:str)->bool:
     return False
 
 def delegate(parent:dict,*,role:str,capabilities:list[str],allow_paths:list[str])->dict:
+    verify_envelope(parent)
     _require(parent.get("delegation_depth",0)>0,"delegation depth exhausted")
     child_caps=set(capabilities)
     _require(child_caps.issubset(set(parent.get("capabilities",[]))),"child capabilities exceed parent authority")
