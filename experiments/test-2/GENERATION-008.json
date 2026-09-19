@@ -1,0 +1,12 @@
+{
+  "test": "KIRION Forge Benchmark Test 2",
+  "generation": 8,
+  "status": "BASELINE_CHALLENGE",
+  "baseline": {
+    "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
+    "sha": "64ff4622dc80c233bcbe1bb58092843134325272"
+  },
+  "trusted_evaluator_source_sha": "64ff4622dc80c233bcbe1bb58092843134325272",
+  "hypothesis": "Successful teacher traces must create review-only skill candidates, not authoritative procedure or execution capability. Teacher and reviewer must be separated and review approval must still not equal promotion.",
+  "promotion_status": "NOT_AUTHORIZED"
+}
