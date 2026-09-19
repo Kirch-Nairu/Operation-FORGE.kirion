@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kirion.dev/schemas/evidence-manifest.schema.json",
+  "title": "Forge Evidence Manifest",
+  "type": "object",
+  "required": ["schema_version", "candidate_sha", "records"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "candidate_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "risk_class": {"enum": ["RISK-0", "RISK-1", "RISK-2", "RISK-3", "RISK-4"]},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim", "evidence_level", "evidence_type", "provenance", "result", "observed_at", "limitations"],
+        "properties": {
+          "claim": {"type": "string"},
+          "evidence_level": {"enum": ["E0", "E1", "E2", "E3", "E4", "E5", "E6", "E7"]},
+          "evidence_type": {"enum": ["SOURCE", "STATIC_ANALYSIS", "UNIT", "INTEGRATION", "SYSTEM", "BUILD", "RUNTIME", "BROWSER", "DEVICE", "DEPLOYMENT", "OPERATIONAL"]},
+          "provenance": {"enum": ["REPORTED", "DIRECTLY_OBSERVED", "AUTOMATED", "REPRODUCED"]},
+          "candidate_sha": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+          "environment": {"type": ["string", "object", "null"]},
+          "command_or_scenario": {"type": ["string", "null"]},
+          "result": {"type": "string"},
+          "artifact_reference": {"type": ["string", "null"]},
+          "observed_at": {"type": "string"},
+          "limitations": {"type": ["string", "array"]}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

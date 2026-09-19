@@ -1,0 +1,20 @@
+# Authority Record
+
+PROJECT:
+REPOSITORY:
+TECHNICAL_AUTHORITY:
+
+AUTHORITY_BRANCH:
+AUTHORITY_SHA:
+REMOTE:
+OBSERVED_AT:
+
+## Delegations
+
+- ROLE:
+  SCOPE:
+  EXPIRY/CONDITION:
+
+## Restrictions
+
+-

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kirion.dev/schemas/writer-handoff.schema.json",
+  "title": "Forge Writer Handoff",
+  "type": "object",
+  "required": ["schema_version", "role", "repository", "source_ref", "source_sha", "target_branch", "scope", "stop_conditions", "validation"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "role": {"const": "CODE_WRITER"},
+    "repository": {"type": "string", "minLength": 1},
+    "source_ref": {"type": "string", "minLength": 1},
+    "source_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "target_branch": {"type": "string", "minLength": 1},
+    "scope": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "out_of_scope": {"type": "array", "items": {"type": "string"}},
+    "dependencies": {"type": "array", "items": {"type": "string"}},
+    "risk_class": {"enum": ["RISK-0", "RISK-1", "RISK-2", "RISK-3", "RISK-4"]},
+    "stop_conditions": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "validation": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+  },
+  "additionalProperties": true
+}

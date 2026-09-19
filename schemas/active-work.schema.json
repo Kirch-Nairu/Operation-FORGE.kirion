@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kirion.dev/schemas/active-work.schema.json",
+  "title": "Forge Active Work Ledger",
+  "type": "object",
+  "required": ["schema_version", "entries"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["writer_id", "role", "branch", "source_sha", "ownership", "dependencies", "status", "blockers", "expected_integration_order"],
+        "properties": {
+          "writer_id": {"type": "string"},
+          "role": {"type": "string"},
+          "branch": {"type": "string"},
+          "source_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "ownership": {"type": "array", "items": {"type": "string"}},
+          "dependencies": {"type": "array", "items": {"type": "string"}},
+          "status": {"enum": ["PLANNED", "ACTIVE", "BLOCKED", "CANDIDATE_READY", "ACCEPTED", "REJECTED", "QUARANTINED", "INTEGRATED"]},
+          "blockers": {"type": "array", "items": {"type": "string"}},
+          "expected_integration_order": {"type": ["integer", "string", "null"]}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

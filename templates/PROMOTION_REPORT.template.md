@@ -1,0 +1,19 @@
+# Promotion Report
+
+CANDIDATE_SHA:
+ACCEPTANCE_REFERENCE:
+TARGET_AUTHORITY:
+EXPECTED_AUTHORITY_SHA:
+OBSERVED_PRECHECK_SHA:
+PROMOTION_OPERATION:
+RESULTING_AUTHORITY_SHA:
+PROMOTED_BY_ROLE:
+OBSERVED_AT:
+
+## Required evidence
+
+## Post-promotion verification
+
+## Memory updates
+
+## Limitations

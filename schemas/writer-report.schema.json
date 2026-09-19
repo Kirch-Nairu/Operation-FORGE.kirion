@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kirion.dev/schemas/writer-report.schema.json",
+  "title": "Forge Writer Report",
+  "type": "object",
+  "required": ["schema_version", "role", "repository", "branch", "starting_sha", "final_sha", "validation", "unverified_claims", "authority_returned"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "role": {"const": "CODE_WRITER"},
+    "repository": {"type": "string"},
+    "branch": {"type": "string"},
+    "starting_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "final_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "commits": {"type": "array", "items": {"type": "string"}},
+    "files_changed": {"type": "array", "items": {"type": "string"}},
+    "validation": {"type": "array", "items": {"type": "object"}},
+    "known_limitations": {"type": "array", "items": {"type": "string"}},
+    "unverified_claims": {"type": "array", "items": {"type": "string"}},
+    "authority_returned": {"type": "boolean"}
+  },
+  "additionalProperties": true
+}

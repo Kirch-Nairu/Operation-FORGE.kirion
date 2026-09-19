@@ -1,67 +1,28 @@
-# Operation FORGE.kirion — Entity Contract
+# Operation FORGE.kirion — Entity Boundary
 
-## Identity
+`Operation-FORGE.kirion` is one governed engineering entity composed of two internal systems with non-overlapping authority.
 
-Operation FORGE.kirion is a composite engineering entity formed from two independently versioned components:
+## Entity topology
 
-1. `forge-core/` — KIRION Forge.
-2. `second-brain/` — Project Second Brain.
+- **KIRION Forge (repository root)** owns engineering authority: roles, repository mutation policy, evidence semantics, review, acceptance, integration, promotion, and recovery.
+- **Project Second Brain (`second-brain/`)** owns cognition support: task classification, rigor selection, semantic routing, context compilation, lifecycle fingerprints, and cognition-side evidence gates.
 
-The entity repository does not collapse those components into one undifferentiated codebase. It pins their exact source commits and carries a deterministic overlay that reconstructs the reviewed Claude repair state from 2026-09-19.
+Project Second Brain may derive what context or evidence is required. It may not grant repository mutation, acceptance, promotion, deployment, or other Forge authority. When cognition output and Forge authority disagree, the action is blocked until the authority state is reconciled.
 
-## Authority
+## Shared contracts
 
-KIRION Forge is the **canonical control plane**.
+The root copies of `SYSTEM_BOUNDARY.md` and `EVIDENCE_CROSSWALK.md` are the entity contracts for repository mutation and evidence interpretation. The Second Brain copies under `second-brain/` are mirrors. `tools/entity_check.py` verifies that both byte copies and their pinned SHA-256 values agree.
 
-Forge owns:
+## Validation
 
-- repository mutation authority;
-- role and capability boundaries;
-- bounded handoffs;
-- evidence semantics;
-- review and acceptance;
-- integration and promotion;
-- deployment authority;
-- recovery and reconciliation.
+Run from the repository root:
 
-Project Second Brain is the **cognition plane**.
+```bash
+python tools/entity_check.py
+```
 
-Second Brain owns:
+The entity validator executes Forge structural/schema/link/shared checks, the Second Brain fail-closed graph validator, the harness test suite, and cross-component shared-contract verification. It does not convert Forge's human maturity predicates into mechanical proof.
 
-- task classification;
-- risk and rigor derivation;
-- semantic lane routing;
-- context compilation;
-- cognition lifecycle fingerprints;
-- cognition-side evidence requirements and gates.
+## Integration rule
 
-### Non-escalation invariant
-
-Second Brain may say that more context, evidence, verification, or rigor is required.
-
-Second Brain may **not** grant a capability that Forge denied, mutate Forge authority, declare a candidate accepted, authorize promotion, or authorize deployment.
-
-## Overlay provenance
-
-The overlay in `overlays/claude-2026-09-19/` is the delta between the source snapshots uploaded for review and Claude's completed repaired trees.
-
-The source snapshots were cross-checked against the pinned upstream heads using matching Git blob hashes for representative authority files before this entity was created.
-
-The overlay is stored as XZ-compressed Git patches encoded as base64 text so the entity remains deterministic and reviewable.
-
-## Materialization
-
-`tools/materialize-entity.sh` and `tools/materialize-entity.ps1`:
-
-1. initialize/update submodules;
-2. verify exact pinned base SHAs;
-3. reconstruct the compressed overlay patches;
-4. verify patch SHA-256 values;
-5. apply the overlays with `git apply --check` before mutation;
-6. run entity verification.
-
-The resulting submodule worktrees intentionally become dirty relative to their pinned base commits: that dirty state is the deterministic entity overlay, not untracked authority drift.
-
-## Promotion model
-
-This entity repository is the integration authority for the composite system. The constituent source repositories remain independently versioned. When an overlay is promoted upstream, the entity manifest should be updated to pin the new upstream commits and the promoted overlay entries should be retired.
+Future runtime mechanisms imported or reimplemented from other agent systems belong behind this entity boundary. Execution runtimes, subagents, tool brokers, verifiers, teacher escalation, or skill systems remain subordinate to Forge authority and may consume Second Brain cognition output without becoming a second authority plane.
