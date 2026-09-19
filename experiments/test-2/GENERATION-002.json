@@ -1,7 +1,7 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 2,
-  "status": "BASELINE_CHALLENGE",
+  "status": "CANDIDATE_MUTATION",
   "baseline": {
     "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
     "sha": "1c05a3142df9a59c02b5dd092e3682fe4e49fad2"
@@ -9,5 +9,18 @@
   "immutable_main_baseline": "da4aacd036fc39bf6271874bd4508ed314dc0551",
   "hypothesis": "Forge's recovery doctrine is descriptive but lacks an executable resumable external-work state machine. This contributes to CI babysitting, delivery-timeout fragility, and human state consolidation.",
   "experiment": "Install evaluator before implementation. Current branch should fail until the missing execution machine exists and satisfies adversarial state-transition scenarios.",
-  "promotion_status": "NOT_AUTHORIZED"
+  "promotion_status": "NOT_AUTHORIZED",
+  "red_run": {
+    "candidate_sha": "bf3c5a6cb4484045a7b3b99155de441c1ba85896",
+    "workflow_run": 35442027280,
+    "result": "EXPECTED_FAILURE",
+    "reason": "missing tools/forge_execution_machine.py"
+  },
+  "mutation": [
+    "tools/forge_execution_machine.py",
+    "protocols/resumable-external-work.md",
+    "state-machine/execution-lifecycle.md",
+    "protocols/execution-window.md"
+  ],
+  "evaluator_changed": false
 }

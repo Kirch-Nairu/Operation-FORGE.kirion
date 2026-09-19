@@ -21,3 +21,7 @@ When remaining execution capacity becomes insufficient for safe speculative work
 Do not create misleading checkpoint commits merely to avoid losing face or to claim completion.
 
 A truthful incomplete state is preferable to corrupted durable history.
+
+## Asynchronous external work
+
+When the remaining work is predominantly an external CI/browser/device/deployment run, do not spend the execution window polling. Follow [Resumable External Work](resumable-external-work.md): observe the exact run identity, persist the branch/SHA/run checkpoint, enter `WAITING_EXTERNAL`, and return control. A later agent reconstructs state from the checkpoint rather than conversation memory.
