@@ -2,11 +2,14 @@
 from __future__ import annotations
 import importlib.util, json
 from pathlib import Path
+import sys
 ROOT=Path.cwd().resolve()
+TOOLS=ROOT/"tools"
+if str(TOOLS) not in sys.path: sys.path.insert(0,str(TOOLS))
+import forge_authority_kernel as a
+import forge_action_approval as p
 def load(path,name):
  s=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
-a=load(ROOT/"tools/forge_authority_kernel.py","auth")
-p=load(ROOT/"tools/forge_action_approval.py","approval")
 MOD=ROOT/"tools"/"forge_tool_broker.py"
 def red(msg): print(json.dumps({"generation":9,"verdict":"RED","reason":msg},indent=2));raise SystemExit(1)
 if not MOD.exists(): red("missing tools/forge_tool_broker.py")
