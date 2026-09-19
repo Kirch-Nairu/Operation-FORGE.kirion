@@ -1,0 +1,17 @@
+name: Forge Evolution Test 2
+
+on:
+  push:
+    branches:
+      - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2
+  workflow_dispatch:
+
+jobs:
+  generation-zero:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Integrated entity validation
+        run: python tools/entity_check.py
+      - name: Evolution policy simulations
+        run: python tools/evolution_test2.py

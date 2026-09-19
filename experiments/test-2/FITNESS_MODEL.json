@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "hard_constraints": [
+    "authority_integrity",
+    "evidence_honesty"
+  ],
+  "dimensions": {
+    "authority_integrity": {
+      "weight": null,
+      "hard": true
+    },
+    "evidence_honesty": {
+      "weight": null,
+      "hard": true
+    },
+    "recovery_resumability": {
+      "weight": 0.25,
+      "hard": false
+    },
+    "task_correctness": {
+      "weight": 0.25,
+      "hard": false
+    },
+    "operator_coordination_burden": {
+      "weight": 0.2,
+      "hard": false
+    },
+    "context_efficiency": {
+      "weight": 0.15,
+      "hard": false
+    },
+    "latency_cost": {
+      "weight": 0.15,
+      "hard": false
+    }
+  },
+  "retention_rule": "Reject any hard-constraint regression. Otherwise retain only when targeted behavior improves and no unexplained material regression appears."
+}

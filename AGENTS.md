@@ -78,3 +78,7 @@ Documentation and tooling alone do not establish NEST-4. Self-hosting maturity r
 ## Integrated entity boundary
 
 This repository embeds Project Second Brain at `second-brain/`. Forge authority remains canonical for repository mutation, review, acceptance, integration, promotion, deployment, and recovery. Second Brain may classify, route, compile context, fingerprint cognition state, and require evidence; it may not grant Forge capabilities or override an authority denial. `python tools/entity_check.py` is the integrated fail-closed validator.
+
+## Self-evolution experiments
+
+When Forge is modifying or benchmarking Forge itself, follow [doctrine/self-evolution-sandbox.md](doctrine/self-evolution-sandbox.md). Experiment success is candidate evidence only: it does not promote its own doctrine, grant authority, or permit an experiment branch to modify `main`.

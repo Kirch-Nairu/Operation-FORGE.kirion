@@ -1,0 +1,22 @@
+{
+  "test": "KIRION Forge Benchmark Test 2",
+  "generation": 0,
+  "status": "ACTIVE",
+  "baseline": {
+    "branch": "main",
+    "sha": "da4aacd036fc39bf6271874bd4508ed314dc0551"
+  },
+  "experiment_branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
+  "hypothesis": "The integrated entity lacks a first-class self-evolution protocol, allowing successful experiments to be confused with accepted authority and allowing an experiment to alter its own judge.",
+  "pre_mutation_observation": {
+    "evidence": "SOURCE_INSPECTED_ONLY",
+    "finding": "ENTITY.md and AGENTS.md define control/cognition authority but do not define generation isolation, evaluator independence, experiment-to-main promotion separation, or observer-note non-authority for self-modification."
+  },
+  "mutation_candidate": [
+    "doctrine/self-evolution-sandbox.md",
+    "AGENTS.md self-evolution section",
+    "experiments/test-2/*",
+    "tools/evolution_test2.py"
+  ],
+  "promotion_status": "NOT_AUTHORIZED"
+}

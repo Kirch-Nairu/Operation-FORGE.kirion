@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "isolate_branch": true,
+  "main_write_from_experiment": false,
+  "simulation_implies_promotion": false,
+  "cognition_can_expand_authority": false,
+  "child_authority_subset": true,
+  "self_acceptance": false,
+  "stale_state_blocks": true,
+  "observer_notes_authoritative": false,
+  "evaluator_mutation_same_generation": false,
+  "external_wait_requires_checkpoint": true,
+  "evidence_must_match_observation": true,
+  "regression_requires_explanation": true
+}
