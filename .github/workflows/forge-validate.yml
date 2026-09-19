@@ -1,0 +1,37 @@
+name: Forge Validate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "KIRCH-*"
+      - "*candidate*"
+      - "*integration*"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Repository structure
+        run: python tools/forge_check.py repo
+
+      - name: Schemas
+        run: python tools/forge_check.py schemas
+
+      - name: Internal links
+        run: python tools/forge_check.py links
+
+      - name: Nest report
+        run: python tools/forge_check.py nest
