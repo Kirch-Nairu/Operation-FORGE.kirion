@@ -187,3 +187,23 @@ def resume_checkpoint(envelope:dict, observed:dict, key:str|None=None)->dict:
     """Atomically verify a durable checkpoint and resume its exact external work."""
     state=verify_checkpoint(envelope,key=key)
     return resume_external(state,observed)
+
+
+def seal_checkpoint_monotonic(state:dict,*,key:str,monotonic_anchor,stream_id:str)->dict:
+    if not key or not stream_id:
+        raise CheckpointIntegrityError("monotonic checkpoint requires key and stream_id")
+    generation=monotonic_anchor.next("execution_checkpoint",stream_id)
+    inner=seal_checkpoint(state,key=key)
+    base={"version":1,"stream_id":stream_id,"generation":generation,"checkpoint":inner}
+    signature=hmac.new(key.encode("utf-8"),_canonical(base),hashlib.sha256).hexdigest()
+    return {**base,"signature_hmac_sha256":signature}
+
+def resume_checkpoint_monotonic(envelope:dict,observed:dict,*,key:str,monotonic_anchor)->dict:
+    if not isinstance(envelope,dict) or envelope.get("version")!=1:
+        raise CheckpointIntegrityError("unsupported monotonic checkpoint")
+    base={k:envelope.get(k) for k in ["version","stream_id","generation","checkpoint"]}
+    expected=hmac.new(key.encode("utf-8"),_canonical(base),hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(str(envelope.get("signature_hmac_sha256") or ""),expected):
+        raise CheckpointIntegrityError("monotonic checkpoint signature mismatch")
+    monotonic_anchor.require_current("execution_checkpoint",base["stream_id"],base["generation"])
+    return resume_checkpoint(base["checkpoint"],observed,key=key)

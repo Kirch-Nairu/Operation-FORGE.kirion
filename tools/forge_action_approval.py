@@ -84,8 +84,14 @@ def verify_approval(token:dict,proposal:dict,*,key:str)->bool:
 
 class ApprovalConsumptionAnchor:
     """Trusted consumed-action anchor kept outside rollbackable ledger snapshots."""
-    def __init__(self):
+    def __init__(self, *, monotonic_anchor=None, state_id:str|None=None, generation:int=0):
         self._consumed=set()
+        self.monotonic_anchor=monotonic_anchor
+        self.state_id=state_id or secrets.token_hex(16)
+        self.generation=int(generation)
+        _require(self.generation>=0,"approval anchor generation must be non-negative")
+        if self.monotonic_anchor is not None:
+            self.monotonic_anchor.require_current("approval_consumption",self.state_id,self.generation)
 
     def contains(self,approval_id:str,action_sha256:str)->bool:
         return (str(approval_id),str(action_sha256)) in self._consumed
@@ -95,27 +101,35 @@ class ApprovalConsumptionAnchor:
         _require(all(identity),"anchor identity is incomplete")
         _require(identity not in self._consumed,"approval token has already been consumed in trusted anchor")
         self._consumed.add(identity)
+        self.generation+=1
+        if self.monotonic_anchor is not None:
+            self.monotonic_anchor.observe("approval_consumption",self.state_id,self.generation)
 
     def to_dict(self,*,key:str)->dict:
         _require(bool(key),"anchor snapshot signing key is required")
         consumed=[{"approval_id":a,"action_sha256":h} for a,h in sorted(self._consumed)]
-        base={"version":1,"consumed":consumed}
+        base={"version":1,"state_id":self.state_id,"generation":self.generation,"consumed":consumed}
         signature=hmac.new(key.encode("utf-8"),_canonical(base),hashlib.sha256).hexdigest()
         return {**base,"signature_hmac_sha256":signature}
 
     @classmethod
-    def from_dict(cls,snapshot:dict,*,key:str):
+    def from_dict(cls,snapshot:dict,*,key:str,monotonic_anchor=None):
         _require(bool(key),"anchor snapshot verification key is required")
         _require(isinstance(snapshot,dict) and snapshot.get("version")==1,"unsupported approval anchor snapshot")
         consumed=snapshot.get("consumed")
         _require(isinstance(consumed,list),"approval anchor consumed entries must be a list")
-        base={"version":1,"consumed":consumed}
+        base={"version":1,"state_id":snapshot.get("state_id"),"generation":snapshot.get("generation"),"consumed":consumed}
         expected=hmac.new(key.encode("utf-8"),_canonical(base),hashlib.sha256).hexdigest()
         _require(hmac.compare_digest(str(snapshot.get("signature_hmac_sha256") or ""),expected),"approval anchor snapshot signature mismatch")
-        anchor=cls()
+        anchor=cls(monotonic_anchor=monotonic_anchor,state_id=base["state_id"],generation=base["generation"])
+        # Restore entries without advancing monotonic generation.
+        anchor._consumed=set()
         for entry in consumed:
             _require(isinstance(entry,dict),"invalid approval anchor entry")
-            anchor.consume(entry.get("approval_id"),entry.get("action_sha256"))
+            identity=(str(entry.get("approval_id") or ""),str(entry.get("action_sha256") or ""))
+            _require(all(identity),"invalid approval anchor entry")
+            _require(identity not in anchor._consumed,"duplicate approval anchor entry")
+            anchor._consumed.add(identity)
         return anchor
 
 class ApprovalLedger:

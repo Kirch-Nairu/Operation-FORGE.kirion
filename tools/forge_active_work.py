@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Active-work lease registry for concurrent Forge mutation ownership."""
 from __future__ import annotations
-import copy, fnmatch, hashlib, hmac, json
+import copy, fnmatch, hashlib, hmac, json, secrets
 from forge_authority_kernel import verify_envelope, verify_signed_envelope, AuthorityError
 
 class ActiveWorkError(RuntimeError):
@@ -32,9 +32,15 @@ def _digest(v):
     return hashlib.sha256(json.dumps(v,sort_keys=True,separators=(",",":")).encode()).hexdigest()
 
 class ActiveWorkRegistry:
-    def __init__(self, *, authority_key:str|None=None):
+    def __init__(self, *, authority_key:str|None=None, monotonic_anchor=None, state_id:str|None=None, generation:int=0):
         self._leases=[]
         self.authority_key=authority_key
+        self.monotonic_anchor=monotonic_anchor
+        self.state_id=state_id or secrets.token_hex(16)
+        self.generation=int(generation)
+        _require(self.generation>=0,"active-work generation must be non-negative")
+        if self.monotonic_anchor is not None:
+            self.monotonic_anchor.require_current("active_work",self.state_id,self.generation)
 
     def acquire(self,envelope:dict,*,worker_id:str,observed_target_sha:str,current_epoch:int|None=None,ttl_epochs:int|None=None)->dict:
         if self.authority_key is not None:
@@ -69,6 +75,7 @@ class ActiveWorkRegistry:
                         f"mutable ownership collision: {worker_id}:{right} overlaps {lease['worker_id']}:{left}")
         candidate["lease_id"]="lease-"+_digest(candidate)[:20]
         self._leases.append(candidate)
+        self._changed()
         return copy.deepcopy(candidate)
 
     def prune_expired(self,*,current_epoch:int)->list[dict]:
@@ -80,13 +87,21 @@ class ActiveWorkRegistry:
             if isinstance(expires,int) and current_epoch>expires:
                 lease["status"]="EXPIRED"
                 expired.append(copy.deepcopy(lease))
+        if expired:
+            self._changed()
         return expired
+
+    def _changed(self)->None:
+        self.generation+=1
+        if self.monotonic_anchor is not None:
+            self.monotonic_anchor.observe("active_work",self.state_id,self.generation)
 
     def release(self,lease_id:str)->dict:
         for lease in self._leases:
             if lease["lease_id"]==lease_id:
                 _require(lease["status"]=="ACTIVE","lease is not active")
                 lease["status"]="RELEASED"
+                self._changed()
                 return copy.deepcopy(lease)
         raise ActiveWorkError("unknown lease")
 
@@ -95,19 +110,19 @@ class ActiveWorkRegistry:
 
     def to_dict(self,*,key:str)->dict:
         _require(bool(key),"active-work snapshot signing key is required")
-        base={"version":1,"leases":copy.deepcopy(self._leases)}
+        base={"version":1,"state_id":self.state_id,"generation":self.generation,"leases":copy.deepcopy(self._leases)}
         sig=hmac.new(key.encode("utf-8"),json.dumps(base,sort_keys=True,separators=(",",":")).encode(),hashlib.sha256).hexdigest()
         return {**base,"signature_hmac_sha256":sig}
 
     @classmethod
-    def from_dict(cls,snapshot:dict,*,key:str,authority_key:str|None=None):
+    def from_dict(cls,snapshot:dict,*,key:str,authority_key:str|None=None,monotonic_anchor=None):
         _require(bool(key),"active-work snapshot verification key is required")
         _require(isinstance(snapshot,dict) and snapshot.get("version")==1,"unsupported active-work snapshot")
         leases=snapshot.get("leases")
         _require(isinstance(leases,list),"active-work snapshot leases must be a list")
-        base={"version":1,"leases":leases}
+        base={"version":1,"state_id":snapshot.get("state_id"),"generation":snapshot.get("generation"),"leases":leases}
         expected=hmac.new(key.encode("utf-8"),json.dumps(base,sort_keys=True,separators=(",",":")).encode(),hashlib.sha256).hexdigest()
         _require(hmac.compare_digest(str(snapshot.get("signature_hmac_sha256") or ""),expected),"active-work snapshot signature mismatch")
-        reg=cls(authority_key=authority_key)
+        reg=cls(authority_key=authority_key,monotonic_anchor=monotonic_anchor,state_id=base["state_id"],generation=base["generation"])
         reg._leases=copy.deepcopy(leases)
         return reg
