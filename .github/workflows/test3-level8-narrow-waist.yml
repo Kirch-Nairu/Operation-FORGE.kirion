@@ -6,10 +6,17 @@ on:
       - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-3
   workflow_dispatch:
 
+env:
+  TEST3_LEVEL8_EVALUATOR_SHA: 1bcbdf52788c270aafacfb5d6e4c80c9694df2c1
+
 jobs:
   level8:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: python tools/entity_check.py
-      - run: python tools/test3_level8_narrow_waist.py
+      - name: Load frozen Level 8 evaluator
+        run: git show "$TEST3_LEVEL8_EVALUATOR_SHA:tools/test3_level8_narrow_waist.py" > /tmp/test3_level8_narrow_waist.py
+      - run: python /tmp/test3_level8_narrow_waist.py

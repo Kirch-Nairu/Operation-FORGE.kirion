@@ -89,3 +89,15 @@ def verify_result(result:dict,request:dict)->bool:
 def record_verification_authenticated(request:dict,*,verifier_token:dict,identity_key:str,outcome:str,observed_evidence:list[str])->dict:
     identity=verify_actor_token(verifier_token,key=identity_key,required_role="VERIFIER")
     return record_verification(request,verifier_id=identity["actor_id"],outcome=outcome,observed_evidence=observed_evidence)
+
+
+def make_verification_request_authenticated(*,candidate_sha:str,claim:str,requirement:str,procedure:list[str],worker_token:dict,identity_key:str,evidence_refs:list[str])->dict:
+    identity=verify_actor_token(worker_token,key=identity_key,required_role="WRITER")
+    return make_verification_request(
+        candidate_sha=candidate_sha,
+        claim=claim,
+        requirement=requirement,
+        procedure=procedure,
+        worker_id=identity["actor_id"],
+        evidence_refs=evidence_refs,
+    )

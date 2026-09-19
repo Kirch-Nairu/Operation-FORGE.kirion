@@ -2,7 +2,7 @@
 """Active-work lease registry for concurrent Forge mutation ownership."""
 from __future__ import annotations
 import copy, fnmatch, hashlib, hmac, json
-from forge_authority_kernel import verify_envelope, AuthorityError
+from forge_authority_kernel import verify_envelope, verify_signed_envelope, AuthorityError
 
 class ActiveWorkError(RuntimeError):
     pass
@@ -32,11 +32,15 @@ def _digest(v):
     return hashlib.sha256(json.dumps(v,sort_keys=True,separators=(",",":")).encode()).hexdigest()
 
 class ActiveWorkRegistry:
-    def __init__(self):
+    def __init__(self, *, authority_key:str|None=None):
         self._leases=[]
+        self.authority_key=authority_key
 
     def acquire(self,envelope:dict,*,worker_id:str,observed_target_sha:str)->dict:
-        verify_envelope(envelope)
+        if self.authority_key is not None:
+            verify_signed_envelope(envelope,key=self.authority_key)
+        else:
+            verify_envelope(envelope)
         _require(bool(worker_id),"worker_id is required")
         _require("WORKTREE_WRITE" in envelope.get("capabilities",[]),"active mutable lease requires WORKTREE_WRITE")
         _require(observed_target_sha==envelope.get("base_sha"),"cannot activate stale authority against moved target")
@@ -78,7 +82,7 @@ class ActiveWorkRegistry:
         return {**base,"signature_hmac_sha256":sig}
 
     @classmethod
-    def from_dict(cls,snapshot:dict,*,key:str):
+    def from_dict(cls,snapshot:dict,*,key:str,authority_key:str|None=None):
         _require(bool(key),"active-work snapshot verification key is required")
         _require(isinstance(snapshot,dict) and snapshot.get("version")==1,"unsupported active-work snapshot")
         leases=snapshot.get("leases")
@@ -86,6 +90,6 @@ class ActiveWorkRegistry:
         base={"version":1,"leases":leases}
         expected=hmac.new(key.encode("utf-8"),json.dumps(base,sort_keys=True,separators=(",",":")).encode(),hashlib.sha256).hexdigest()
         _require(hmac.compare_digest(str(snapshot.get("signature_hmac_sha256") or ""),expected),"active-work snapshot signature mismatch")
-        reg=cls()
+        reg=cls(authority_key=authority_key)
         reg._leases=copy.deepcopy(leases)
         return reg

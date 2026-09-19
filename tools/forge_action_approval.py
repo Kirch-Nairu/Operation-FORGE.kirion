@@ -96,6 +96,28 @@ class ApprovalConsumptionAnchor:
         _require(identity not in self._consumed,"approval token has already been consumed in trusted anchor")
         self._consumed.add(identity)
 
+    def to_dict(self,*,key:str)->dict:
+        _require(bool(key),"anchor snapshot signing key is required")
+        consumed=[{"approval_id":a,"action_sha256":h} for a,h in sorted(self._consumed)]
+        base={"version":1,"consumed":consumed}
+        signature=hmac.new(key.encode("utf-8"),_canonical(base),hashlib.sha256).hexdigest()
+        return {**base,"signature_hmac_sha256":signature}
+
+    @classmethod
+    def from_dict(cls,snapshot:dict,*,key:str):
+        _require(bool(key),"anchor snapshot verification key is required")
+        _require(isinstance(snapshot,dict) and snapshot.get("version")==1,"unsupported approval anchor snapshot")
+        consumed=snapshot.get("consumed")
+        _require(isinstance(consumed,list),"approval anchor consumed entries must be a list")
+        base={"version":1,"consumed":consumed}
+        expected=hmac.new(key.encode("utf-8"),_canonical(base),hashlib.sha256).hexdigest()
+        _require(hmac.compare_digest(str(snapshot.get("signature_hmac_sha256") or ""),expected),"approval anchor snapshot signature mismatch")
+        anchor=cls()
+        for entry in consumed:
+            _require(isinstance(entry,dict),"invalid approval anchor entry")
+            anchor.consume(entry.get("approval_id"),entry.get("action_sha256"))
+        return anchor
+
 class ApprovalLedger:
     """One-use exact-action approvals with rollback high-water detection.
 

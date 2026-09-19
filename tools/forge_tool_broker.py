@@ -8,7 +8,7 @@ _TOOLS_DIR=Path(__file__).resolve().parent
 if str(_TOOLS_DIR) not in sys.path:
     sys.path.insert(0,str(_TOOLS_DIR))
 
-from forge_authority_kernel import authorize, authorize_current, AuthorityError
+from forge_authority_kernel import authorize, authorize_current, verify_signed_envelope, authorize_signed_current, AuthorityError
 from forge_action_approval import propose_action, ApprovalLedger, ApprovalError
 
 class ToolBrokerError(RuntimeError):
@@ -20,8 +20,10 @@ TARGET_BOUND_CAPABILITIES={
 }
 
 class ToolBroker:
-    def __init__(self):
+    def __init__(self, *, authority_key:str|None=None, require_trusted_approval_anchor:bool=False):
         self._tools={}
+        self.authority_key=authority_key
+        self.require_trusted_approval_anchor=bool(require_trusted_approval_anchor)
 
     def register(self,name:str,*,capability:str,handler,sensitive:bool=False,path_arg:str|None=None):
         if not name or name in self._tools:
@@ -45,10 +47,15 @@ class ToolBroker:
             if meta["path_arg"] not in args:
                 raise ToolBrokerError(f"missing path argument: {meta['path_arg']}")
             path=args[meta["path_arg"]]
+        if self.authority_key is not None:
+            verify_signed_envelope(envelope,key=self.authority_key)
         if meta["capability"] in TARGET_BOUND_CAPABILITIES:
             if not observed_target_sha:
                 raise ToolBrokerError("mutating tool requires observed_target_sha")
-            authorize_current(envelope,meta["capability"],current_sha=observed_target_sha,path=path)
+            if self.authority_key is not None:
+                authorize_signed_current(envelope,meta["capability"],key=self.authority_key,current_sha=observed_target_sha,path=path)
+            else:
+                authorize_current(envelope,meta["capability"],current_sha=observed_target_sha,path=path)
         else:
             authorize(envelope,meta["capability"],path=path)
 
@@ -70,6 +77,8 @@ class ToolBroker:
         if meta["sensitive"]:
             if approval_token is None or not approval_key or approval_ledger is None:
                 raise ToolBrokerError("sensitive tool requires exact-action approval and durable consumption ledger")
+            if self.require_trusted_approval_anchor and getattr(approval_ledger,"anchor",None) is None:
+                raise ToolBrokerError("sensitive tool requires a trusted approval consumption anchor")
             proposal=propose_action(envelope,capability=meta["capability"],operation=name,parameters=args,target_state=target_state or {})
             # Consume immediately before attempting the side effect. If the handler
             # fails ambiguously, replaying the same approval remains prohibited.
