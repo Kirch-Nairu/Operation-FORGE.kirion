@@ -1,0 +1,12 @@
+{
+  "test": "TEST 3",
+  "generation": 4,
+  "status": "EVALUATOR_FIRST_BASELINE",
+  "parent_candidate": "2a455c8d2ca411999ed443881e59b947047db215",
+  "prior_green_scenarios": 1350,
+  "level": 9,
+  "new_scenarios": 500,
+  "hypothesis": "Authority, identities, approvals, leases, and broker authorization must remain correct across logical time, expiry, revocation, and key rotation rather than staying valid forever.",
+  "evaluator": "tools/test3_level9_temporal_trust.py",
+  "promotion_status": "NOT_AUTHORIZED"
+}
