@@ -6,12 +6,19 @@ on:
       - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2
   workflow_dispatch:
 
+env:
+  GEN3_EVALUATOR_SHA: c5d34a4886ac4797f243b9062b3ad3fff8d891d0
+
 jobs:
-  evaluator-staging:
+  generation-three:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Integrated entity validation
         run: python tools/entity_check.py
-      - name: Compile repaired evaluator
-        run: python -m py_compile tools/evolution_generation3.py
+      - name: Load frozen repaired Generation 3 evaluator
+        run: git show "$GEN3_EVALUATOR_SHA:tools/evolution_generation3.py" > /tmp/evolution_generation3.py
+      - name: Generation 3 checkpoint integrity evaluator
+        run: python /tmp/evolution_generation3.py

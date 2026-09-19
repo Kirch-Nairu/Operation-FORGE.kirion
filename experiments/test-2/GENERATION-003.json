@@ -1,13 +1,13 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 3,
-  "status": "EVALUATOR_REPAIR",
+  "status": "BASELINE_CHALLENGE_RETRY",
   "baseline": {
     "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
     "sha": "10b454e037352e4875a981f9e825bfdd2a554114"
   },
   "immutable_main_baseline": "da4aacd036fc39bf6271874bd4508ed314dc0551",
-  "trusted_evaluator_source_sha": "10b454e037352e4875a981f9e825bfdd2a554114",
+  "trusted_evaluator_source_sha": "c5d34a4886ac4797f243b9062b3ad3fff8d891d0",
   "hypothesis": "Resumable execution checkpoints are durable but not tamper-evident. Authority-bearing role/branch/SHA/external-run state must fail closed if edited or verified under the wrong signing regime.",
   "method": "Freeze evaluator before mutation; expect RED on missing checkpoint integrity API; then add smallest integrity layer without changing evaluator.",
   "promotion_status": "NOT_AUTHORIZED",
@@ -17,5 +17,6 @@
     "classification": "EVALUATOR_DEFECT",
     "reason": "frozen evaluator resolved ROOT from /tmp path rather than checked-out repository"
   },
-  "baseline_result": "NOT_MEASURED"
+  "baseline_result": "NOT_MEASURED",
+  "retry_after_evaluator_repair": true
 }
