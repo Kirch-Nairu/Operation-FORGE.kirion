@@ -1,0 +1,33 @@
+name: Forge Test 3 Progressive Overload
+
+on:
+  push:
+    branches:
+      - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-3
+  workflow_dispatch:
+
+jobs:
+  progressive-gauntlet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Integrated entity validation
+        run: python tools/entity_check.py
+      - name: Execute cumulative 700-scenario gauntlet
+        id: gauntlet
+        continue-on-error: true
+        run: python tools/test3_progressive_gauntlet.py
+      - name: Upload audit corpus
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test3-audit
+          path: |
+            test3-report.json
+            test3-misbehavior.jsonl
+            test3-family-summary.json
+      - name: Enforce gauntlet result
+        if: steps.gauntlet.outcome != 'success'
+        run: |
+          echo "Test 3 found behavioral mismatches. Audit artifact was preserved."
+          exit 1
