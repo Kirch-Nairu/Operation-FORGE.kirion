@@ -1,0 +1,12 @@
+{
+  "test": "KIRION Forge Benchmark Test 2",
+  "generation": 6,
+  "status": "BASELINE_CHALLENGE",
+  "baseline": {
+    "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
+    "sha": "611051314a3a66b03fd5ed680a3576c2135dea5b"
+  },
+  "trusted_evaluator_source_sha": "611051314a3a66b03fd5ed680a3576c2135dea5b",
+  "hypothesis": "Exact-action approvals are action-bound but replayable. Approval consumption must be durable across resumed sessions and failed verification must not burn a valid token.",
+  "promotion_status": "NOT_AUTHORIZED"
+}
