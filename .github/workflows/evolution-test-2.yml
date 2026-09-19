@@ -6,12 +6,39 @@ on:
       - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2
   workflow_dispatch:
 
+env:
+  TRUSTED_EVALUATOR_SHA: 1567fffa1f21304686aa97e767783d8350b25fdf
+
 jobs:
-  generation-zero:
+  generation-one:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Integrated entity validation
         run: python tools/entity_check.py
-      - name: Evolution policy simulations
+
+      - name: Generation 0 policy smoke simulations
         run: python tools/evolution_test2.py
+
+      - name: Load frozen evaluator from pre-generation commit
+        run: |
+          git show "$TRUSTED_EVALUATOR_SHA:tools/evolution_guard.py" > /tmp/evolution_guard.py
+          git show "$TRUSTED_EVALUATOR_SHA:tools/evolution_adversary.py" > /tmp/evolution_adversary.py
+          sha256sum /tmp/evolution_guard.py /tmp/evolution_adversary.py
+
+      - name: Trusted repository-state guard
+        run: |
+          python /tmp/evolution_guard.py \
+            --root . \
+            --branch "$GITHUB_REF_NAME" \
+            --generation 1
+
+      - name: Adversarial negative-test suite
+        run: |
+          python /tmp/evolution_adversary.py \
+            --root . \
+            --guard /tmp/evolution_guard.py \
+            --generation 1

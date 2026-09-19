@@ -1,0 +1,22 @@
+{
+  "test": "KIRION Forge Benchmark Test 2",
+  "generation": 1,
+  "status": "ACTIVE",
+  "baseline": {
+    "branch": "main",
+    "sha": "da4aacd036fc39bf6271874bd4508ed314dc0551"
+  },
+  "experiment_branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
+  "parent_generation": 0,
+  "trusted_evaluator_source_sha": "1567fffa1f21304686aa97e767783d8350b25fdf",
+  "hypothesis": "Generation 0's 100/100 result is semantically weak because the simulator checks declarations from its own POLICY.json. A repository-state guard plus adversarial negative tests should detect concrete authority/evidence boundary violations while using an evaluator frozen before the Generation 1 mutation.",
+  "method": [
+    "run integrated entity validation",
+    "load evolution_guard.py and evolution_adversary.py from trusted evaluator source SHA",
+    "validate current repository state",
+    "mutate isolated temporary copies with adversarial authority/evidence violations",
+    "require the trusted guard to reject every mutation"
+  ],
+  "known_trust_limitation": "The branch-local workflow caller remains mutable by the same Git authority. Full evaluator independence ultimately requires an immutable/protected external workflow or separate acceptance authority outside the experiment branch.",
+  "promotion_status": "NOT_AUTHORIZED"
+}
