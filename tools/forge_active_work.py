@@ -36,7 +36,7 @@ class ActiveWorkRegistry:
         self._leases=[]
         self.authority_key=authority_key
 
-    def acquire(self,envelope:dict,*,worker_id:str,observed_target_sha:str)->dict:
+    def acquire(self,envelope:dict,*,worker_id:str,observed_target_sha:str,current_epoch:int|None=None,ttl_epochs:int|None=None)->dict:
         if self.authority_key is not None:
             verify_signed_envelope(envelope,key=self.authority_key)
         else:
@@ -44,6 +44,10 @@ class ActiveWorkRegistry:
         _require(bool(worker_id),"worker_id is required")
         _require("WORKTREE_WRITE" in envelope.get("capabilities",[]),"active mutable lease requires WORKTREE_WRITE")
         _require(observed_target_sha==envelope.get("base_sha"),"cannot activate stale authority against moved target")
+        if current_epoch is not None or ttl_epochs is not None:
+            _require(isinstance(current_epoch,int) and isinstance(ttl_epochs,int),"lease current_epoch and ttl_epochs must be provided together")
+            _require(ttl_epochs>0,"lease ttl_epochs must be positive")
+            self.prune_expired(current_epoch=current_epoch)
         candidate={
             "worker_id":worker_id,
             "repository":envelope["repository"],
@@ -53,6 +57,9 @@ class ActiveWorkRegistry:
             "paths":copy.deepcopy(envelope.get("allow_paths",[])),
             "status":"ACTIVE",
         }
+        if current_epoch is not None:
+            candidate["issued_epoch"]=current_epoch
+            candidate["expires_epoch"]=current_epoch+ttl_epochs
         for lease in self._leases:
             if lease.get("status")!="ACTIVE": continue
             if lease["repository"]!=candidate["repository"] or lease["branch"]!=candidate["branch"]: continue
@@ -63,6 +70,17 @@ class ActiveWorkRegistry:
         candidate["lease_id"]="lease-"+_digest(candidate)[:20]
         self._leases.append(candidate)
         return copy.deepcopy(candidate)
+
+    def prune_expired(self,*,current_epoch:int)->list[dict]:
+        _require(isinstance(current_epoch,int),"current_epoch must be an integer")
+        expired=[]
+        for lease in self._leases:
+            if lease.get("status")!="ACTIVE": continue
+            expires=lease.get("expires_epoch")
+            if isinstance(expires,int) and current_epoch>expires:
+                lease["status"]="EXPIRED"
+                expired.append(copy.deepcopy(lease))
+        return expired
 
     def release(self,lease_id:str)->dict:
         for lease in self._leases:

@@ -180,3 +180,42 @@ class ApprovalLedger:
         _require(hmac.compare_digest(str(snapshot.get("snapshot_sha256") or ""),_sha(base)),"approval ledger snapshot digest mismatch")
         _require(bool(base["ledger_id"]) and isinstance(base["consumed"],list),"invalid approval ledger snapshot")
         return cls(consumed=base["consumed"],ledger_id=base["ledger_id"],generation=base["generation"],_restoring=True,anchor=anchor)
+
+
+def _temporal_approval_base(token:dict)->dict:
+    return {
+        "version":2,
+        "approval_id":token.get("approval_id"),
+        "approver":token.get("approver"),
+        "action_sha256":token.get("action_sha256"),
+        "envelope_sha256":token.get("envelope_sha256"),
+        "capability":token.get("capability"),
+        "issued_epoch":token.get("issued_epoch"),
+        "expires_epoch":token.get("expires_epoch"),
+    }
+
+def approve_action_temporal(proposal:dict,*,approver:str,key:str,approval_id:str,issued_epoch:int,expires_epoch:int)->dict:
+    _validate_proposal(proposal)
+    _require(bool(approver and key and approval_id),"approver, key, and approval_id are required")
+    _require(isinstance(issued_epoch,int) and isinstance(expires_epoch,int) and expires_epoch>=issued_epoch,"invalid approval epochs")
+    base={
+        "version":2,"approval_id":approval_id,"approver":approver,
+        "action_sha256":proposal["action_sha256"],"envelope_sha256":proposal["envelope_sha256"],
+        "capability":proposal["capability"],"issued_epoch":issued_epoch,"expires_epoch":expires_epoch,
+    }
+    return {**base,"signature_hmac_sha256":hmac.new(key.encode("utf-8"),_canonical(base),hashlib.sha256).hexdigest()}
+
+def verify_approval_temporal(token:dict,proposal:dict,*,key:str,current_epoch:int)->bool:
+    _require(bool(key),"approval verification key is required")
+    _validate_proposal(proposal)
+    _require(isinstance(token,dict) and token.get("version")==2,"unsupported temporal approval token")
+    _require(token.get("action_sha256")==proposal.get("action_sha256"),"approval is for a different exact action")
+    _require(token.get("envelope_sha256")==proposal.get("envelope_sha256"),"approval authority envelope mismatch")
+    _require(token.get("capability")==proposal.get("capability"),"approval capability mismatch")
+    issued=token.get("issued_epoch");expires=token.get("expires_epoch")
+    _require(isinstance(current_epoch,int) and isinstance(issued,int) and isinstance(expires,int),"approval epochs missing")
+    _require(current_epoch>=issued,"current epoch predates approval")
+    _require(current_epoch<=expires,f"approval expired at epoch {expires}; current is {current_epoch}")
+    expected=hmac.new(key.encode("utf-8"),_canonical(_temporal_approval_base(token)),hashlib.sha256).hexdigest()
+    _require(hmac.compare_digest(str(token.get("signature_hmac_sha256") or ""),expected),"temporal approval signature verification failed")
+    return True

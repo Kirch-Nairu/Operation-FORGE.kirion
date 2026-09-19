@@ -6,10 +6,17 @@ on:
       - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-3
   workflow_dispatch:
 
+env:
+  TEST3_LEVEL9_EVALUATOR_SHA: 37e82d11dc13b3491bf4af144c9a38b365c39b9b
+
 jobs:
   level9:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: python tools/entity_check.py
-      - run: python tools/test3_level9_temporal_trust.py
+      - name: Load frozen Level 9 evaluator
+        run: git show "$TEST3_LEVEL9_EVALUATOR_SHA:tools/test3_level9_temporal_trust.py" > /tmp/test3_level9_temporal_trust.py
+      - run: python /tmp/test3_level9_temporal_trust.py

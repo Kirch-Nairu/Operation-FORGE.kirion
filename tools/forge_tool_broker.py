@@ -8,7 +8,7 @@ _TOOLS_DIR=Path(__file__).resolve().parent
 if str(_TOOLS_DIR) not in sys.path:
     sys.path.insert(0,str(_TOOLS_DIR))
 
-from forge_authority_kernel import authorize, authorize_current, verify_signed_envelope, authorize_signed_current, AuthorityError
+from forge_authority_kernel import authorize, authorize_current, verify_signed_envelope, authorize_signed_current, verify_signed_envelope_temporal, AuthorityError
 from forge_action_approval import propose_action, ApprovalLedger, ApprovalError
 
 class ToolBrokerError(RuntimeError):
@@ -20,10 +20,16 @@ TARGET_BOUND_CAPABILITIES={
 }
 
 class ToolBroker:
-    def __init__(self, *, authority_key:str|None=None, require_trusted_approval_anchor:bool=False):
+    def __init__(self, *, authority_key:str|None=None, require_trusted_approval_anchor:bool=False, authority_trust_store=None, current_epoch:int|None=None):
         self._tools={}
         self.authority_key=authority_key
         self.require_trusted_approval_anchor=bool(require_trusted_approval_anchor)
+        self.authority_trust_store=authority_trust_store
+        self.current_epoch=current_epoch
+        if self.authority_key is not None and self.authority_trust_store is not None:
+            raise ToolBrokerError("choose static authority_key or temporal authority_trust_store, not both")
+        if self.authority_trust_store is not None and not isinstance(self.current_epoch,int):
+            raise ToolBrokerError("temporal authority mode requires current_epoch")
 
     def register(self,name:str,*,capability:str,handler,sensitive:bool=False,path_arg:str|None=None):
         if not name or name in self._tools:
@@ -47,7 +53,9 @@ class ToolBroker:
             if meta["path_arg"] not in args:
                 raise ToolBrokerError(f"missing path argument: {meta['path_arg']}")
             path=args[meta["path_arg"]]
-        if self.authority_key is not None:
+        if self.authority_trust_store is not None:
+            verify_signed_envelope_temporal(envelope,trust_store=self.authority_trust_store,current_epoch=self.current_epoch)
+        elif self.authority_key is not None:
             verify_signed_envelope(envelope,key=self.authority_key)
         if meta["capability"] in TARGET_BOUND_CAPABILITIES:
             if not observed_target_sha:

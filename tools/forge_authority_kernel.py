@@ -156,3 +156,37 @@ def authorize_signed_current(envelope:dict,capability:str,*,key:str,current_sha:
     verify_signed_envelope(envelope,key=key)
     _require(current_sha==envelope.get("base_sha"),f"target drift: observed {current_sha} != authority base {envelope.get('base_sha')}")
     return authorize(envelope,capability,path=path)
+
+
+def _temporal_authority_base(envelope:dict)->dict:
+    return {
+        "version":1,
+        "authority_issuer":envelope.get("authority_issuer"),
+        "authority_trust_epoch":envelope.get("authority_trust_epoch"),
+        "authority_expires_epoch":envelope.get("authority_expires_epoch"),
+        "envelope_sha256":envelope.get("envelope_sha256"),
+    }
+
+def sign_envelope_temporal(envelope:dict,*,issuer_id:str,trust_store,current_epoch:int,expires_epoch:int)->dict:
+    verify_envelope(envelope)
+    _require(isinstance(current_epoch,int) and isinstance(expires_epoch,int),"logical epochs must be integers")
+    _require(expires_epoch>=current_epoch,"authority expiry cannot precede issue epoch")
+    key=trust_store.signing_key(issuer_id,epoch=current_epoch)
+    signed=copy.deepcopy(envelope)
+    signed["authority_issuer"]=issuer_id
+    signed["authority_trust_epoch"]=current_epoch
+    signed["authority_expires_epoch"]=expires_epoch
+    signed["authority_temporal_signature_hmac_sha256"]=hmac.new(key.encode("utf-8"),_canonical(_temporal_authority_base(signed)),hashlib.sha256).hexdigest()
+    return signed
+
+def verify_signed_envelope_temporal(envelope:dict,*,trust_store,current_epoch:int)->bool:
+    verify_envelope(envelope)
+    issuer=envelope.get("authority_issuer")
+    token_epoch=envelope.get("authority_trust_epoch")
+    expires=envelope.get("authority_expires_epoch")
+    _require(bool(issuer),"temporal authority issuer missing")
+    _require(isinstance(token_epoch,int) and isinstance(expires,int),"temporal authority epochs missing")
+    key=trust_store.verification_key(issuer,token_epoch=token_epoch,current_epoch=current_epoch,expires_epoch=expires)
+    expected=hmac.new(key.encode("utf-8"),_canonical(_temporal_authority_base(envelope)),hashlib.sha256).hexdigest()
+    _require(hmac.compare_digest(str(envelope.get("authority_temporal_signature_hmac_sha256") or ""),expected),"temporal authority signature verification failed")
+    return True
