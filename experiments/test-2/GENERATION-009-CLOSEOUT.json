@@ -1,0 +1,23 @@
+{
+  "generation": 9,
+  "status": "CLOSED",
+  "valid_green": {
+    "sha": "8d0a7316e2cfa7e034971bd85dcd88138fe60100",
+    "run": 35443446181,
+    "result": "12/12 PASS"
+  },
+  "invalid_attempt": {
+    "sha": "abc9d384249692cd16ec686b662328de0083b21a",
+    "run": 35442987588,
+    "classification": "EVALUATOR_DEFECT"
+  },
+  "retained": [
+    "narrow-waist tool broker",
+    "capability enforcement before handler execution",
+    "path-scope enforcement",
+    "exact-action approval for sensitive effects",
+    "one-use approval consumption"
+  ],
+  "interpretation": "Tool visibility is now separated from tool authority at the execution boundary. Sensitive effects require exact-action approval and one-use consumption before handler invocation.",
+  "promotion_status": "NOT_AUTHORIZED"
+}
