@@ -1,0 +1,13 @@
+{
+  "test": "KIRION Forge Benchmark Test 2",
+  "generation": 2,
+  "status": "BASELINE_CHALLENGE",
+  "baseline": {
+    "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
+    "sha": "1c05a3142df9a59c02b5dd092e3682fe4e49fad2"
+  },
+  "immutable_main_baseline": "da4aacd036fc39bf6271874bd4508ed314dc0551",
+  "hypothesis": "Forge's recovery doctrine is descriptive but lacks an executable resumable external-work state machine. This contributes to CI babysitting, delivery-timeout fragility, and human state consolidation.",
+  "experiment": "Install evaluator before implementation. Current branch should fail until the missing execution machine exists and satisfies adversarial state-transition scenarios.",
+  "promotion_status": "NOT_AUTHORIZED"
+}
