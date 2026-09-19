@@ -1,0 +1,72 @@
+name: Repair vendored Second Brain
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.entity-bootstrap/**'
+      - '.github/workflows/entity-repair.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout entity
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Reconstruct entity payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .entity-bootstrap/chunk*.b64 > /tmp/operation-forge-entity.b64
+          base64 -d /tmp/operation-forge-entity.b64 > /tmp/operation-forge-entity.tar.xz
+          xz -t /tmp/operation-forge-entity.tar.xz
+          tar -tJf /tmp/operation-forge-entity.tar.xz >/dev/null
+
+      - name: Replace Second Brain gitlink with vendored tree
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Remove the tracked gitlink explicitly. A plain filesystem delete is
+          # insufficient because mode 160000 survives in the index.
+          git rm -f --cached second-brain || true
+          rm -rf second-brain
+
+          # Extract only the reviewed Second Brain tree from the entity payload.
+          tar -xJf /tmp/operation-forge-entity.tar.xz -C . ./second-brain
+
+          # Bootstrap material must not remain part of the final entity.
+          rm -rf .entity-bootstrap
+          rm -f .github/workflows/entity-repair.yml
+
+          git add -f second-brain
+          git add -A
+
+          # Fail closed if Git still sees a submodule/gitlink.
+          if git ls-files -s second-brain | awk '{print $1}' | grep -qx '160000'; then
+            echo "ERROR: second-brain is still a gitlink." >&2
+            exit 1
+          fi
+
+          # Prove representative files are now ordinary tracked files.
+          test -f second-brain/VALIDATION.md
+          test -f second-brain/SYSTEM_BOUNDARY.md
+          test -f second-brain/EVIDENCE_CROSSWALK.md
+
+          git config user.name "Operation FORGE.kirion"
+          git config user.email "forge-kirion@users.noreply.github.com"
+
+          if git diff --cached --quiet; then
+            echo "No repair required."
+            exit 0
+          fi
+
+          git commit -m "fix(entity): vendor Project Second Brain into entity"
+          git push origin HEAD:main
