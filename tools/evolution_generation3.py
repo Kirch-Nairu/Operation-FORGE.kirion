@@ -2,7 +2,7 @@
 from __future__ import annotations
 import importlib.util, json
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1]
+ROOT=Path.cwd().resolve()
 MOD=ROOT/"tools"/"forge_execution_machine.py"
 
 def red(msg):
