@@ -1,7 +1,7 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 4,
-  "status": "BASELINE_CHALLENGE",
+  "status": "CANDIDATE_MUTATION",
   "baseline": {
     "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
     "sha": "8637cd6c770d167fa9b2e6385de5ac7842224a95"
@@ -10,5 +10,17 @@
   "trusted_evaluator_source_sha": "8637cd6c770d167fa9b2e6385de5ac7842224a95",
   "hypothesis": "Forge authority is still primarily semantic/prose at runtime. Tool visibility must not imply authorization, writes must respect owned paths, and delegated agents must inherit a strict subset of parent capabilities and scope.",
   "method": "Freeze evaluator before implementation; expect RED while authority kernel is absent; then implement smallest capability-envelope kernel with evaluator unchanged.",
-  "promotion_status": "NOT_AUTHORIZED"
+  "promotion_status": "NOT_AUTHORIZED",
+  "red_run": {
+    "candidate_sha": "ec75b048f34f439831170f76ed237337445deee8",
+    "workflow_run": 35442313001,
+    "result": "EXPECTED_FAILURE",
+    "reason": "missing tools/forge_authority_kernel.py"
+  },
+  "mutation": [
+    "tools/forge_authority_kernel.py",
+    "doctrine/capability-authority.md",
+    "doctrine/authority-model.md"
+  ],
+  "evaluator_changed": false
 }

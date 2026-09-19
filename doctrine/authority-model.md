@@ -58,3 +58,7 @@ Forge does not remove human authority. It makes delegation explicit. The technic
 ## Promotion authority
 
 Candidate existence never implies promotion authority. Promotion belongs to the role or human explicitly responsible for acceptance and integration.
+
+## Mechanical capability envelopes
+
+For runtime enforcement, Forge separates role semantics from effect capabilities. See [Capability Authority Model](capability-authority.md). The experimental kernel in `tools/forge_authority_kernel.py` binds repository/base/branch, explicit capabilities, owned paths, and delegation depth into a deterministic envelope. Tool visibility never grants authority.
