@@ -78,3 +78,42 @@ def verify_approval(token:dict,proposal:dict,*,key:str)->bool:
     expected=hmac.new(key.encode("utf-8"),_canonical(base),hashlib.sha256).hexdigest()
     _require(hmac.compare_digest(str(token.get("signature_hmac_sha256") or ""),expected),"approval signature verification failed")
     return True
+
+class ApprovalLedger:
+    """Durable one-use consumption ledger for exact-action approval tokens."""
+
+    def __init__(self, consumed=None):
+        self._consumed=[]
+        self._keys=set()
+        for entry in consumed or []:
+            self._add_existing(entry)
+
+    def _add_existing(self, entry):
+        _require(isinstance(entry,dict),"invalid consumed approval entry")
+        approval_id=str(entry.get("approval_id") or "")
+        action_sha256=str(entry.get("action_sha256") or "")
+        _require(bool(approval_id and action_sha256),"consumed entry requires approval_id and action_sha256")
+        key=(approval_id,action_sha256)
+        _require(key not in self._keys,"duplicate consumed approval entry")
+        normalized={"approval_id":approval_id,"action_sha256":action_sha256}
+        self._keys.add(key)
+        self._consumed.append(normalized)
+
+    def consume(self, token:dict, proposal:dict, *, key:str)->bool:
+        # Verification happens before mutation: invalid attempts never burn a token.
+        verify_approval(token,proposal,key=key)
+        identity=(str(token.get("approval_id") or ""),str(token.get("action_sha256") or ""))
+        _require(identity not in self._keys,"approval token has already been consumed")
+        self._keys.add(identity)
+        self._consumed.append({"approval_id":identity[0],"action_sha256":identity[1]})
+        return True
+
+    def to_dict(self)->dict:
+        return {"version":1,"consumed":copy.deepcopy(self._consumed)}
+
+    @classmethod
+    def from_dict(cls, snapshot:dict):
+        _require(isinstance(snapshot,dict) and snapshot.get("version")==1,"unsupported approval ledger snapshot")
+        consumed=snapshot.get("consumed")
+        _require(isinstance(consumed,list),"approval ledger consumed entries must be a list")
+        return cls(consumed=consumed)
