@@ -1,21 +1,36 @@
-# KIRION FORGE
+# Operation FORGE.kirion
 
-KIRION Forge is a repository-native engineering operating system for governed AI-assisted software work.
+Operation FORGE.kirion is the **composite entity** that binds:
 
-It defines authority, roles, bounded handoffs, evidence, review, acceptance, integration, promotion, recovery, and project memory as repository truth.
+- **KIRION Forge** — engineering authority, roles, bounded mutation, evidence, review, acceptance, integration, promotion, recovery.
+- **Project Second Brain** — cognition harness, task classification, rigor selection, semantic routing, context compilation, lifecycle fingerprints, and cognition-side gates.
 
-## Operation FORGE.kirion entity
+The two components remain separately versioned and are pinned as git submodules. Claude's repaired 2026-09-19 state is represented as deterministic overlay patches under `overlays/claude-2026-09-19/`.
 
-This repository is the integrated Forge entity. KIRION Forge remains the canonical engineering authority at the repository root; Project Second Brain is embedded at `second-brain/` as the cognition and harness component.
-
-The entity boundary is explicit:
-
-- Forge owns repository mutation authority, roles, evidence semantics, review, acceptance, integration, promotion, deployment, and recovery.
-- Project Second Brain owns cognition support: classification, rigor selection, semantic routing, context compilation, lifecycle fingerprints, and cognition-side evidence gates.
-- Cognition may require context or evidence, but it cannot grant Forge authority or override an authority denial.
-
-See `ENTITY.md` and `ENTITY_MANIFEST.json`. Validate the integrated state with:
+## Materialize the entity
 
 ```bash
-python tools/entity_check.py
+git clone --recurse-submodules https://github.com/Kirch-Nairu/Operation-FORGE.kirion.git
+cd Operation-FORGE.kirion
+./tools/materialize-entity.sh
 ```
+
+PowerShell:
+
+```powershell
+git clone --recurse-submodules https://github.com/Kirch-Nairu/Operation-FORGE.kirion.git
+Set-Location Operation-FORGE.kirion
+./tools/materialize-entity.ps1
+```
+
+Then validate:
+
+```bash
+python tools/verify-entity.py
+```
+
+## Authority invariant
+
+**Cognition may require context or evidence, but it cannot grant repository mutation, acceptance, promotion, deployment, or any other Forge authority.**
+
+See `ENTITY.md` and `ENTITY_MANIFEST.json`.

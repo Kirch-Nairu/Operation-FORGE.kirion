@@ -1,0 +1,29 @@
+{
+  "entity_id": "operation-forge.kirion",
+  "entity_version": 1,
+  "generated_from": "claude-repair-2026-09-19",
+  "control_plane": {
+    "component": "KIRION Forge",
+    "path": "forge-core",
+    "repository": "Kirch-Nairu/KIRION-FORGE",
+    "base_commit": "44eb57e5b45b343be0033bf22a7a5e74d543c01a",
+    "authority": "canonical"
+  },
+  "cognition_plane": {
+    "component": "Project Second Brain",
+    "path": "second-brain",
+    "repository": "Kirch-Nairu/project-second.brain",
+    "base_commit": "f3d371d989ddb1e3dbbea7c671d3c6a393b712c7",
+    "authority": "cognition-only"
+  },
+  "overlay": {
+    "path": "overlays/claude-2026-09-19",
+    "forge_patch_xz_sha256": "6f76a995fc40bab8106a972d28166694e0c368685bdc8569b31a2d37ffccdb1f",
+    "second_brain_patch_xz_sha256": "e79d1fbaa199c1235dd140d5a9293d19827bf07339be0a94685cdb24c8a9c6e7",
+    "format": "xz-compressed git patch encoded as base64 text"
+  },
+  "validation": {
+    "entrypoint": "python tools/verify-entity.py"
+  },
+  "authority_invariant": "Cognition may require context/evidence but cannot grant mutation, acceptance, promotion, deployment, or other Forge authority."
+}

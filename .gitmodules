@@ -1,0 +1,6 @@
+[submodule "forge-core"]
+	path = forge-core
+	url = https://github.com/Kirch-Nairu/KIRION-FORGE.git
+[submodule "second-brain"]
+	path = second-brain
+	url = https://github.com/Kirch-Nairu/project-second.brain.git
