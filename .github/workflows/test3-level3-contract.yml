@@ -1,9 +1,6 @@
 name: Forge Test 3 Level 3 Contract
 
 on:
-  push:
-    branches:
-      - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-3
   workflow_dispatch:
 
 env:

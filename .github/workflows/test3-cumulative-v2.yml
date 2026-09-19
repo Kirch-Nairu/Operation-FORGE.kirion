@@ -1,0 +1,20 @@
+name: Forge Test 3 Cumulative V2
+
+on:
+  push:
+    branches:
+      - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-3
+  workflow_dispatch:
+
+jobs:
+  cumulative-v2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python tools/entity_check.py
+      - run: python tools/test3_cumulative_v2.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test3-cumulative-v2
+          path: test3-cumulative-v2.json
