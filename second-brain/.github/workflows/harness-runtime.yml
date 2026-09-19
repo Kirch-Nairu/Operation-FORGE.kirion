@@ -1,0 +1,61 @@
+name: Cognition Harness Runtime
+
+on:
+  push:
+    paths:
+      - 'harness/**'
+      - 'tools/harness/**'
+      - '.github/workflows/harness-runtime.yml'
+  pull_request:
+    paths:
+      - 'harness/**'
+      - 'tools/harness/**'
+      - '.github/workflows/harness-runtime.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-harness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PSB_SEMANTIC_PROVIDER: GIT
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check tools/harness/cli.js
+          for file in tools/harness/lib/*.js tools/harness/test/*.js; do
+            node --check "$file"
+          done
+          node --check tools/harness/notion/sync.mjs
+      - name: Harness tests
+        run: node tools/harness/test/run.js
+      - name: Notion semantic provider adversarial tests
+        run: node tools/harness/test/semantic-provider.js
+      - name: Harness doctor
+        run: node tools/harness/cli.js doctor
+      - name: Compile greenfield cognition pack
+        run: node tools/harness/cli.js bootstrap --task harness/examples/sentinelops-greenfield.task.json
+      - name: Prove known runtime failure blocks delivery
+        shell: bash
+        run: |
+          set +e
+          node tools/harness/cli.js evaluate \
+            --task harness/examples/sentinelops-greenfield.task.json \
+            --evidence harness/examples/sentinelops-runtime-failure.evidence.json \
+            --through PRE_DELIVERY
+          status=$?
+          set -e
+          if [ "$status" -ne 3 ]; then
+            echo "Expected blocking gate exit code 3, got $status"
+            exit 1
+          fi
