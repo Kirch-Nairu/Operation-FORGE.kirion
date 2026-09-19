@@ -1,7 +1,7 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 1,
-  "status": "ACTIVE",
+  "status": "CLOSED",
   "baseline": {
     "branch": "main",
     "sha": "da4aacd036fc39bf6271874bd4508ed314dc0551"
@@ -17,6 +17,16 @@
     "mutate isolated temporary copies with adversarial authority/evidence violations",
     "require the trusted guard to reject every mutation"
   ],
+  "result": {
+    "candidate_sha": "6351512298f935cf1dc45141818cfec3f1bfcc45",
+    "workflow_run": 35441900073,
+    "entity_validation": "PASS",
+    "policy_smoke": "100/100 PASS",
+    "adversarial_negative_tests": "20/20 REJECTED",
+    "escaped_mutations": 0
+  },
+  "retained": "YES",
   "known_trust_limitation": "The branch-local workflow caller remains mutable by the same Git authority. Full evaluator independence ultimately requires an immutable/protected external workflow or separate acceptance authority outside the experiment branch.",
+  "next_hypothesis": "Branch-local self-evaluation can produce strong candidate evidence, but it cannot by itself prove its own promotion safety. Forge should explicitly model the trusted computing base for self-evolution and distinguish branch-local evidence from externally anchored acceptance evidence.",
   "promotion_status": "NOT_AUTHORIZED"
 }

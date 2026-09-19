@@ -1,0 +1,23 @@
+{
+  "generation": 1,
+  "status": "CLOSED",
+  "candidate_sha": "6351512298f935cf1dc45141818cfec3f1bfcc45",
+  "workflow_run": 35441900073,
+  "trusted_evaluator_source_sha": "1567fffa1f21304686aa97e767783d8350b25fdf",
+  "evaluator_sha256": "3e0f0f72464073926672832c7956926d0dcdec2bb0f858b85e331c709ec3848a",
+  "adversary_sha256": "18705065503c100beed37d44df80bec6af4a5795452d1d1aae7aa69f1a7baf11",
+  "integrated_entity_validation": "PASS",
+  "simulations": {
+    "generation_0_policy_smoke": {
+      "passed": 100,
+      "failed": 0
+    },
+    "generation_1_adversarial": {
+      "rejected": 20,
+      "escaped": 0
+    }
+  },
+  "interpretation": "The branch now rejects the tested authority/evidence violations with a frozen pre-generation evaluator. This is materially stronger than Generation 0, but the workflow caller remains in the branch's own mutation authority and therefore is not a sufficient external trust root for promotion.",
+  "decision": "RETAIN",
+  "promotion_status": "NOT_AUTHORIZED"
+}
