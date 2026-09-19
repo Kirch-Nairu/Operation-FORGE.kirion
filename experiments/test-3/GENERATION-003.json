@@ -1,0 +1,15 @@
+{
+  "test": "TEST 3",
+  "generation": 3,
+  "status": "EVALUATOR_FIRST_BASELINE",
+  "parent_candidate": "4b2e7bd6466507ba7bcd7af6d04f5b2f6978fbbb",
+  "prior": {
+    "cumulative_v2": "800/800 PASS",
+    "level7": "250/250 PASS"
+  },
+  "level": 8,
+  "new_scenarios": 300,
+  "hypothesis": "Trust primitives must be enforced at the actual narrow waist, survive restart, and bind both worker and verifier identity rather than existing only as optional helper APIs.",
+  "evaluator": "tools/test3_level8_narrow_waist.py",
+  "promotion_status": "NOT_AUTHORIZED"
+}
