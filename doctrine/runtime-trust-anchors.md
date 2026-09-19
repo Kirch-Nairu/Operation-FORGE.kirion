@@ -1,0 +1,1 @@
+# Runtime Trust Anchors\n\nHashes detect accidental mutation only when the attacker cannot simply recompute them. Authority-bearing state crossing an untrusted model/runtime boundary therefore uses server-held HMAC identity/signing or a trusted external consumption/state anchor. Candidate-controlled snapshots are not their own trust root.\n

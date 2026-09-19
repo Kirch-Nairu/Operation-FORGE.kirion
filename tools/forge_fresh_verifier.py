@@ -2,6 +2,7 @@
 """Fresh verifier contract: independent evidence, never self-acceptance."""
 from __future__ import annotations
 import copy, hashlib, hmac, json
+from forge_actor_identity import verify_actor_token
 
 class VerificationError(RuntimeError):
     pass
@@ -83,3 +84,8 @@ def verify_result(result:dict,request:dict)->bool:
     expected=_sha(_result_base(result))
     _require(hmac.compare_digest(str(result.get("result_sha256") or ""),expected),"verification result digest mismatch")
     return True
+
+
+def record_verification_authenticated(request:dict,*,verifier_token:dict,identity_key:str,outcome:str,observed_evidence:list[str])->dict:
+    identity=verify_actor_token(verifier_token,key=identity_key,required_role="VERIFIER")
+    return record_verification(request,verifier_id=identity["actor_id"],outcome=outcome,observed_evidence=observed_evidence)

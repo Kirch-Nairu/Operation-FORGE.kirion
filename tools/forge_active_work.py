@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Active-work lease registry for concurrent Forge mutation ownership."""
 from __future__ import annotations
-import copy, fnmatch, hashlib, json
+import copy, fnmatch, hashlib, hmac, json
 from forge_authority_kernel import verify_envelope, AuthorityError
 
 class ActiveWorkError(RuntimeError):
@@ -70,3 +70,22 @@ class ActiveWorkRegistry:
 
     def active(self)->list[dict]:
         return copy.deepcopy([x for x in self._leases if x.get("status")=="ACTIVE"])
+
+    def to_dict(self,*,key:str)->dict:
+        _require(bool(key),"active-work snapshot signing key is required")
+        base={"version":1,"leases":copy.deepcopy(self._leases)}
+        sig=hmac.new(key.encode("utf-8"),json.dumps(base,sort_keys=True,separators=(",",":")).encode(),hashlib.sha256).hexdigest()
+        return {**base,"signature_hmac_sha256":sig}
+
+    @classmethod
+    def from_dict(cls,snapshot:dict,*,key:str):
+        _require(bool(key),"active-work snapshot verification key is required")
+        _require(isinstance(snapshot,dict) and snapshot.get("version")==1,"unsupported active-work snapshot")
+        leases=snapshot.get("leases")
+        _require(isinstance(leases,list),"active-work snapshot leases must be a list")
+        base={"version":1,"leases":leases}
+        expected=hmac.new(key.encode("utf-8"),json.dumps(base,sort_keys=True,separators=(",",":")).encode(),hashlib.sha256).hexdigest()
+        _require(hmac.compare_digest(str(snapshot.get("signature_hmac_sha256") or ""),expected),"active-work snapshot signature mismatch")
+        reg=cls()
+        reg._leases=copy.deepcopy(leases)
+        return reg

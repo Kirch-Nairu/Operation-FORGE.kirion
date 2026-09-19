@@ -82,6 +82,20 @@ def verify_approval(token:dict,proposal:dict,*,key:str)->bool:
     _require(hmac.compare_digest(str(token.get("signature_hmac_sha256") or ""),expected),"approval signature verification failed")
     return True
 
+class ApprovalConsumptionAnchor:
+    """Trusted consumed-action anchor kept outside rollbackable ledger snapshots."""
+    def __init__(self):
+        self._consumed=set()
+
+    def contains(self,approval_id:str,action_sha256:str)->bool:
+        return (str(approval_id),str(action_sha256)) in self._consumed
+
+    def consume(self,approval_id:str,action_sha256:str)->None:
+        identity=(str(approval_id),str(action_sha256))
+        _require(all(identity),"anchor identity is incomplete")
+        _require(identity not in self._consumed,"approval token has already been consumed in trusted anchor")
+        self._consumed.add(identity)
+
 class ApprovalLedger:
     """One-use exact-action approvals with rollback high-water detection.
 
@@ -91,8 +105,9 @@ class ApprovalLedger:
     """
     _high_water={}
 
-    def __init__(self, consumed=None, *, ledger_id=None, generation=0, _restoring=False):
+    def __init__(self, consumed=None, *, ledger_id=None, generation=0, _restoring=False, anchor=None):
         self.ledger_id=ledger_id or secrets.token_hex(16)
+        self.anchor=anchor
         self.generation=int(generation)
         _require(self.generation>=0,"ledger generation must be non-negative")
         if _restoring:
@@ -118,6 +133,9 @@ class ApprovalLedger:
         verify_approval(token,proposal,key=key)
         identity=(str(token.get("approval_id") or ""),str(token.get("action_sha256") or ""))
         _require(identity not in self._keys,"approval token has already been consumed")
+        if self.anchor is not None:
+            _require(not self.anchor.contains(identity[0],identity[1]),"approval token has already been consumed in trusted anchor")
+            self.anchor.consume(identity[0],identity[1])
         self._keys.add(identity)
         self._consumed.append({"approval_id":identity[0],"action_sha256":identity[1]})
         self.generation+=1
@@ -129,7 +147,7 @@ class ApprovalLedger:
         return {**base,"snapshot_sha256":_sha(base)}
 
     @classmethod
-    def from_dict(cls, snapshot:dict):
+    def from_dict(cls, snapshot:dict, *, anchor=None):
         _require(isinstance(snapshot,dict) and snapshot.get("version")==2,"unsupported approval ledger snapshot")
         base={
             "version":snapshot.get("version"),
@@ -139,4 +157,4 @@ class ApprovalLedger:
         }
         _require(hmac.compare_digest(str(snapshot.get("snapshot_sha256") or ""),_sha(base)),"approval ledger snapshot digest mismatch")
         _require(bool(base["ledger_id"]) and isinstance(base["consumed"],list),"invalid approval ledger snapshot")
-        return cls(consumed=base["consumed"],ledger_id=base["ledger_id"],generation=base["generation"],_restoring=True)
+        return cls(consumed=base["consumed"],ledger_id=base["ledger_id"],generation=base["generation"],_restoring=True,anchor=anchor)

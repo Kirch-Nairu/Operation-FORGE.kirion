@@ -181,3 +181,9 @@ def verify_checkpoint(envelope: dict, key: str | None = None) -> dict:
     state=copy.deepcopy(envelope["state"])
     state["_verified_checkpoint_state_sha256"]=_verified_state_digest(state)
     return state
+
+
+def resume_checkpoint(envelope:dict, observed:dict, key:str|None=None)->dict:
+    """Atomically verify a durable checkpoint and resume its exact external work."""
+    state=verify_checkpoint(envelope,key=key)
+    return resume_external(state,observed)

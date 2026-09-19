@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Capability-based authority envelopes for Forge execution."""
 from __future__ import annotations
-import copy, fnmatch, hashlib, json
+import copy, fnmatch, hashlib, hmac, json
 
 class AuthorityError(RuntimeError):
     pass
@@ -123,5 +123,36 @@ def authorize_current(envelope:dict,capability:str,*,current_sha:str,path:str|No
     """Authorize an effect only against the exact observed repository head."""
     verify_envelope(envelope)
     _require(bool(current_sha),"current_sha is required for target-bound authority")
+    _require(current_sha==envelope.get("base_sha"),f"target drift: observed {current_sha} != authority base {envelope.get('base_sha')}")
+    return authorize(envelope,capability,path=path)
+
+
+def _signed_authority_base(envelope:dict)->dict:
+    return {
+        "version":1,
+        "authority_issuer":envelope.get("authority_issuer"),
+        "envelope_sha256":envelope.get("envelope_sha256"),
+    }
+
+def sign_envelope(envelope:dict,*,issuer_id:str,key:str)->dict:
+    verify_envelope(envelope)
+    _require(bool(issuer_id and key),"authority issuer and signing key are required")
+    signed=copy.deepcopy(envelope)
+    signed["authority_issuer"]=issuer_id
+    base=_signed_authority_base(signed)
+    signed["authority_signature_hmac_sha256"]=hmac.new(key.encode("utf-8"),_canonical(base),hashlib.sha256).hexdigest()
+    return signed
+
+def verify_signed_envelope(envelope:dict,*,key:str)->bool:
+    verify_envelope(envelope)
+    _require(bool(key),"authority verification key is required")
+    _require(bool(envelope.get("authority_issuer")),"signed authority issuer missing")
+    actual=str(envelope.get("authority_signature_hmac_sha256") or "")
+    expected=hmac.new(key.encode("utf-8"),_canonical(_signed_authority_base(envelope)),hashlib.sha256).hexdigest()
+    _require(hmac.compare_digest(actual,expected),"signed authority verification failed")
+    return True
+
+def authorize_signed_current(envelope:dict,capability:str,*,key:str,current_sha:str,path:str|None=None)->bool:
+    verify_signed_envelope(envelope,key=key)
     _require(current_sha==envelope.get("base_sha"),f"target drift: observed {current_sha} != authority base {envelope.get('base_sha')}")
     return authorize(envelope,capability,path=path)
