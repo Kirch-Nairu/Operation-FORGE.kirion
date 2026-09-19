@@ -1,0 +1,19 @@
+{
+  "generation": 0,
+  "status": "CLOSED_FOR_MEASUREMENT_REDESIGN",
+  "candidate_commit": "910b0ce82b0c312aeb4d01503fa56ed36b682b56",
+  "workflow_run": 35441770425,
+  "entity_validation": "PASS",
+  "second_brain_harness": "26/26 PASS",
+  "policy_simulations": "100/100 PASS",
+  "interpretation": "The simulator is a useful wiring/regression smoke test but is not semantically independent because it evaluates declarations from the same POLICY.json it is intended to validate.",
+  "retained": [
+    "self-evolution containment doctrine",
+    "branch isolation",
+    "no-self-promotion rule",
+    "fitness hard constraints",
+    "observer-note non-authority"
+  ],
+  "next": "Establish a repository-state guard and adversarial negative tests before claiming stronger self-evolution evidence.",
+  "promotion_status": "NOT_AUTHORIZED"
+}
