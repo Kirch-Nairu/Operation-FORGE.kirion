@@ -1,0 +1,12 @@
+{
+  "test": "TEST 3",
+  "generation": 6,
+  "status": "EVALUATOR_FIRST_BASELINE",
+  "parent_candidate": "c6f49cde7b2ec1544b9eb2cd274fdbc9effea56c",
+  "prior_green_scenarios": 2450,
+  "level": 11,
+  "new_scenarios": 600,
+  "hypothesis": "Temporal trust must survive composition: sensitive effects, fresh verification, active ownership, and actor-bound authority must agree on the same authenticated principal and logical epoch.",
+  "evaluator": "tools/test3_level11_cross_component.py",
+  "promotion_status": "NOT_AUTHORIZED"
+}
