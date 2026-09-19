@@ -1,9 +1,6 @@
 name: Forge Test 3 Progressive Overload
 
 on:
-  push:
-    branches:
-      - KIRCH-FORGE-ENTITY-EVOLUTION-TEST-3
   workflow_dispatch:
 
 jobs:

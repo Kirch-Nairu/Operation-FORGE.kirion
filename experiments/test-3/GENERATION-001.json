@@ -1,0 +1,11 @@
+{
+  "test": "TEST 3 — Progressive Overload Behavioral Gauntlet",
+  "generation": 1,
+  "status": "EVALUATOR_FIRST_BASELINE",
+  "parent_candidate": "07336dc569c2682ddedbceede3f292b49ea98736",
+  "hypothesis": "The remaining Level 3 reds are invalid hidden-state tests. Explicit active-work leases and observed target SHA should make concurrency/drift behavior testable without guessing.",
+  "corrected_level3_scenarios": 100,
+  "evaluator": "tools/test3_level3_contract.py",
+  "expected_initial_result": "RED_MISSING_RUNTIME_CONTRACT",
+  "promotion_status": "NOT_AUTHORIZED"
+}
