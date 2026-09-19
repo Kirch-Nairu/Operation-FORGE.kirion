@@ -6,6 +6,9 @@ that must be durably checkpointed before an ephemeral agent yields control.
 """
 from __future__ import annotations
 import copy
+import hashlib
+import hmac
+import json
 
 class ExecutionError(RuntimeError):
     pass
@@ -114,3 +117,57 @@ def resume_external(state: dict, observed: dict) -> dict:
     s["last_external_conclusion"]=conclusion
     s["external"]={**ext,"observed_status":"completed","observed_conclusion":conclusion}
     return s
+
+
+class CheckpointIntegrityError(RuntimeError):
+    pass
+
+CHECKPOINT_VERSION=1
+
+def _canonical(value: dict) -> bytes:
+    return json.dumps(value,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode("utf-8")
+
+def _checkpoint_digest(base: dict, key: str | None = None) -> str:
+    payload=_canonical(base)
+    if key is not None:
+        return hmac.new(key.encode("utf-8"),payload,hashlib.sha256).hexdigest()
+    return hashlib.sha256(payload).hexdigest()
+
+def seal_checkpoint(state: dict, key: str | None = None) -> dict:
+    """Seal authority-bearing execution state for durable handoff/resumption."""
+    base={
+        "checkpoint_version":CHECKPOINT_VERSION,
+        "integrity_mode":"HMAC_SHA256" if key is not None else "SHA256",
+        "state":copy.deepcopy(state),
+    }
+    return {**base,"integrity_sha256":_checkpoint_digest(base,key)}
+
+def verify_checkpoint(envelope: dict, key: str | None = None) -> dict:
+    """Verify checkpoint integrity and return an isolated copy of the state.
+
+    Providing a key makes HMAC mandatory. This prevents an unsigned checkpoint
+    from remaining silently trusted after the runtime is upgraded to signing.
+    """
+    if not isinstance(envelope,dict):
+        raise CheckpointIntegrityError("checkpoint envelope must be an object")
+    if envelope.get("checkpoint_version")!=CHECKPOINT_VERSION:
+        raise CheckpointIntegrityError("unsupported checkpoint version")
+    mode=envelope.get("integrity_mode")
+    if mode not in {"SHA256","HMAC_SHA256"}:
+        raise CheckpointIntegrityError("unsupported checkpoint integrity mode")
+    if mode=="HMAC_SHA256" and key is None:
+        raise CheckpointIntegrityError("HMAC checkpoint requires the server-held key")
+    if mode=="SHA256" and key is not None:
+        raise CheckpointIntegrityError("unsigned checkpoint rejected because HMAC is now required")
+    if "state" not in envelope or "integrity_sha256" not in envelope:
+        raise CheckpointIntegrityError("incomplete checkpoint envelope")
+    base={
+        "checkpoint_version":envelope["checkpoint_version"],
+        "integrity_mode":mode,
+        "state":envelope["state"],
+    }
+    expected=_checkpoint_digest(base,key if mode=="HMAC_SHA256" else None)
+    actual=str(envelope.get("integrity_sha256") or "")
+    if not hmac.compare_digest(actual,expected):
+        raise CheckpointIntegrityError("checkpoint integrity verification failed")
+    return copy.deepcopy(envelope["state"])

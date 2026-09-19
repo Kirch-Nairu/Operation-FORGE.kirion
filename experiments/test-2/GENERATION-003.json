@@ -1,7 +1,7 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 3,
-  "status": "BASELINE_CHALLENGE_RETRY",
+  "status": "CANDIDATE_MUTATION",
   "baseline": {
     "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
     "sha": "10b454e037352e4875a981f9e825bfdd2a554114"
@@ -18,5 +18,16 @@
     "reason": "frozen evaluator resolved ROOT from /tmp path rather than checked-out repository"
   },
   "baseline_result": "NOT_MEASURED",
-  "retry_after_evaluator_repair": true
+  "retry_after_evaluator_repair": true,
+  "valid_red_run": {
+    "candidate_sha": "56bb5c71a9591c2f6326bcb650f597767bbe8118",
+    "workflow_run": 35442204648,
+    "result": "EXPECTED_FAILURE",
+    "reason": "missing checkpoint integrity API: seal_checkpoint"
+  },
+  "mutation": [
+    "tools/forge_execution_machine.py checkpoint envelope",
+    "protocols/resumable-external-work.md integrity law"
+  ],
+  "evaluator_changed": false
 }

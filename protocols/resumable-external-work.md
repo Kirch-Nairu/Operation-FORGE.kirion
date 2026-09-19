@@ -70,3 +70,14 @@ External failure is never converted into success merely because source inspectio
 ## Runtime reference
 
 The experiment implementation is `tools/forge_execution_machine.py`. It is intentionally transport-neutral and models durable transition semantics rather than GitHub-specific polling.
+
+## Checkpoint integrity
+
+Durable execution checkpoints carry authority-bearing state: role, branch, exact head SHA, external run identity, and current lifecycle state. They must therefore be tamper-evident.
+
+The execution machine supports:
+
+- `SHA256` envelopes for local integrity detection;
+- `HMAC_SHA256` envelopes when a server-held signing key is available.
+
+If the runtime begins requiring HMAC, previously unsigned checkpoints are not silently grandfathered. They must be recreated under the stronger integrity regime. A checkpoint that fails integrity verification is evidence of corruption or incompatible trust state and must not be resumed.
