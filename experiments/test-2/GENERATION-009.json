@@ -1,12 +1,23 @@
 {
   "test": "KIRION Forge Benchmark Test 2",
   "generation": 9,
-  "status": "BASELINE_CHALLENGE",
+  "status": "CANDIDATE_MUTATION",
   "baseline": {
     "branch": "KIRCH-FORGE-ENTITY-EVOLUTION-TEST-2",
     "sha": "d13d9ab885a89cf0d57101b34c90728e3c4b147d"
   },
   "trusted_evaluator_source_sha": "d13d9ab885a89cf0d57101b34c90728e3c4b147d",
   "hypothesis": "Independent authority/approval modules can be bypassed unless all side effects pass through a narrow-waist broker that enforces capability, path scope, sensitive-action approval, and one-use consumption before invoking handlers.",
-  "promotion_status": "NOT_AUTHORIZED"
+  "promotion_status": "NOT_AUTHORIZED",
+  "red_run": {
+    "candidate_sha": "08acb12057e0f33fa18901f7351770d6850a02c7",
+    "workflow_run": 35442938984,
+    "result": "EXPECTED_FAILURE",
+    "reason": "missing tools/forge_tool_broker.py"
+  },
+  "mutation": [
+    "tools/forge_tool_broker.py",
+    "doctrine/tool-broker.md"
+  ],
+  "evaluator_changed": false
 }

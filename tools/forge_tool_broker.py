@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+"""Narrow-waist tool broker for Forge effect enforcement."""
+from __future__ import annotations
+import sys
+from pathlib import Path
+
+_TOOLS_DIR=Path(__file__).resolve().parent
+if str(_TOOLS_DIR) not in sys.path:
+    sys.path.insert(0,str(_TOOLS_DIR))
+
+from forge_authority_kernel import authorize, AuthorityError
+from forge_action_approval import propose_action, ApprovalLedger, ApprovalError
+
+class ToolBrokerError(RuntimeError):
+    pass
+
+class ToolBroker:
+    def __init__(self):
+        self._tools={}
+
+    def register(self,name:str,*,capability:str,handler,sensitive:bool=False,path_arg:str|None=None):
+        if not name or name in self._tools:
+            raise ToolBrokerError("tool name must be unique and non-empty")
+        if not callable(handler):
+            raise ToolBrokerError("tool handler must be callable")
+        self._tools[name]={"capability":capability,"handler":handler,"sensitive":bool(sensitive),"path_arg":path_arg}
+        return self
+
+    def _tool(self,name:str)->dict:
+        if name not in self._tools:
+            raise ToolBrokerError(f"unknown tool: {name}")
+        return self._tools[name]
+
+    def describe(self)->list[dict]:
+        return [{"name":name,"capability":meta["capability"],"sensitive":meta["sensitive"],"path_arg":meta["path_arg"]} for name,meta in sorted(self._tools.items())]
+
+    def _authorize_tool(self,meta:dict,envelope:dict,args:dict)->None:
+        path=None
+        if meta["path_arg"] is not None:
+            if meta["path_arg"] not in args:
+                raise ToolBrokerError(f"missing path argument: {meta['path_arg']}")
+            path=args[meta["path_arg"]]
+        authorize(envelope,meta["capability"],path=path)
+
+    def proposal_for(self,name:str,envelope:dict,args:dict,*,target_state:dict)->dict:
+        meta=self._tool(name)
+        self._authorize_tool(meta,envelope,args)
+        if not meta["sensitive"]:
+            raise ToolBrokerError("exact-action proposals are only required for sensitive tools")
+        return propose_action(envelope,capability=meta["capability"],operation=name,parameters=args,target_state=target_state)
+
+    def execute(self,name:str,envelope:dict,args:dict,*,target_state:dict|None=None,approval_token:dict|None=None,approval_key:str|None=None,approval_ledger:ApprovalLedger|None=None):
+        meta=self._tool(name)
+        if not isinstance(args,dict):
+            raise ToolBrokerError("tool arguments must be an object")
+
+        # Authority is evaluated before any handler code can run.
+        self._authorize_tool(meta,envelope,args)
+
+        if meta["sensitive"]:
+            if approval_token is None or not approval_key or approval_ledger is None:
+                raise ToolBrokerError("sensitive tool requires exact-action approval and durable consumption ledger")
+            proposal=propose_action(envelope,capability=meta["capability"],operation=name,parameters=args,target_state=target_state or {})
+            # Consume immediately before attempting the side effect. If the handler
+            # fails ambiguously, replaying the same approval remains prohibited.
+            approval_ledger.consume(approval_token,proposal,key=approval_key)
+
+        return meta["handler"](**args)
